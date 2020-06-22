@@ -1,0 +1,28 @@
+// [theme="raratina"] {
+:root {
+    --bg-color: #1d2024;
+    --link-hover-color: #cedce7;
+
+    --border-color: #242d30;
+    // --link-hover-color: #e43f5a;
+    --link-color: #3fa7e4;
+    --font-color: #c2c9cf;
+    --font-detail-color: #617485;
+    --games-list-bg-color: #202327;
+    --games-list-bg-hover-color: #38414d;
+
+    --task-progress-color: #00bfff;
+    --task-description-color: #3b9cbd;
+    --task-animation-function: linear;
+
+    --header-bg-color: #111111;
+    --header-font-color: #535353;
+    --header-link-bg-hover-color: #202020;
+    --header-active-link-border-color: #00bfff;
+
+    --animation-very-short-time: 0.11s;
+    --animation-short-time: 0.33s;
+    --animation-middle-time: 0.77s;
+    --animation-long-time: 1.33s;
+    --animation-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}

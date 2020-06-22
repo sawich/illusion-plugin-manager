@@ -1,0 +1,50 @@
+{
+    "name": "illusionpluggin",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "eb": "vue-cli-service electron:build",
+        "es": "set ELECTRON_ENABLE_LOGGING=1 && vue-cli-service electron:serve",
+        "postinstall": "electron-builder install-app-deps",
+        "postuninstall": "electron-builder install-app-deps"
+    },
+    "main": "background.js",
+    "dependencies": {
+        "@types/nodegit": "^0.26.5",
+        "core-js": "^3.6.5",
+        "electron": "^9.0.4",
+        "fast-xml-parser": "^3.17.4",
+        "nodegit": "^0.26.5",
+        "normalize.css": "^8.0.1",
+        "simple-git": "^2.9.0",
+        "vs-parse": "^3.0.0",
+        "vue": "^2.6.11",
+        "vue-class-component": "^7.2.3",
+        "vue-i18n": "^8.18.2",
+        "vue-material-design-icons": "^4.7.1",
+        "vue-property-decorator": "^9.0.0",
+        "vue-router": "^3.3.4",
+        "vuex": "^3.4.0",
+        "vuex-class": "^0.3.2",
+        "vuex-class-component": "^2.3.3"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "~4.4.5",
+        "@vue/cli-plugin-router": "~4.4.5",
+        "@vue/cli-plugin-typescript": "~4.4.5",
+        "@vue/cli-plugin-vuex": "~4.4.5",
+        "@vue/cli-service": "~4.4.5",
+        "sass": "^1.26.8",
+        "sass-loader": "^8.0.2",
+        "typescript": "~3.9.5",
+        "vue-cli-plugin-electron-builder": "~2.0.0-rc.2",
+        "vue-template-compiler": "^2.6.11"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not dead"
+    ]
+}
