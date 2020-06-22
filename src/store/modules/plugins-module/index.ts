@@ -28,7 +28,7 @@ export class PluginsModule extends VuexModule {
     this._plugins.push(plugin);
   }
 
-  _plugins: Plugin[] = [];
+  private _plugins: Plugin[] = [];
 }
 
 // https://youtu.be/7hEefkR7NHc?list=PLkqN7b9u5k92tpEpQEwgTcyddxCwwAQNP

@@ -30,14 +30,13 @@
               {{ $t(`plugins.items.${plugin.lang}.name`) }}
             </div>
             <div class="desc">
-              &nbsp;—&nbsp;{{ $t(`plugins.items.${plugin.lang}.desc`) }}
+              &nbsp;—&nbsp;{{ $t("plugins.items")[plugin.lang].desc }}
             </div>
           </div>
         </template>
       </div>
     </div>
     <div class="tasks">
-      {{ Object.keys(tasksTasks) }}
       <div class="task" v-for="task in tasksTasks" :key="task.id">
         {{ task.id }} {{ task.plugin.id }}
         {{ $t(`plugins.items.${task.plugin.lang}.name`) }}
@@ -76,23 +75,9 @@ export default class Game extends Vue {
   }
 
   get plugins() {
-    return this.pluginsPlugins.filter(p =>
-      p.games.includes((this.$route.query.game as unknown) as PluginGame)
-    );
+    const game = Number(this.$route.query.game);
+    return this.pluginsPlugins.filter(p => p.games.includes(game));
   }
-
-  // async created() {
-  //   const gameIds = Array.from(
-  //     Array(Object.keys(PluginGame).length / 2),
-  //     (e, i) => i
-  //   );
-
-  //   this.plugins = gameIds.map(gameId =>
-  //     this.pluginsPlugins.filter(p => p.games.includes(Number(gameId)))
-  //   );
-  // }
-
-  // plugins: Plugin[][] = [];
 }
 </script>
 

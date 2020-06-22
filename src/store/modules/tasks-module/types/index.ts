@@ -5,24 +5,31 @@ export enum JobCategory {
   GitPull,
   GitClone,
   VSBuild,
+
+  /** Nothing. */
   Dummy,
 }
 
 export enum JobIcon {
+  /** Nothing. */
+  Dummy,
+
   GitHub,
   Download,
   VisualStudio,
-  Dummy,
 }
 
 export interface IRunnableJob<T> {
-  info: Task;
+  task: Task;
   action: () => Promise<T>;
 }
 
 export enum TaskStatus {
-  Start,
   Exists,
+  GitCloning,
+
+  /** Nothing. */
+  Dymmy,
 }
 
 export interface ITasks {

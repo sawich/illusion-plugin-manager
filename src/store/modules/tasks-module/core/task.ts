@@ -14,20 +14,28 @@ export class Task {
     return this._id;
   }
 
-  public get identity() {
-    return this.plugin.identity;
-  }
-
   public get game() {
     return this._game;
+  }
+
+  public get status() {
+    return this._status;
   }
 
   public get plugin() {
     return this._plugin;
   }
 
-  public get status() {
-    return this._status;
+  public get identity() {
+    return this._plugin.identity;
+  }
+
+  public get lang() {
+    return this._plugin.lang;
+  }
+
+  public get job() {
+    return this._job;
   }
 
   public get category() {
@@ -36,10 +44,6 @@ export class Task {
 
   public get icon() {
     return this._job.icon;
-  }
-
-  public get job() {
-    return this._job;
   }
 
   public get awaiter() {
@@ -79,6 +83,6 @@ export class Task {
   private _id: string;
   private _game: PluginGame;
   private _plugin: Plugin;
-  private _status = TaskStatus.Start;
+  private _status = TaskStatus.Dymmy;
   private _job: Job;
 }

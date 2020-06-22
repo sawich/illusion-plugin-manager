@@ -1,8 +1,6 @@
 import { JobCategory, JobIcon, TaskStatus } from "../types";
 import { Task } from "./task";
-import { TasksModule } from "..";
 import { tasks } from "@/store";
-import { TouchBarScrubber } from "electron";
 
 export abstract class Job {
   /**
@@ -73,11 +71,8 @@ export abstract class Job {
       this._resolver = resolve;
     });
 
-    tasks.changeTask({ task: this._info, job: this });
-
-    // this._info.job = this;
-
-    console.info(`created task with [id:${this._info.id}][identity:${this._info.identity}]`);
+    tasks.setJob({ task: this._info, job: this });
+    console.info(`created job with [id:${this._info.id}][identity:${this._info.identity}]`);
   }
 
   /**
@@ -86,7 +81,7 @@ export abstract class Job {
 
   private _info: Task;
   private _icon: JobIcon;
-  private _status = TaskStatus.Start;
+  private _status = TaskStatus.Dymmy;
   private _category: JobCategory;
   private _action: () => Promise<void>;
   private _awaiter: Promise<void>;

@@ -1,6 +1,6 @@
 import { createModule, mutation, action } from "vuex-class-component";
 import { GitCloneJob } from "./jobs/git-clone-job";
-import { IRunnableJob, ITasks, TaskStatus } from "./types";
+import { IRunnableJob, ITasks, TaskStatus, JobCategory } from "./types";
 import { Vue } from "vue-property-decorator";
 import { Job } from "./core/job";
 import { Task } from "./core/task";
@@ -20,24 +20,23 @@ export class TasksModule extends VuexModule {
    * Actions
    */
 
-  @action public async runGitClone({ info, action }: IRunnableJob<any>) {
-    console.log(`runGitClone [id:${info.id}][identity:${info.identity}]`);
+  @action public async runGitClone({ task, action }: IRunnableJob<any>) {
+    console.log(`runGitClone [id:${task.id}][identity:${task.identity}]`);
 
     /** Task who use this repository has launched, can just wait until she end. */
     const existsTask = Object.values(this.tasks)
-      .filter((t) => t.category == info.category && t.id != info.id)
-      .find((t) => t.identity == info.plugin.identity);
+      .filter((t) => t.category == JobCategory.GitClone && t.id != task.id)
+      .find((t) => t.identity == task.identity);
 
     if (existsTask !== undefined) {
-      console.log(`[id:${info.id}][identity:${info.identity}] task exists`);
-      this.updateStatus({ task: existsTask, status: TaskStatus.Exists });
+      console.warn(`task exists [id:${task.id}][identity:${task.identity}]`);
+      this.setStatus({ task, status: TaskStatus.Exists });
       console.log("change status");
 
       return existsTask;
     }
 
-    console.log(`[id:${info.id}][identity:${info.identity}] task created`);
-    const newTask = new GitCloneJob(info, action);
+    const newTask = new GitCloneJob(task, action);
     newTask.run();
 
     return newTask;
@@ -47,14 +46,14 @@ export class TasksModule extends VuexModule {
    * Mutations
    */
 
-  @mutation public changeTask({ task, job }: { task: Task; job: Job }) {
+  @mutation public setJob({ task, job }: { task: Task; job: Job }) {
     // Vue.set(task, "job", job);
     task.job = job;
-    task.status;
   }
 
-  @mutation public updateStatus({ task, status }: { task: Task; status: TaskStatus }) {
+  @mutation public setStatus({ task, status }: { task: Task; status: TaskStatus }) {
     task.status = status;
+    console.log("new status:", task.status);
   }
 
   @mutation public add(task: Task) {

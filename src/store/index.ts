@@ -27,5 +27,6 @@ export const store = new Vuex.Store({
 });
 
 export const tasks = createProxy(store, TasksModule);
+export const plugins = createProxy(store, PluginsModule);
 export const installedGames = createProxy(store, InstalledGamesModule);
 export const installedPlugins = createProxy(store, InstalledPluginsModule);

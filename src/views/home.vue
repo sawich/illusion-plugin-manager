@@ -3,7 +3,7 @@
     <div class="games">
       <router-link
         class="game"
-        v-for="(name, id) of $t('game.names')"
+        v-for="(name, id) in $t('game.names')"
         :key="`info-${name}`"
         :to="{ name: 'library', query: { game: id } }"
       >

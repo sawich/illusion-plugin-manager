@@ -54,7 +54,7 @@ export class VSModule extends VuexModule {
       await new Promise(async (resolve: (filename: IUpdateComponents) => void, reject) => {
         // spawn(exe, args, { stdio: ["ignore"] }).once("close", async () => {
         const json = JSON.parse(await readFile(config, "utf-8")) as IVSConfig;
-        console.dir(json);
+        // console.dir(json);
         return resolve({
           buildTool: version as KnownBuildTools,
           components: json.components,

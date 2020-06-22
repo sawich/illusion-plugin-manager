@@ -1,55 +1,51 @@
+import { Task } from "../../tasks-module/core/task";
 import { IGitPluginRaw } from "../types";
-import { Placer } from "./placer";
 import { Plugin } from "../core/plugin";
 import { promises as fs } from "fs";
+import { Placer } from "./placer";
 import { tasks } from "@/store";
 import { resolve } from "path";
 
 import simpleGit from "simple-git";
-import { Task } from "../../tasks-module/core/task";
 
 const mkdir = fs.mkdir;
 const access = fs.access;
 
 export class GitPlacer extends Placer {
-  public async clonned(path: string) {
-    try {
-      await access(path);
-      return true;
-    } catch {
-      return false;
-    }
-  }
+  public async clonned(path: string) {}
 
   public async place(info: Task) {
     console.info("call place");
 
     const task = await tasks.runGitClone({
-      info,
+      task: info,
       action: async () => {
         console.info("task action");
 
         const path = this.path;
         console.info("path:", path);
-        if (await this.clonned(path)) {
-          console.info("already clonned");
-          return;
-        }
 
-        console.log("create directories");
-        await mkdir(path, { recursive: true });
+        try {
+          await access(path);
+          console.info("already clonned");
+        } catch {
+          console.log("create directories");
+          await mkdir(path, { recursive: true });
+
+          const git = simpleGit(path);
+
+          console.log("start clone");
+          await git.clone(this._url, ".", ["--recursive"]);
+        }
 
         console.log("start timeout");
         await new Promise(async (r) => {
           setTimeout(() => {
-            console.log("timeout end");
+            // console.log("timeout end");
             r();
-          }, 2000);
+          }, 1000 * 60 * 4);
         });
 
-        // console.log("start clone");
-        // const git = simpleGit(path);
-        // await git.clone(this._url, ".", ["--recursive"]);
         console.info("action end");
       },
     });

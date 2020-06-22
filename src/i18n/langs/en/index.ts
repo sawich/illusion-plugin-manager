@@ -1,20 +1,31 @@
-import { TaskStatus } from "@/store/modules/tasks-module/types";
+import { TaskStatus, JobCategory } from "@/store/modules/tasks-module/types";
+import { PluginGame } from "@/store/modules/plugins-module/types";
 
 export default {
   game: {
-    names: [
-      /* PluginGame.PlayHome */ "Play Home",
-      /* PluginGame.HoneySelect1 */ "Honey Select 1",
-      /* PluginGame.Koikatsu */ "Koikatsu",
-      /* PluginGame.AIShoujo */ "AI Shoujo",
-      /* PluginGame.HoneySelect2 */ "Honey Select 2",
-    ],
+    names: {
+      [PluginGame.PlayHome]: "Play Home",
+      [PluginGame.HoneySelect1]: "Honey Select 1",
+      [PluginGame.Koikatsu]: "Koikatsu",
+      [PluginGame.AIShoujo]: "AI Shoujo",
+      [PluginGame.HoneySelect2]: "Honey Select 2",
+    },
+  },
+  job: {
+    categories: {
+      [JobCategory.Dummy]: "—",
+      [JobCategory.VSInstaller]: "VSInstaller",
+      [JobCategory.GitPull]: "GitPull",
+      [JobCategory.GitClone]: "GitClone",
+      [JobCategory.VSBuild]: "VSBuild",
+    },
   },
   tasks: {
     name: "Tasks",
     status: {
-      [TaskStatus.Start]: "Starting...",
-      [TaskStatus.Exists]: "Wait for end exists task...",
+      [TaskStatus.Dymmy]: "Starting...",
+      [TaskStatus.Exists]: "This task runned by another game. Wait for end exists task...",
+      [TaskStatus.GitCloning]: "Cloning from git...",
     },
   },
   plugins: {

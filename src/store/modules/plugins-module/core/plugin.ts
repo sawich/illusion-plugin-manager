@@ -10,6 +10,7 @@ export class Plugin {
   public get id() {
     return this._id;
   }
+
   public get lang() {
     return this._lang;
   }

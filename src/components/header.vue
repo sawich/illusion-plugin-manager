@@ -72,14 +72,12 @@ export default class Header extends Vue {
 @import "@/themes/raratina.scss";
 
 .header {
-  margin-top: 1px;
   -webkit-app-region: drag;
   user-select: none;
   display: grid;
   grid-template-columns: 1fr auto auto;
   gap: 10px;
   background-color: var(--header-bg-color);
-  height: 36px;
   overflow: hidden;
 }
 
