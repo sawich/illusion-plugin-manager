@@ -1,6 +1,6 @@
 import { createModule, mutation, action } from "vuex-class-component";
 import { GitCloneJob } from "./jobs/git-clone-job";
-import { IRunnableJob, ITasks, JobStatus } from "./types";
+import { IRunnableJob, ITasks, TaskStatus } from "./types";
 import { Vue } from "vue-property-decorator";
 import { Job } from "./core/job";
 import { Task } from "./core/task";
@@ -30,8 +30,8 @@ export class TasksModule extends VuexModule {
 
     if (existsTask !== undefined) {
       console.log(`[id:${info.id}][identity:${info.identity}] task exists`);
-      // info.status = JobStatus.Exists;
-      // console.log("change status");
+      this.updateStatus({ task: existsTask, status: TaskStatus.Exists });
+      console.log("change status");
 
       return existsTask;
     }
@@ -50,6 +50,11 @@ export class TasksModule extends VuexModule {
   @mutation public changeTask({ task, job }: { task: Task; job: Job }) {
     // Vue.set(task, "job", job);
     task.job = job;
+    task.status;
+  }
+
+  @mutation public updateStatus({ task, status }: { task: Task; status: TaskStatus }) {
+    task.status = status;
   }
 
   @mutation public add(task: Task) {

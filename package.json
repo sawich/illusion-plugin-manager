@@ -1,5 +1,5 @@
 {
-    "name": "illusionpluggin",
+    "name": "illusion-plugin-manager",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -10,13 +10,16 @@
         "postinstall": "electron-builder install-app-deps",
         "postuninstall": "electron-builder install-app-deps"
     },
+    "author": {
+        "email": "sawich@angeldev.org",
+        "name": "sawich"
+    },
     "main": "background.js",
     "dependencies": {
         "@types/nodegit": "^0.26.5",
         "core-js": "^3.6.5",
-        "electron": "^9.0.4",
+        "electron": "^10.0.0-beta.4",
         "fast-xml-parser": "^3.17.4",
-        "nodegit": "^0.26.5",
         "normalize.css": "^8.0.1",
         "simple-git": "^2.9.0",
         "vs-parse": "^3.0.0",

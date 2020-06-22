@@ -12,7 +12,7 @@ export class InstalledPluginsModule extends VuexModule {
   @action
   private async load() {
     const data = await readFile(`${__userdata}/plugins.json`, "utf-8");
-    // const path = `Y:\\Users\\sawic\\source\\repos\\ill\\angel-package-generator\\test.angel.json`;
+    // const path = `Y:\\Users\\sawic\\source\\repos\\ill\\illusion-plugin-generator\\test.angel.json`;
     // const plugins: IPluginRaw[] = JSON.parse(await readFile(path, "utf-8"));
     // for (const plugin of plugins) {
     //     this.context.commit("add", plugin);

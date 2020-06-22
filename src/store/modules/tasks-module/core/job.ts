@@ -1,4 +1,4 @@
-import { JobCategory, JobIcon, JobStatus } from "../types";
+import { JobCategory, JobIcon, TaskStatus } from "../types";
 import { Task } from "./task";
 import { TasksModule } from "..";
 import { tasks } from "@/store";
@@ -44,7 +44,7 @@ export abstract class Job {
    * Setters
    */
 
-  public set status(status: JobStatus) {
+  public set status(status: TaskStatus) {
     this._status = status;
   }
 
@@ -86,7 +86,7 @@ export abstract class Job {
 
   private _info: Task;
   private _icon: JobIcon;
-  private _status = JobStatus.Start;
+  private _status = TaskStatus.Start;
   private _category: JobCategory;
   private _action: () => Promise<void>;
   private _awaiter: Promise<void>;

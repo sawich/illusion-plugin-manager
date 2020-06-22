@@ -1,19 +1,23 @@
 <template>
   <section class="tasks">
     <div class="items">
-      <template v-for="task in tasks">
+      <div class="item" v-for="task in tasks" :key="`${task.id}-item`">
         <div
           class="icon"
-          :key="`${task.id}-icon`"
           :style="{ backgroundImage: `url(${fullIconPath(task.game)})` }"
         />
+        <div class="detail" :key="`${task.id}-detail`">
+          <div class="name">
+            {{ $t("game.names")[task.game] }}
+          </div>
+          <div class="status">
+            {{ $t("tasks.status")[task.status] }}
+          </div>
 
-        {{ task.id }}
-
-        <!-- <div class="id">{{ task.id }}</div> -->
-      </template>
+          <!-- <div class="id">{{ task.id }}</div> -->
+        </div>
+      </div>
     </div>
-    Tasks
   </section>
 </template>
 
@@ -31,7 +35,7 @@ export default class Tasks extends Vue {
   private tasks!: any;
 
   fullIconPath(game: PluginGame) {
-    return fullGameIconPath(game, GameIconSize.s24);
+    return fullGameIconPath(game, GameIconSize.s48);
   }
 }
 </script>
@@ -43,21 +47,24 @@ export default class Tasks extends Vue {
   padding: 20px;
 }
 
-.items {
-}
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  background-color: var(--header-link-bg-hover-color);
+  padding: 10px;
+  gap: 10px;
 
-.install-button {
-  cursor: pointer;
-  display: inline-grid;
-  align-items: center;
-  grid-template-columns: 24px 1fr;
-  gap: 4px;
-  padding: 0px 4px;
-  border-radius: 3px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }
 
 .icon {
-  width: 24px;
-  height: 24px;
+  width: 48px;
+  height: 48px;
+}
+
+.status {
+  color: var(--font-detail-color);
 }
 </style>

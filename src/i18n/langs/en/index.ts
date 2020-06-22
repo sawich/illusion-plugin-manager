@@ -1,13 +1,20 @@
-import { JobStatus } from "@/store/modules/tasks-module/types";
+import { TaskStatus } from "@/store/modules/tasks-module/types";
 
 export default {
+  game: {
+    names: [
+      /* PluginGame.PlayHome */ "Play Home",
+      /* PluginGame.HoneySelect1 */ "Honey Select 1",
+      /* PluginGame.Koikatsu */ "Koikatsu",
+      /* PluginGame.AIShoujo */ "AI Shoujo",
+      /* PluginGame.HoneySelect2 */ "Honey Select 2",
+    ],
+  },
   tasks: {
     name: "Tasks",
-    progress: {
-      status: {
-        [JobStatus.Start]: "Starting...",
-        [JobStatus.Exists]: "WAit for end exists task...",
-      },
+    status: {
+      [TaskStatus.Start]: "Starting...",
+      [TaskStatus.Exists]: "Wait for end exists task...",
     },
   },
   plugins: {

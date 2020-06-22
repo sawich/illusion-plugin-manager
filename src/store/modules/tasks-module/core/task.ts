@@ -1,7 +1,7 @@
 import { Plugin } from "../../plugins-module/core/plugin";
 import { PluginGame } from "../../plugins-module/types";
 import { DummyJob } from "../jobs/dummy-job";
-import { JobStatus } from "../types";
+import { TaskStatus } from "../types";
 import { tasks } from "@/store";
 import { Job } from "./job";
 
@@ -50,7 +50,7 @@ export class Task {
    * Setters
    */
 
-  public set status(status: JobStatus) {
+  public set status(status: TaskStatus) {
     this._status = status;
   }
 
@@ -79,6 +79,6 @@ export class Task {
   private _id: string;
   private _game: PluginGame;
   private _plugin: Plugin;
-  private _status = JobStatus.Start;
+  private _status = TaskStatus.Start;
   private _job: Job;
 }

@@ -7,7 +7,7 @@
     </div>-->
     <div class="plugins">
       <div class="plugin">
-        <template v-for="plugin of plugins[$route.query.game]">
+        <template v-for="plugin of plugins">
           <div
             class="button installing-button"
             :key="`button-installing-${plugin.id}`"
@@ -75,57 +75,24 @@ export default class Game extends Vue {
     console.log(" - - - installed");
   }
 
-  async created() {
-    const gameIds = Array.from(
-      Array(Object.keys(PluginGame).length / 2),
-      (e, i) => i
-    );
-
-    this.plugins = gameIds.map(gameId =>
-      this.pluginsPlugins.filter(p => p.games.includes(Number(gameId)))
+  get plugins() {
+    return this.pluginsPlugins.filter(p =>
+      p.games.includes((this.$route.query.game as unknown) as PluginGame)
     );
   }
 
-  plugins: Plugin[][] = [];
-
-  // async addTask1() {
-  //   await download(
-  //     "https://dotnet.microsoft.com/download/dotnet-core/scripts/v1/dotnet-install.ps1",
-  //     "BetterHScenes"
+  // async created() {
+  //   const gameIds = Array.from(
+  //     Array(Object.keys(PluginGame).length / 2),
+  //     (e, i) => i
   //   );
-  //   console.log("after download 1");
-  // }
 
-  // async addTask2() {
-  //   await download(
-  //     "https://github.com/git-for-windows/git/releases/download/v2.27.0.windows.1/Git-2.27.0-32-bit.exe",
-  //     "BetterHScenes"
+  //   this.plugins = gameIds.map(gameId =>
+  //     this.pluginsPlugins.filter(p => p.games.includes(Number(gameId)))
   //   );
-  //   console.log("after download 2");
   // }
 
-  // private async created() {
-  // const x = fs
-  //   .readFile(
-  //     "L:\\[ScrewThisNoise] Koikatsu BetterRepack RX1\\package.json",
-  //     "utf8"
-  //   )
-  //   .then(err => console.log(err));
-  // console.log(x);
-  // this.data = await readFile(
-  // "L:\\[ScrewThisNoise] Koikatsu BetterRepack RX1\\package.json"
-  // );
-  // console.log(this.data);
-  // const uri = `https://api.github.com/repos/${this.pluginSources[0].uri}/releases/latest`;
-  // const f = await fetch(uri);
-  // const j = await f.json();
-  // for (const asset of j.assets) {
-  //   if ((asset.name as string).toLowerCase().includes("koik")) {
-  //     console.log(asset);
-  //     break;
-  //   }
-  // }
-  // }
+  // plugins: Plugin[][] = [];
 }
 </script>
 

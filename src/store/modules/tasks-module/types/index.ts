@@ -20,7 +20,7 @@ export interface IRunnableJob<T> {
   action: () => Promise<T>;
 }
 
-export enum JobStatus {
+export enum TaskStatus {
   Start,
   Exists,
 }

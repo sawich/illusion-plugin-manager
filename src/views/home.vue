@@ -3,7 +3,7 @@
     <div class="games">
       <router-link
         class="game"
-        v-for="(name, id) of games"
+        v-for="(name, id) of $t('game.names')"
         :key="`info-${name}`"
         :to="{ name: 'library', query: { game: id } }"
       >
@@ -28,14 +28,6 @@ export default class Home extends Vue {
   fullIconPath(game: PluginGame) {
     return fullGameIconPath(game, GameIconSize.s16);
   }
-
-  private games = [
-    /* PluginGame.PlayHome */ "Play Home",
-    /* PluginGame.HoneySelect1 */ "Honey Select 1",
-    /* PluginGame.Koikatsu */ "Koikatsu",
-    /* PluginGame.AIShoujo */ "AI Shoujo",
-    /* PluginGame.HoneySelect2 */ "Honey Select 2"
-  ];
 }
 </script>
 

@@ -138,6 +138,7 @@ test/
 # Recommended template: Node.gitignore
 
 dist/
+dist_electron/
 npm-debug.log
 yarn-error.log
 

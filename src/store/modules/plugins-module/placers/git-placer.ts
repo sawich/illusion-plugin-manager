@@ -36,10 +36,20 @@ export class GitPlacer extends Placer {
           return;
         }
 
+        console.log("create directories");
         await mkdir(path, { recursive: true });
 
-        const git = simpleGit(path);
-        await git.clone(this._url, ".", ["--recursive"]);
+        console.log("start timeout");
+        await new Promise(async (r) => {
+          setTimeout(() => {
+            console.log("timeout end");
+            r();
+          }, 2000);
+        });
+
+        // console.log("start clone");
+        // const git = simpleGit(path);
+        // await git.clone(this._url, ".", ["--recursive"]);
         console.info("action end");
       },
     });
