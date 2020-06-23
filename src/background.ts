@@ -5,27 +5,19 @@ import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import { ipcMain } from "electron";
 
 ipcMain.on("vue-restore", () => {
-  // if (win.maximizable) {
   win.restore();
-  // }
 });
 
 ipcMain.on("vue-maximize", () => {
-  if (win.maximizable) {
-    win.maximize();
-  }
+  win.maximize();
 });
 
 ipcMain.on("vue-minimize", () => {
-  if (win.minimizable) {
-    win.minimize();
-  }
+  win.minimize();
 });
 
 ipcMain.on("vue-close", () => {
-  if (win.closable) {
-    win.close();
-  }
+  win.close();
 });
 
 const isDevelopment = process.env.NODE_ENV !== "production";
