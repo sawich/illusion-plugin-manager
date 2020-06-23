@@ -1,15 +1,39 @@
 "use strict";
 
 import { app, protocol, BrowserWindow } from "electron";
-import {
-  createProtocol,
-  /* installVueDevtools */
-} from "vue-cli-plugin-electron-builder/lib";
+import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
+import { ipcMain } from "electron";
+
+ipcMain.on("vue-restore", () => {
+  // if (win.maximizable) {
+  win.restore();
+  // }
+});
+
+ipcMain.on("vue-maximize", () => {
+  if (win.maximizable) {
+    win.maximize();
+  }
+});
+
+ipcMain.on("vue-minimize", () => {
+  if (win.minimizable) {
+    win.minimize();
+  }
+});
+
+ipcMain.on("vue-close", () => {
+  if (win.closable) {
+    win.close();
+  }
+});
+
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win: BrowserWindow | null;
+// @ts-ignore
+let win: BrowserWindow = null;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{ scheme: "app", privileges: { secure: true, standard: true } }]);
@@ -43,6 +67,7 @@ function createWindow() {
   }
 
   win.on("closed", () => {
+    // @ts-ignore
     win = null;
   });
 }

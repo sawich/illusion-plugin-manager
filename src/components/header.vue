@@ -29,15 +29,24 @@
       <minimize-icon
         class="icon header-active-item window-control-icon"
         :size="16"
+        @click="minimize"
       />
-      <!-- <restore-icon class="icon window-control-icon" :size="16" /> -->
+      <restore-icon
+        class="icon header-active-item window-control-icon"
+        :size="16"
+        @click="restore"
+        v-if="windowState == 1"
+      />
       <maximize-icon
         class="icon header-active-item window-control-icon"
         :size="16"
+        @click="maximize"
+        v-if="windowState == 0"
       />
       <close-icon
         class="icon header-active-item window-control-icon"
         :size="16"
+        @click="close"
       />
     </div>
   </header>
@@ -46,10 +55,17 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { ITasks } from "../store/modules/tasks-module/types";
 
 import { namespace } from "vuex-class";
-import { ITasks } from "../store/modules/tasks-module/types";
 const tasks = namespace("tasks");
+
+import { ipcRenderer } from "electron";
+ipcRenderer.on("vue-maximize", () => {
+  console.log("ipcRenderer");
+
+  ipcRenderer.send("vue-maximize", "asd");
+});
 
 @Component({
   components: {
@@ -65,6 +81,26 @@ const tasks = namespace("tasks");
 export default class Header extends Vue {
   @tasks.Getter("tasks")
   private tasksTasks!: ITasks;
+
+  private async restore() {
+    ipcRenderer.send("vue-restore");
+    this.windowState = 1;
+  }
+
+  private async minimize() {
+    ipcRenderer.send("vue-minimize");
+  }
+
+  private async maximize() {
+    ipcRenderer.send("vue-maximize");
+    this.windowState = 1;
+  }
+
+  private async close() {
+    ipcRenderer.send("vue-close");
+  }
+
+  private windowState = 0;
 }
 </script>
 
