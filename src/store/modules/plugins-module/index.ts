@@ -1,8 +1,9 @@
 import { createModule, mutation, action } from "vuex-class-component";
+import { Plugin } from "./core/plugin";
 import { IPluginRaw } from "./types";
+import { resolve } from "path";
 
 import { promises as fs } from "fs";
-import { Plugin } from "./core/plugin";
 const readFile = fs.readFile;
 
 const VuexModule = createModule({ namespaced: "plugins", strict: false });
@@ -15,7 +16,7 @@ export class PluginsModule extends VuexModule {
   @action
   public async load() {
     // const data = await fs.readFile(`${__cache}/angel-package.json`, "utf-8");
-    const path = `Y:\\Users\\sawic\\source\\repos\\ill\\illusion-plugin-generator\\test.angel.json`;
+    const path = resolve(__static, "plugins.json");
     const raws: IPluginRaw[] = JSON.parse(await readFile(path, "utf-8"));
     for (const raw of raws) {
       this.$store.commit("add", raw);
