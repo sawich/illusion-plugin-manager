@@ -14,7 +14,7 @@
         {{ name }}
       </router-link>
     </div>
-    <router-view />
+    <router-view class="library-content" />
   </section>
 </template>
 
@@ -37,10 +37,13 @@ export default class Home extends Vue {
 .home {
   display: grid;
   grid-template-columns: auto 1fr;
+  overflow: hidden;
 }
 
 .games {
   background-color: var(--games-list-bg-color);
+  position: sticky;
+  top: 0;
 }
 
 .game {
@@ -73,5 +76,9 @@ export default class Home extends Vue {
 
 .router-link-exact-active {
   cursor: default;
+}
+
+.library-content {
+  overflow-y: auto;
 }
 </style>

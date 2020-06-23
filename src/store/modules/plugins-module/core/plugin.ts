@@ -5,6 +5,7 @@ import { GitPlacer } from "../placers/git-placer";
 import { Resolver } from "../resolvers/resolver";
 import { Placer } from "../placers/placer";
 import { Task } from "../../tasks-module/core/task";
+import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
 
 export class Plugin {
   public get id() {
@@ -27,22 +28,30 @@ export class Plugin {
     return this._dependencies;
   }
 
-  public async install(game: PluginGame) {
+  /**
+   * @param game unique game id
+   * @param deep install as dependency
+   */
+  public async install(game: PluginGame, deep = false) {
     try {
       const info = new Task(game, this);
 
       if (this._dependencies.length > 0) {
         console.dir("install dependencies:", this._dependencies);
-        await Promise.race(this._dependencies.map((d) => d.install(game)));
+        await Promise.race(this._dependencies.map((d) => d.install(game, true)));
       }
 
       await this._placer.place(info);
       await this._resolver.install(info);
     } catch (e) {
-      if (e instanceof Task) {
-        console.log("task already exists. wait...");
-
-        await e.awaiter;
+      if (e instanceof TaskExistExeption) {
+        if (deep) {
+          console.log("task already exists. wait...");
+          await e.task.awaiter;
+        } else {
+          console.warn("duplicated task...");
+          throw new Error("Duplicated task");
+        }
       }
     }
   }

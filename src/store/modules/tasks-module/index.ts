@@ -4,6 +4,7 @@ import { IRunnableJob, ITasks, TaskStatus, JobCategory } from "./types";
 import { Vue } from "vue-property-decorator";
 import { Job } from "./core/job";
 import { Task } from "./core/task";
+import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
 
 const VuexModule = createModule({ namespaced: "tasks", strict: false });
 
@@ -47,7 +48,6 @@ export class TasksModule extends VuexModule {
    */
 
   @mutation public setJob({ task, job }: { task: Task; job: Job }) {
-    // Vue.set(task, "job", job);
     task.job = job;
   }
 
@@ -57,11 +57,9 @@ export class TasksModule extends VuexModule {
   }
 
   @mutation public add(task: Task) {
-    /** This task already exists. */
-
     const existsTask = this._tasks[task.id];
-    if (task.id in this._tasks) {
-      throw existsTask;
+    if (existsTask !== undefined) {
+      throw new TaskExistExeption(existsTask);
     }
 
     Vue.set(this._tasks, task.id, task);

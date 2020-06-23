@@ -25,6 +25,7 @@
         "vs-parse": "^3.0.0",
         "vue": "^2.6.11",
         "vue-class-component": "^7.2.3",
+        "vue-fragment": "^1.5.1",
         "vue-i18n": "^8.18.2",
         "vue-material-design-icons": "^4.7.1",
         "vue-property-decorator": "^9.0.0",

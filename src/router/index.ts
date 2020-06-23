@@ -6,24 +6,30 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: "/",
-    component: () => import("@/views/home.vue"),
+    component: () => import("@/layouts/default.vue"),
     children: [
       {
-        name: "library",
-        path: "library",
-        component: () => import("@/views/library.vue"),
+        path: "/",
+        component: () => import("@/views/home.vue"),
+        children: [
+          {
+            name: "library",
+            path: "library",
+            component: () => import("@/views/library.vue"),
+          },
+        ],
+      },
+      {
+        name: "tasks",
+        path: "/tasks",
+        component: () => import("@/views/tasks.vue"),
+      },
+      {
+        name: "settings",
+        path: "/settings",
+        component: () => import("@/views/settings.vue"),
       },
     ],
-  },
-  {
-    name: "tasks",
-    path: "/tasks",
-    component: () => import("@/views/tasks.vue"),
-  },
-  {
-    name: "settings",
-    path: "/settings",
-    component: () => import("@/views/settings.vue"),
   },
 ];
 

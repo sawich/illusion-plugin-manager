@@ -1,11 +1,8 @@
 
 <template>
-  <div id="app">
-    <header-component class="header" />
-    <div class="router">
-      <router-view class="router-content" theme="raratina" />
-    </div>
-  </div>
+  <!-- <div id="app"> -->
+  <router-view class="app-content" theme="raratina" />
+  <!-- </div> -->
 </template>
 
 <script lang="ts">
@@ -16,11 +13,7 @@ const cached = namespace("cached");
 const plugins = namespace("plugins");
 const vs = namespace("vs");
 
-@Component({
-  components: {
-    HeaderComponent: () => import("@/components/header.vue")
-  }
-})
+@Component({})
 export default class App extends Vue {
   @cached.Action("load")
   private cachedLoad!: () => Promise<void>;
@@ -48,34 +41,18 @@ export default class App extends Vue {
 
 body {
   font: 14px "Oxygen Mono", monospace;
-  height: 100vh;
-  display: grid;
   line-height: 1.6;
-}
-
-$headerSize: 36px;
-
-#app {
-  display: grid;
-  grid-template-rows: $headerSize 1fr;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
   color: var(--font-color);
-  position: relative;
+  overflow: hidden;
 }
 
-.header {
-  position: sticky;
-  top: 0px;
-  height: $headerSize;
-}
-
-.router {
-  overflow-y: auto;
-  max-height: calc(100vh - #{$headerSize});
-  // max-height: 0;
-  display: inherit;
+body,
+.app-content {
+  height: 100vh;
+  width: 100vw;
 }
 </style>

@@ -1,48 +1,35 @@
 <template>
-  <section class="library">
-    <!-- <div class="categories">
-      <div class="category">plugins</div>
-      <div class="category">mods</div>
-      <div class="category">cards</div>
-    </div>-->
-    <div class="plugins">
-      <div class="plugin">
-        <template v-for="plugin of plugins">
-          <div
-            class="button installing-button"
-            :key="`button-installing-${plugin.id}`"
-            v-if="`${plugin.id}-id-${$route.query.game}` in tasksTasks"
-          >
-            <install-icon :size="16" class="icon install-icon" />
-            {{ $t(`plugins.installing`) }}
+  <div class="plugins">
+    <div class="plugin">
+      <template v-for="plugin of plugins">
+        <!-- <div
+          class="button installing-button"
+          :key="`button-installing-${plugin.id}`"
+          v-if="`${plugin.id}-id-${$route.query.game}` in tasksTasks"
+        >
+          <install-icon :size="16" class="icon install-icon" />
+          {{ $t(`plugins.installing`) }}
+        </div> -->
+        <div
+          class="button install-button"
+          @click="install($route.query.game, plugin)"
+          :key="`button-install-${plugin.id}`"
+        >
+          <!-- v-else -->
+          <install-icon :size="16" class="icon install-icon" />
+          {{ $t(`plugins.install`) }}
+        </div>
+        <div class="plugin-text" :key="`text-${plugin.id}`">
+          <div class="name">
+            {{ $t("plugins.items")[plugin.lang].name }}
           </div>
-          <div
-            class="button install-button"
-            @click="install($route.query.game, plugin)"
-            :key="`button-install-${plugin.id}`"
-            v-else
-          >
-            <install-icon :size="16" class="icon install-icon" />
-            {{ $t(`plugins.install`) }}
+          <div class="description">
+            &nbsp;—&nbsp;{{ $t("plugins.items")[plugin.lang].description }}
           </div>
-          <div class="plugin-text" :key="`text-${plugin.id}`">
-            <div class="name">
-              {{ $t(`plugins.items.${plugin.lang}.name`) }}
-            </div>
-            <div class="desc">
-              &nbsp;—&nbsp;{{ $t("plugins.items")[plugin.lang].desc }}
-            </div>
-          </div>
-        </template>
-      </div>
+        </div>
+      </template>
     </div>
-    <div class="tasks">
-      <div class="task" v-for="task in tasksTasks" :key="task.id">
-        {{ task.id }} {{ task.plugin.id }}
-        {{ $t(`plugins.items.${task.plugin.lang}.name`) }}
-      </div>
-    </div>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -84,35 +71,8 @@ export default class Game extends Vue {
 <style lang="scss" scoped>
 @import "@/common.scss";
 
-.library {
+.plugins {
   padding: 20px;
-}
-
-.categories {
-  display: grid;
-  grid-auto-flow: column;
-  justify-content: start;
-  gap: 20px;
-  padding: 6px 8px;
-  border-radius: 3px;
-  font-weight: bold;
-
-  background-color: #292d33;
-}
-
-.category {
-  cursor: pointer;
-  border-radius: 3px;
-  padding: 4px 8px;
-  transition: color $animationLongTime $animationFunction,
-    background-color $animationLongTime $animationFunction;
-
-  &:hover {
-    color: #dbe6f1;
-    background-color: #474f5c;
-    transition: color $animationVeryShortTime $animationFunction,
-      background-color $animationVeryShortTime $animationFunction;
-  }
 }
 
 .plugin {
@@ -130,18 +90,17 @@ export default class Game extends Vue {
   grid-template-columns: 16px 1fr;
   gap: 4px;
   padding: 0px 4px;
-  border-radius: 3px;
 }
 
 .install-button {
-  color: var(--header-link-bg-hover-color);
+  color: var(--library-install-button-color);
   background-color: var(--font-color);
   transition: color $animationLongTime $animationFunction,
     background-color $animationLongTime $animationFunction;
 
   &:hover {
-    color: unset;
-    background-color: var(--header-link-bg-hover-color);
+    color: var(--font-color);
+    background-color: var(--library-install-button-color);
     transition: color $animationVeryShortTime $animationFunction,
       background-color $animationVeryShortTime $animationFunction;
   }
@@ -156,11 +115,11 @@ export default class Game extends Vue {
 }
 
 .name,
-.desc {
+.description {
   display: inline;
 }
 
-.desc {
+.description {
   color: var(--font-detail-color);
   font-style: italic;
 }

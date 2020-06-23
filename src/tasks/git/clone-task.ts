@@ -20,7 +20,7 @@
 //             await mkdir(path);
 
 //             const git = simpleGit(path);
-//             await git.clone(this._plugin.root.uri, ".");
+//             await git.clone(this._plugin.root.url, ".");
 
 //             this._resolver();
 //         } catch (e) {
