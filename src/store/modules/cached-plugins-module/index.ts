@@ -13,17 +13,17 @@ export class CachedPluginsModule extends VuexModule {
   //
 
   @action
-  public async save() {
+  async save() {
     return await writeFile(`${__cache}/cached.json`, JSON.stringify(this._plugins), "utf-8");
   }
 
   @action
-  public async check(plugin: Plugin) {
+  async check(plugin: Plugin) {
     return this._plugins.has(plugin.identity);
   }
 
   @action
-  public async load() {
+  async load() {
     const cached = await CachedPluginsModule.getData();
     this.$store.commit("seed", cached);
   }

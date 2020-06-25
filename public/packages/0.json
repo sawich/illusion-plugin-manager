@@ -1,0 +1,87 @@
+{
+  "identity": 0,
+  "category": 0,
+  "place": {
+    "type": 0,
+    "url": "https://github.com/BepInEx/BepInEx"
+  },
+  "resolve": {
+    "id": 0,
+    "type": 0,
+    "files": [
+      [
+        "bin/0Harmony.dll",
+        "BepInEx/core/0Harmony.dll"
+      ],
+      [
+        "bin/BepInEx.dll",
+        "BepInEx/core/BepInEx.dll"
+      ],
+      [
+        "bin/BepInEx.Harmony.dll",
+        "BepInEx/core/BepInEx.Harmony.dll"
+      ],
+      [
+        "bin/BepInEx.Preloader.dll",
+        "BepInEx/core/BepInEx.Preloader.dll"
+      ],
+      [
+        "bin/Mono.Cecil.dll",
+        "BepInEx/core/Mono.Cecil.dll"
+      ],
+      [
+        "bin/Mono.Cecil.Mdb.dll",
+        "BepInEx/core/Mono.Cecil.Mdb.dll"
+      ],
+      [
+        "bin/Mono.Cecil.Pdb.dll",
+        "BepInEx/core/Mono.Cecil.Pdb.dll"
+      ],
+      [
+        "bin/Mono.Cecil.Rocks.dll",
+        "BepInEx/core/Mono.Cecil.Rocks.dll"
+      ],
+      [
+        "bin/MonoMod.RuntimeDetour.dll",
+        "BepInEx/core/MonoMod.RuntimeDetour.dll"
+      ],
+      [
+        "bin/MonoMod.Utils.dll",
+        "BepInEx/core/MonoMod.Utils.dll"
+      ],
+      [
+        "bin/0Harmony.xml",
+        "BepInEx/core/0Harmony.xml"
+      ],
+      [
+        "bin/BepInEx.Harmony.xml",
+        "BepInEx/core/BepInEx.Harmony.xml"
+      ],
+      [
+        "bin/BepInEx.Preloader.xml",
+        "BepInEx/core/BepInEx.Preloader.xml"
+      ],
+      [
+        "bin/BepInEx.xml",
+        "BepInEx/core/BepInEx.xml"
+      ],
+      [
+        "bin/MonoMod.RuntimeDetour.xml",
+        "BepInEx/core/MonoMod.RuntimeDetour.xml"
+      ],
+      [
+        "bin/MonoMod.Utils.xml",
+        "BepInEx/core/MonoMod.Utils.xml"
+      ]
+    ],
+    "games": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "lang": 0,
+    "dependencies": []
+  }
+}

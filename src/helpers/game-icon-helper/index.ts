@@ -1,6 +1,6 @@
 import { PluginGame } from "@/store/modules/plugins-module/types";
 
-export enum GameIconSize {
+export const enum GameIconSize {
   "s16" = 1,
   "s24",
   "s32",

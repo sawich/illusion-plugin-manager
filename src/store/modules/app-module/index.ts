@@ -13,11 +13,11 @@ interface IAppInstalled {
 const VuexModule = createModule({ namespaced: "app", strict: false });
 
 export class AppModule extends VuexModule {
-  // public get installed() {
+  //  get installed() {
   //     return this._installed;
   // }
   //
-  // public constructor(module: Mod<ThisType<any>, any>) {
+  //  constructor(module: Mod<ThisType<any>, any>) {
   //     super(module);
   //     readFile(`${__static}\\installed.json`, "utf8")
   //         .then((data: string) => {
@@ -28,7 +28,7 @@ export class AppModule extends VuexModule {
   //         });
   // }
   // @action
-  // public load() {}
+  //  load() {}
   //
   // private _installed: IAppInstalled[] = [];
   //

@@ -7,7 +7,7 @@
 // export type RejectorType = (r: any) => void;
 
 // export class Download extends Task {
-//     public async run(handler: ProgressHandler) {
+//      async run(handler: ProgressHandler) {
 //         let progress = 0;
 
 //         try {
@@ -36,7 +36,7 @@
 //         }
 //     }
 
-//     public constructor(url: string, description: string, resolve: ResolverType, reject: RejectorType) {
+//      constructor(url: string, description: string, resolve: ResolverType, reject: RejectorType) {
 //         super("downloading", description, "just_download");
 
 //         this._url = url;

@@ -10,43 +10,43 @@ export class Task {
    * Getters
    */
 
-  public get id() {
+  get id() {
     return this._id;
   }
 
-  public get game() {
+  get game() {
     return this._game;
   }
 
-  public get status() {
+  get status() {
     return this._status;
   }
 
-  public get plugin() {
+  get plugin() {
     return this._plugin;
   }
 
-  public get identity() {
+  get identity() {
     return this._plugin.identity;
   }
 
-  public get lang() {
+  get lang() {
     return this._plugin.lang;
   }
 
-  public get job() {
+  get job() {
     return this._job;
   }
 
-  public get category() {
+  get category() {
     return this._job.category;
   }
 
-  public get icon() {
+  get icon() {
     return this._job.icon;
   }
 
-  public get awaiter() {
+  get awaiter() {
     return this._job.awaiter;
   }
 
@@ -54,11 +54,11 @@ export class Task {
    * Setters
    */
 
-  public set status(status: TaskStatus) {
+  set status(status: TaskStatus) {
     this._status = status;
   }
 
-  public set job(task: Job) {
+  set job(task: Job) {
     this._job = task;
   }
 
@@ -66,7 +66,7 @@ export class Task {
    * Methods
    */
 
-  public constructor(game: PluginGame, plugin: Plugin) {
+  constructor(game: PluginGame, plugin: Plugin) {
     this._id = `${game}-id-${plugin.id}`;
     this._game = game;
     this._plugin = plugin;

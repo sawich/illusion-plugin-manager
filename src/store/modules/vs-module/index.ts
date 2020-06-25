@@ -35,7 +35,7 @@ interface BuildToolsLoad {
 const VuexModule = createModule({ namespaced: "vs", strict: false });
 
 export class VSModule extends VuexModule {
-  public get buildTools() {
+  get buildTools() {
     return this._buildTools;
   }
 
@@ -44,7 +44,7 @@ export class VSModule extends VuexModule {
   //
 
   @action
-  public async load() {
+  async load() {
     const buildtools: BuildToolsLoad[] = [{ version: "15.0", filename: "vs_BuildTools16" }];
     for (const { version, filename } of buildtools) {
       const exe = resolve(__cache, `${filename}.exe`);

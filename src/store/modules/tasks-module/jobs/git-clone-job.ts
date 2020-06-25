@@ -4,7 +4,7 @@ import { Task } from "../core/task";
 import { tasks } from "@/store";
 
 export class GitCloneJob extends Job {
-  public constructor(task: Task, action: () => Promise<void>) {
+  constructor(task: Task, action: () => Promise<void>) {
     super(task, JobIcon.GitHub, JobCategory.GitClone, action);
 
     tasks.setStatus({ task, status: TaskStatus.GitCloning });

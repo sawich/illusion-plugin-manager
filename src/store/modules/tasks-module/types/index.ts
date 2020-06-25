@@ -1,6 +1,6 @@
 import { Task } from "../core/task";
 
-export enum JobCategory {
+export const enum JobCategory {
   VSInstaller,
   GitPull,
   GitClone,
@@ -10,7 +10,7 @@ export enum JobCategory {
   Dummy,
 }
 
-export enum JobIcon {
+export const enum JobIcon {
   /** Nothing. */
   Dummy,
 
@@ -24,7 +24,7 @@ export interface IRunnableJob<T> {
   action: () => Promise<T>;
 }
 
-export enum TaskStatus {
+export const enum TaskStatus {
   Exists,
   GitCloning,
 

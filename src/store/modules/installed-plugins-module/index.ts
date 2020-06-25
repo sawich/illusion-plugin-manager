@@ -5,7 +5,7 @@ const readFile = fs.readFile;
 const VuexModule = createModule({ namespaced: "installed-plugins", strict: false });
 
 export class InstalledPluginsModule extends VuexModule {
-  //   public get plugins() {
+  //    get plugins() {
   // return this._plugins;
   //   }
 

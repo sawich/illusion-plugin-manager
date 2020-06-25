@@ -1,17 +1,17 @@
 import { Task } from "../../tasks-module/core/task";
-import { Plugin } from "../core/plugin";
+import { PluginContainer } from "../core/plugin";
 
 export abstract class Placer {
-  public get plugin() {
-    return this._plugin;
+  get container() {
+    return this._container;
   }
 
-  public abstract place(info: Task): Promise<void>;
-  public abstract update(info: Task): Promise<void>;
+  abstract place(info: Task): Promise<void>;
+  abstract update(info: Task): Promise<void>;
 
-  protected constructor(plugin: Plugin) {
-    this._plugin = plugin;
+  protected constructor(container: PluginContainer) {
+    this._container = container;
   }
 
-  private _plugin: Plugin;
+  private _container: PluginContainer;
 }

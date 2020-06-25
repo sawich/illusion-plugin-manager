@@ -1,11 +1,10 @@
 "use strict";
 
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, ipcMain } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
-import { ipcMain } from "electron";
 
-ipcMain.on("vue-restore", () => {
-  win.restore();
+ipcMain.on("vue-unmaximize", () => {
+  win.unmaximize();
 });
 
 ipcMain.on("vue-maximize", () => {
@@ -36,6 +35,7 @@ function createWindow() {
     width: 800,
     height: 600,
     frame: false,
+    transparent: true,
     webPreferences: {
       webSecurity: process.env.NODE_ENV !== "development",
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -44,6 +44,14 @@ function createWindow() {
       nodeIntegration: true, // <--- flag
       nodeIntegrationInWorker: true, // <---  for web workers
     },
+  });
+
+  win.on("unmaximize", () => {
+    win.webContents.send("vue-unmaximize");
+  });
+
+  win.on("maximize", () => {
+    win.webContents.send("vue-maximize");
   });
 
   win.setMenuBarVisibility(false);

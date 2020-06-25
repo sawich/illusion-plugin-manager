@@ -4,7 +4,7 @@ import { Task } from "../core/task";
 import { tasks } from "@/store";
 
 export class WaitExistsJob extends Job {
-  public constructor(task: Task) {
+  constructor(task: Task) {
     super(task, JobIcon.GitHub, JobCategory.GitClone, async () => {});
 
     tasks.setStatus({ task, status: TaskStatus.GitCloning });

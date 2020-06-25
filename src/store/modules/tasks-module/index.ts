@@ -13,7 +13,7 @@ export class TasksModule extends VuexModule {
    * Getters
    */
 
-  public get tasks() {
+  get tasks() {
     return this._tasks;
   }
 
@@ -21,7 +21,7 @@ export class TasksModule extends VuexModule {
    * Actions
    */
 
-  @action public async runGitClone({ task, action }: IRunnableJob<any>) {
+  @action async runGitClone({ task, action }: IRunnableJob<any>) {
     console.log(`runGitClone [id:${task.id}][identity:${task.identity}]`);
 
     /** Task who use this repository has launched, can just wait until she end. */
@@ -47,16 +47,16 @@ export class TasksModule extends VuexModule {
    * Mutations
    */
 
-  @mutation public setJob({ task, job }: { task: Task; job: Job }) {
+  @mutation setJob({ task, job }: { task: Task; job: Job }) {
     task.job = job;
   }
 
-  @mutation public setStatus({ task, status }: { task: Task; status: TaskStatus }) {
+  @mutation setStatus({ task, status }: { task: Task; status: TaskStatus }) {
     task.status = status;
     console.log("new status:", task.status);
   }
 
-  @mutation public add(task: Task) {
+  @mutation add(task: Task) {
     const existsTask = this._tasks[task.id];
     if (existsTask !== undefined) {
       throw new TaskExistExeption(existsTask);
@@ -65,7 +65,7 @@ export class TasksModule extends VuexModule {
     Vue.set(this._tasks, task.id, task);
   }
 
-  @mutation public complete(task: Job) {
+  @mutation complete(task: Job) {
     Vue.delete(this._tasks, task.id);
     console.log("task removed:", task.id);
   }

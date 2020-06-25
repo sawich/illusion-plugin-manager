@@ -31,10 +31,10 @@
         :size="16"
         @click="minimize"
       />
-      <restore-icon
+      <unmaximize-icon
         class="icon header-active-item window-control-icon"
         :size="16"
-        @click="restore"
+        @click="unmaximize"
         v-if="windowState == 1"
       />
       <maximize-icon
@@ -61,11 +61,6 @@ import { namespace } from "vuex-class";
 const tasks = namespace("tasks");
 
 import { ipcRenderer } from "electron";
-ipcRenderer.on("vue-maximize", () => {
-  console.log("ipcRenderer");
-
-  ipcRenderer.send("vue-maximize", "asd");
-});
 
 @Component({
   components: {
@@ -73,7 +68,7 @@ ipcRenderer.on("vue-maximize", () => {
     // SettingsIcon: () => import("vue-material-design-icons/CogOutline.vue"),
     TasksIcon: () => import("vue-material-design-icons/ArrowCollapseDown.vue"),
     MinimizeIcon: () => import("vue-material-design-icons/WindowMinimize.vue"),
-    RestoreIcon: () => import("vue-material-design-icons/WindowRestore.vue"),
+    UnmaximizeIcon: () => import("vue-material-design-icons/WindowRestore.vue"),
     MaximizeIcon: () => import("vue-material-design-icons/WindowMaximize.vue"),
     CloseIcon: () => import("vue-material-design-icons/WindowClose.vue")
   }
@@ -82,9 +77,9 @@ export default class Header extends Vue {
   @tasks.Getter("tasks")
   private tasksTasks!: ITasks;
 
-  private async restore() {
-    ipcRenderer.send("vue-restore");
-    this.windowState = 1;
+  private async unmaximize() {
+    ipcRenderer.send("vue-unmaximize");
+    this.windowState = 0;
   }
 
   private async minimize() {
@@ -98,6 +93,16 @@ export default class Header extends Vue {
 
   private async close() {
     ipcRenderer.send("vue-close");
+  }
+
+  private async created() {
+    ipcRenderer.on("vue-unmaximize", this.unmaximize);
+    ipcRenderer.on("vue-maximize", this.maximize);
+  }
+
+  private async destroyed() {
+    ipcRenderer.off("vue-unmaximize", this.unmaximize);
+    ipcRenderer.off("vue-maximize", this.maximize);
   }
 
   private windowState = 0;
@@ -114,7 +119,7 @@ export default class Header extends Vue {
   grid-template-columns: 1fr auto auto;
   gap: 10px;
   background-color: var(--header-bg-color);
-  overflow: hidden;
+  margin-top: 1px;
 }
 
 .header-row {

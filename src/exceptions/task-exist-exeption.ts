@@ -1,11 +1,11 @@
 import { Task } from "@/store/modules/tasks-module/core/task";
 
 export class TaskExistExeption extends Error {
-  public get task() {
+  get task() {
     return this._task;
   }
 
-  public constructor(task: Task) {
+  constructor(task: Task) {
     super();
     super.name = this.constructor.name;
 

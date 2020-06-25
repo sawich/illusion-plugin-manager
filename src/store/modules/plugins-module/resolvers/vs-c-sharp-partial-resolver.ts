@@ -2,10 +2,10 @@ import { Resolver } from "./resolver";
 import { Plugin } from "../core/plugin";
 
 export class VSCSharpPartialResolver extends Resolver {
-  public async install() {}
-  public async update() {}
+  async install() {}
+  async update() {}
 
-  public constructor(plugin: Plugin) {
+  constructor(plugin: Plugin) {
     super(plugin);
   }
 }

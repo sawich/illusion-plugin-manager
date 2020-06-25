@@ -13,7 +13,7 @@
 // export type RejectorType = (r: any) => void;
 
 // export class GitCloneTask extends Task {
-//     public async run() {
+//      async run() {
 //         try {
 //             const path = `${__cache}/${this._plugin.identity}`;
 //             await rimraf(path);
@@ -30,7 +30,7 @@
 //         }
 //     }
 
-//     public constructor(plugin: Plugin, description: string, resolve: ResolverType, reject: RejectorType) {
+//      constructor(plugin: Plugin, description: string, resolve: ResolverType, reject: RejectorType) {
 //         super("cloning", description, "github");
 
 //         this._plugin = plugin;

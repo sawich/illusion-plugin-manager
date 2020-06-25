@@ -32,27 +32,16 @@ export default {
     install: "Install",
     installing: "Installing",
     items: [
-      {
-        name: "BepInEx",
-        description: "Bepis Injector Extensible",
-      },
-      {
-        name: "BetterHScenes",
-        description: "This plugin fixes HScene performance bugs and adds extra features",
-      },
-      {
-        name: "BrowserFolders",
-        description: "Maker and Studio File Browser Folders for games by Illusion",
-      },
+      { name: "BepInEx", description: "Bepis Injector Extensible" },
+      { name: "BepInEx.ConfigurationManager", description: "Mod configuration manager for BepInEx 5" },
+      { name: "BetterHScenes", description: "This plugin fixes HScene performance bugs and adds extra features" },
+      { name: "BrowserFolders", description: "Maker and Studio File Browser Folders for games by Illusion" },
       {
         name: "CameraTargetFix",
         description:
           "Hides the cursor when the camera target is disabled in Studio. In AI Girl, also makes the camera target option in the game settings work properly for the character maker",
       },
-      {
-        name: "CharacterListOptimizations",
-        description: "Makes character lists load faster",
-      },
+      { name: "CharacterListOptimizations", description: "Makes character lists load faster" },
       {
         name: "CenteredHSceneCursor",
         description:
@@ -101,10 +90,7 @@ export default {
         description:
           "Fixes downloaded character cards not appearing in the New Game character selection (so you don't have to go to maker and re-save them)",
       },
-      {
-        name: "NullChecks",
-        description: "Fixes for some questionably made mods causing issues",
-      },
+      { name: "NullChecks", description: "Fixes for some questionably made mods causing issues" },
       {
         name: "PartyCardCompatibility",
         description: "Allows loading of cards saved in Koikatsu Party (Steam release) in Koikatu and Studio",
@@ -114,10 +100,7 @@ export default {
         description:
           "Prevents cards with invalid or missing personalities from crashing the game. A default personality is set instead",
       },
-      {
-        name: "PoseLoad",
-        description: "Corrects Honey Select poses loaded in Koikatsu and prevents errors",
-      },
+      { name: "PoseLoad", description: "Corrects Honey Select poses loaded in Koikatsu and prevents errors" },
       {
         name: "ResourceUnloadOptimizations",
         description: 'Improves loading times and eliminates stutter after loading was "finished"',

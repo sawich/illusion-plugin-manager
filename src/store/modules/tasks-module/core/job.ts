@@ -6,35 +6,35 @@ export abstract class Job {
   /**
    * Getters
    */
-  public get id() {
+  get id() {
     return this._info.id;
   }
 
-  public get identity() {
+  get identity() {
     return this._info.identity;
   }
 
-  public get game() {
+  get game() {
     return this._info.game;
   }
 
-  public get plugin() {
+  get plugin() {
     return this._info.plugin;
   }
 
-  public get status() {
+  get status() {
     return this._status;
   }
 
-  public get category() {
+  get category() {
     return this._category;
   }
 
-  public get icon() {
+  get icon() {
     return this._icon;
   }
 
-  public get awaiter() {
+  get awaiter() {
     return this._awaiter;
   }
 
@@ -42,7 +42,7 @@ export abstract class Job {
    * Setters
    */
 
-  public set status(status: TaskStatus) {
+  set status(status: TaskStatus) {
     this._status = status;
   }
 
@@ -50,7 +50,7 @@ export abstract class Job {
    * Methods
    */
 
-  public async run() {
+  async run() {
     console.info("job runned");
     try {
       await this._action();

@@ -1,6 +1,6 @@
 import { Task } from "../../tasks-module/core/task";
-import { IGitPluginRaw } from "../types";
-import { Plugin } from "../core/plugin";
+import { IGitPlugin } from "../types";
+import { Plugin, PluginContainer } from "../core/plugin";
 import { promises as fs } from "fs";
 import { Placer } from "./placer";
 import { tasks } from "@/store";
@@ -12,9 +12,9 @@ const mkdir = fs.mkdir;
 const access = fs.access;
 
 export class GitPlacer extends Placer {
-  public async clonned(path: string) {}
+  async clonned(path: string) {}
 
-  public async place(info: Task) {
+  async place(info: Task) {
     console.info("call place");
 
     const task = await tasks.runGitClone({
@@ -53,16 +53,16 @@ export class GitPlacer extends Placer {
     await task.awaiter;
   }
 
-  public async update(info: Task) {}
+  async update(info: Task) {}
 
-  public constructor(raw: IGitPluginRaw, plugin: Plugin) {
-    super(plugin);
+  constructor(raw: IGitPlugin, container: PluginContainer) {
+    super(container);
 
     this._url = raw.url;
   }
 
   private get path() {
-    return resolve(__cache, `git/${this.plugin.identity}`);
+    return resolve(__cache, `git/${this.container.identity}`);
   }
 
   private _url: string;

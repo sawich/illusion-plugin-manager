@@ -1,22 +1,26 @@
 import { createModule, mutation, action } from "vuex-class-component";
-import { InstalledGame, IInstalledGame } from "./types";
+import { Game, IInstalledGame } from "./types";
 
 import { promises as fs } from "fs";
 import { PluginGame } from "../plugins-module/types";
 const readFile = fs.readFile;
 
-const VuexModule = createModule({ namespaced: "installed-games", strict: false });
+const VuexModule = createModule({ namespaced: "games", strict: false });
 
-export class InstalledGamesModule extends VuexModule {
+interface IGames {
+  [key: PluginGame]: Game;
+}
+
+export class GamesModule extends VuexModule {
   /**
    * Getters
    */
 
-  public get games() {
+  get games() {
     return this._games.values();
   }
 
-  public get(id: PluginGame) {
+  get(id: PluginGame) {
     return this._games.get(id);
   }
 
@@ -25,10 +29,10 @@ export class InstalledGamesModule extends VuexModule {
    */
 
   @action
-  public async load() {
-    const data = await InstalledGamesModule.getData();
+  async load() {
+    const data = await GamesModule.getData();
     for (const info of data) {
-      this.add(new InstalledGame(info.id, info.path));
+      this.add(new Game(info.id, info.path));
     }
   }
 
@@ -37,7 +41,7 @@ export class InstalledGamesModule extends VuexModule {
    */
 
   @mutation
-  public add(game: InstalledGame) {
+  add(game: Game) {
     this._games.set(game.id, game);
   }
 
@@ -57,5 +61,5 @@ export class InstalledGamesModule extends VuexModule {
    * Data
    */
 
-  _games = new Map<number, InstalledGame>();
+  _games = new Map<number, Game>();
 }

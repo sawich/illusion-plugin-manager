@@ -3,7 +3,7 @@
 // import { resolve } from "path";
 
 // export class GitPullTask extends Task {
-//     public async run() {
+//      async run() {
 //         const path = resolve(__cache, "git/Mantas-2155X/BetterHScenes2");
 //         const git = simpleGit(path);
 
@@ -18,7 +18,7 @@
 //         }
 //     }
 
-//     public constructor(description: string) {
+//      constructor(description: string) {
 //         super("cloning", description, "github");
 //     }
 // }
