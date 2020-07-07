@@ -13,7 +13,8 @@
         "baseUrl": ".",
         "outDir": "dist/",
         "types": [
-            "webpack-env"
+            "webpack-env",
+            "electron",
         ],
         "paths": {
             "@/*": [

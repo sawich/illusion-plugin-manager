@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <header-component class="header" />
+    <!-- <header-component class="header" /> -->
     <router-view />
   </div>
 </template>
@@ -10,7 +10,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
-    HeaderComponent: () => import("@/components/header.vue")
+    // HeaderComponent: () => import("@/components/header.vue")
   }
 })
 export default class Default extends Vue {}
