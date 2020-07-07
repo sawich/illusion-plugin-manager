@@ -3,7 +3,7 @@
     <div class="title">
       <router-link
         class="link header-active-item header-row header-row-texts"
-        :to="{ name: 'library' }"
+        :to="{ name: 'home' }"
         v-text="'Library'"
       />
     </div>
@@ -19,10 +19,7 @@
         :to="{ name: 'tasks' }"
       >
         <tasks-icon class="icon user-icon" :size="16" />
-        <div
-          class="icon-have-tasks"
-          v-if="Object.keys(tasksTasks).length > 0"
-        />
+        <div class="icon-have-tasks" v-if="Object.keys(entries).length > 0" />
       </router-link>
     </div>
     <div class="header-row">
@@ -74,8 +71,8 @@ import { ipcRenderer } from "electron";
   }
 })
 export default class Header extends Vue {
-  @tasks.Getter("tasks")
-  private tasksTasks!: ITasks;
+  @tasks.Getter("entries")
+  private entries!: ITasks;
 
   private async unmaximize() {
     ipcRenderer.send("vue-unmaximize");

@@ -1,22 +1,28 @@
 <template>
   <section class="tasks">
     <div class="items">
-      <div class="item" v-for="task in tasks" :key="`${task.id}-item`">
+      <div
+        class="item"
+        v-for="task in entries"
+        :key="`${task.container.uuidentity}-item`"
+      >
         <div
           class="game-icon"
-          :style="{ backgroundImage: `url(${gameFullIconPath(task.game)})` }"
+          :style="{
+            backgroundImage: `url(${gameFullIconPath(task.package.game.id)})`
+          }"
         />
-        <div class="detail" :key="`${task.id}-detail`">
+        <div class="detail">
           <header class="detail-header">
             <div class="game-name">
-              {{ $t("game.names")[task.game] }}
+              {{ $t("game.names")[task.package.game.id] }}
             </div>
             <div class="plugin-name">
-              {{ $t("plugins.items")[task.lang].name }}
+              {{ $t("plugins.items")[task.package.lang].name }}
             </div>
           </header>
           <div class="status">
-            {{ $t("tasks.status")[task.status] }}
+            {{ $t("job.categories")[task.job.category] }}
           </div>
         </div>
       </div>
@@ -26,18 +32,18 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { PluginGame } from "@/store/modules/plugins-module/types";
+import { PluginGame } from "@/store/modules/packages-module/types";
 import { fullGameIconPath, GameIconSize } from "@/helpers/game-icon-helper";
 import { fullJobIconPath } from "@/helpers/job-icon-helper";
 
 import { namespace } from "vuex-class";
-import { JobIcon } from "../store/modules/tasks-module/types";
+import { JobIcon, ITasks } from "../store/modules/tasks-module/types";
 const tasks = namespace("tasks");
 
 @Component({ components: {} })
 export default class Tasks extends Vue {
-  @tasks.Getter("tasks")
-  private tasks!: any;
+  @tasks.Getter("entries")
+  private entries!: ITasks;
 
   gameFullIconPath(game: PluginGame) {
     return fullGameIconPath(game, GameIconSize.s48);

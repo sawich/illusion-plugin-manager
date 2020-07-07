@@ -1,4 +1,4 @@
-import { PluginGame } from "@/store/modules/plugins-module/types";
+import { PluginGame } from "@/store/modules/packages-module/types";
 
 export const enum GameIconSize {
   "s16" = 1,

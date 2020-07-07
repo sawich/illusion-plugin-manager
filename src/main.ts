@@ -3,9 +3,6 @@ import "normalize.css";
 import Vue from "vue";
 Vue.config.productionTip = false;
 
-import { Plugin } from "vue-fragment";
-Vue.use(Plugin);
-
 import { resolve } from "path";
 (global as any).__cache = resolve(__static, `.cache`);
 (global as any).__userdata = resolve(__static, `userdata`);

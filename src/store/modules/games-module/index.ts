@@ -1,22 +1,18 @@
 import { createModule, mutation, action } from "vuex-class-component";
-import { Game, IInstalledGame } from "./types";
+import { PluginGame } from "../packages-module/types";
+import { Game, KoikatsuGame, IGameInfo } from "./types";
 
 import { promises as fs } from "fs";
-import { PluginGame } from "../plugins-module/types";
 const readFile = fs.readFile;
 
 const VuexModule = createModule({ namespaced: "games", strict: false });
-
-interface IGames {
-  [key: PluginGame]: Game;
-}
 
 export class GamesModule extends VuexModule {
   /**
    * Getters
    */
 
-  get games() {
+  get list() {
     return this._games.values();
   }
 
@@ -32,7 +28,18 @@ export class GamesModule extends VuexModule {
   async load() {
     const data = await GamesModule.getData();
     for (const info of data) {
-      this.add(new Game(info.id, info.path));
+      switch (info.game) {
+        case PluginGame.Koikatsu:
+          this.add(new KoikatsuGame(info));
+          break;
+
+        case PluginGame.PlayHome:
+        case PluginGame.HoneySelect1:
+        case PluginGame.AIShoujo:
+        case PluginGame.HoneySelect2:
+        default:
+          break;
+      }
     }
   }
 
@@ -46,20 +53,24 @@ export class GamesModule extends VuexModule {
   }
 
   /**
-   * Static
+   * Statics
    */
 
-  private static async getData() {
+  private static async readData() {
     try {
-      return JSON.parse(await readFile(`${__userdata}/games.json`, "utf-8")) as IInstalledGame[];
+      return await readFile(`${__userdata}/games.json`, "utf-8");
     } catch {
-      return [];
+      return "[]";
     }
+  }
+
+  private static async getData() {
+    return JSON.parse(await GamesModule.readData()) as IGameInfo[];
   }
 
   /**
    * Data
    */
 
-  _games = new Map<number, Game>();
+  _games = new Map<PluginGame, Game>();
 }

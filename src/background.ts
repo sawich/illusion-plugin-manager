@@ -37,7 +37,7 @@ function createWindow() {
     frame: false,
     transparent: true,
     webPreferences: {
-      webSecurity: process.env.NODE_ENV !== "development",
+      webSecurity: !isDevelopment,
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       // nodeIntegration: Boolean(process.env.ELECTRON_NODE_INTEGRATION)
@@ -70,6 +70,10 @@ function createWindow() {
     // @ts-ignore
     win = null;
   });
+}
+
+if (isDevelopment) {
+  app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 }
 
 // Quit when all windows are closed.

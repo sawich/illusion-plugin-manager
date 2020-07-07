@@ -11,7 +11,7 @@
 //         let progress = 0;
 
 //         try {
-//             const r = await fetch(this.private _url, { mode: "no-cors" });
+//             const r = await fetch(this.private _url);
 //             if (!r.ok) return this._rejector(r);
 
 //             const length = Number(r.headers.get("Content-Length"));

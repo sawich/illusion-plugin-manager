@@ -6,7 +6,7 @@
 // const mkdir = promisify(fs.mkdir);
 
 // import rimrafCallback from "rimraf";
-// import { Plugin } from "@/store/modules/plugins-module";
+// import { Plugin } from "@/store/modules/packages-module";
 // const rimraf = promisify(rimrafCallback);
 
 // export type ResolverType = () => void;

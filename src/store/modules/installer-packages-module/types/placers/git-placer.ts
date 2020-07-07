@@ -1,24 +1,22 @@
-import { Task } from "../../tasks-module/core/task";
-import { IGitPlugin } from "../types";
-import { Plugin, PluginContainer } from "../core/plugin";
+import { PluginContainer } from "../core/installer";
 import { promises as fs } from "fs";
 import { Placer } from "./placer";
-import { tasks } from "@/store";
 import { resolve } from "path";
 
 import simpleGit from "simple-git";
+import { Task } from "@/store/modules/tasks-module/core/task";
+import { IGitPlacer } from "..";
+import { GitCloneJob } from "@/store/modules/jobs-module/types/jobs/git-clone-job";
 
 const mkdir = fs.mkdir;
 const access = fs.access;
 
 export class GitPlacer extends Placer {
-  async clonned(path: string) {}
-
-  async place(info: Task) {
+  async install(task: Task) {
     console.info("call place");
 
-    const task = await tasks.runGitClone({
-      task: info,
+    const job = new GitCloneJob({
+      task,
       action: async () => {
         console.info("task action");
 
@@ -29,7 +27,7 @@ export class GitPlacer extends Placer {
           await access(path);
           console.info("already clonned");
         } catch {
-          console.log("create directories");
+          console.log("create directory");
           await mkdir(path, { recursive: true });
 
           const git = simpleGit(path);
@@ -38,32 +36,26 @@ export class GitPlacer extends Placer {
           await git.clone(this._url, ".", ["--recursive"]);
         }
 
-        console.log("start timeout");
-        await new Promise(async (r) => {
-          setTimeout(() => {
-            // console.log("timeout end");
-            r();
-          }, 1000 * 60 * 4);
-        });
-
         console.info("action end");
       },
     });
 
-    await task.awaiter;
+    await job.run();
   }
 
   async update(info: Task) {}
 
-  constructor(raw: IGitPlugin, container: PluginContainer) {
-    super(container);
+  constructor(info: { container: PluginContainer; placer: IGitPlacer }) {
+    super();
 
-    this._url = raw.url;
+    this._container = info.container;
+    this._url = info.placer.url;
   }
 
   private get path() {
-    return resolve(__cache, `git/${this.container.identity}`);
+    return resolve(__cache, `git/${this._container.uuid}`);
   }
 
+  private _container: PluginContainer;
   private _url: string;
 }

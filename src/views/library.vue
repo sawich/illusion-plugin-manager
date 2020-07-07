@@ -1,30 +1,30 @@
 <template>
   <div class="plugins">
     <div class="plugin">
-      <template v-for="plugin of plugins">
+      <template v-for="p of list">
         <!-- <div
           class="button installing-button"
-          :key="`button-installing-${plugin.id}`"
-          v-if="`${plugin.id}-id-${$route.query.game}` in tasksTasks"
+          :key="`button-installing-${p.uuid}`"
+          v-if="`${p.uuid}-id-${$route.query.game}` in tasksTasks"
         >
           <install-icon :size="16" class="icon install-icon" />
           {{ $t(`plugins.installing`) }}
         </div> -->
         <div
           class="button install-button"
-          @click="install($route.query.game, plugin)"
-          :key="`button-install-${plugin.id}`"
+          @click="() => p.install()"
+          :key="`button-install-${p.uuid}`"
         >
           <!-- v-else -->
           <install-icon :size="16" class="icon install-icon" />
           {{ $t(`plugins.install`) }}
         </div>
-        <div class="plugin-text" :key="`text-${plugin.id}`">
+        <div class="plugin-text" :key="`text-${p.uuid}`">
           <div class="name">
-            {{ $t("plugins.items")[plugin.lang].name }}
+            {{ $t("plugins.items")[p.lang].name }}
           </div>
           <div class="description">
-            &nbsp;—&nbsp;{{ $t("plugins.items")[plugin.lang].description }}
+            &nbsp;—&nbsp;{{ $t("plugins.items")[p.lang].description }}
           </div>
         </div>
       </template>
@@ -33,16 +33,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { PluginGame } from "@/store/modules/plugins-module/types";
-import { Plugin } from "@/store/modules/plugins-module/core/plugin";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { PluginGame, Package } from "@/store/modules/packages-module/types";
 import { ITasks } from "../store/modules/tasks-module/types";
-
-import { namespace } from "vuex-class";
-const plugins = namespace("plugins");
-const cached = namespace("cached");
-const tasks = namespace("tasks");
-const vs = namespace("vs");
+import { packages } from "../store";
+import { IPackages } from "../store/modules/packages-module";
 
 @Component({
   components: {
@@ -50,20 +45,20 @@ const vs = namespace("vs");
   }
 })
 export default class Game extends Vue {
-  @plugins.Getter("plugins")
-  private pluginsPlugins!: Plugin[];
+  list: IPackages = {};
 
-  @tasks.Getter("tasks")
-  private tasksTasks!: ITasks;
-
-  async install(game: PluginGame, plugin: Plugin) {
-    await plugin.install(game);
-    console.log(" - - - installed");
+  @Watch("$route")
+  async onRouteChange() {
+    this.init();
   }
 
-  get plugins() {
+  async created() {
+    this.init();
+  }
+
+  private async init() {
     const game = Number(this.$route.query.game);
-    return this.pluginsPlugins.filter(p => p.games.includes(game));
+    this.list = await packages.list(game);
   }
 }
 </script>

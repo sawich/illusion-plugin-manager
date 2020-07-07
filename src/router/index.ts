@@ -10,6 +10,7 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: "/",
+        name: "home",
         component: () => import("@/views/home.vue"),
         children: [
           {
@@ -28,6 +29,18 @@ const routes: Array<RouteConfig> = [
         name: "settings",
         path: "/settings",
         component: () => import("@/views/settings.vue"),
+      },
+    ],
+  },
+  {
+    path: "/",
+    component: () => import("@/layouts/empty.vue"),
+
+    children: [
+      {
+        name: "loading",
+        path: "loading",
+        component: () => import("@/views/loading.vue"),
       },
     ],
   },

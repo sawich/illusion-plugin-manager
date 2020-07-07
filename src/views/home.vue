@@ -20,8 +20,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { PluginGame } from "@/store/modules/packages-module/types";
 import { fullGameIconPath, GameIconSize } from "@/helpers/game-icon-helper";
-import { PluginGame } from "../store/modules/plugins-module/types";
 
 @Component({ components: {} })
 export default class Home extends Vue {
