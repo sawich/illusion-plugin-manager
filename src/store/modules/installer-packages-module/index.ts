@@ -2,7 +2,10 @@ import { createModule, action } from "vuex-class-component";
 import { Package } from "../packages-module/types";
 import { Installer } from "./types/core/installer";
 
-const VuexModule = createModule({ namespaced: "installer-packages", strict: false });
+const VuexModule = createModule({
+  namespaced: "installer-packages",
+  strict: false
+});
 
 export class InstallerPackagesModule extends VuexModule {
   @action async install(info: { package: Package; dep: boolean }) {

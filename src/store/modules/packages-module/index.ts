@@ -12,10 +12,10 @@ export interface IPackages {
 }
 
 export class PackagesModule extends VuexModule {
-  // @action
-  // async get(info: { game: PluginGame; uuid: string }) {
-  //   return this._entries[info.game][info.uuid];
-  // }
+  @action
+  async get(uuid: string) {
+    return this._unordered[uuid];
+  }
 
   @action
   async list(game: PluginGame) {
@@ -26,6 +26,7 @@ export class PackagesModule extends VuexModule {
   async load() {
     for (const game of games.list) {
       const packages = await fetch(game.packagesUrl);
+
       const datas = (await packages.json()) as IPackage[];
       this.add({ game, packages: datas });
     }
@@ -36,12 +37,15 @@ export class PackagesModule extends VuexModule {
     const packages: IPackages = {};
 
     for (const p of info.packages) {
-      packages[p.uuid] = new Package({ package: p, game: info.game });
+      const pack = new Package({ package: p, game: info.game });
+      packages[p.uuid] = pack;
+      Vue.set(this._unordered, p.uuid, pack);
     }
 
     Vue.set(this._entries, info.game.id, packages);
   }
 
+  private _unordered: { [key: string]: Package } = {};
   private _entries: { [key: number]: IPackages } = {};
 }
 

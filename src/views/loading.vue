@@ -12,12 +12,9 @@ import { games, packages, installedPackages, vs, cached } from "@/store";
 export default class Loading extends Vue {
   async created() {
     console.log("created");
+    console.log("loading");
 
-    // await vs.load();
-    await games.load();
-    await packages.load();
-    // await cached.load();
-    // await installedPackages.load();
+    await Promise.all([games.load().then(packages.load), vs.load()]);
 
     console.log("created end");
 

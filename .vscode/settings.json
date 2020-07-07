@@ -1,6 +1,0 @@
-{
-  "files.exclude": {
-    "**/public/.cache": true,
-    "**/dist_electron": true
-  }
-}

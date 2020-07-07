@@ -1,9 +1,6 @@
-import { createModule, mutation, action } from "vuex-class-component";
-import { Module as Mod } from "vuex";
-import { promises as fs } from "fs";
-import { resolve } from "path";
+import { createModule } from "vuex-class-component";
 
-const readFile = fs.readFile;
+import { readFile } from "fs/promises";
 
 interface IAppInstalled {
   guid: string;
@@ -33,7 +30,7 @@ export class AppModule extends VuexModule {
   // private _installed: IAppInstalled[] = [];
   //
   // #buildtools = {
-  //     "15.0": resolve(__cache, "vs_BuildTools15.exe"),
-  //     "16.0": resolve(__cache, "vs_BuildTools16.exe"),
+  //     "15.0": join(__cache, "vs_BuildTools15.exe"),
+  //     "16.0": join(__cache, "vs_BuildTools16.exe"),
   // };
 }

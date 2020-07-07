@@ -57,7 +57,7 @@ import { ITasks } from "../store/modules/tasks-module/types";
 import { namespace } from "vuex-class";
 const tasks = namespace("tasks");
 
-import { ipcRenderer } from "electron";
+// import { ipcRenderer } from "electron";
 
 @Component({
   components: {
@@ -75,31 +75,29 @@ export default class Header extends Vue {
   private entries!: ITasks;
 
   private async unmaximize() {
-    ipcRenderer.send("vue-unmaximize");
+    //@ts-ignore
+    const window = nw.Window.get();
+    window.restore();
     this.windowState = 0;
   }
 
   private async minimize() {
-    ipcRenderer.send("vue-minimize");
+    //@ts-ignore
+    const window = nw.Window.get();
+    window.minimize();
   }
 
   private async maximize() {
-    ipcRenderer.send("vue-maximize");
+    //@ts-ignore
+    const window = nw.Window.get();
+    window.maximize();
     this.windowState = 1;
   }
 
   private async close() {
-    ipcRenderer.send("vue-close");
-  }
-
-  private async created() {
-    ipcRenderer.on("vue-unmaximize", this.unmaximize);
-    ipcRenderer.on("vue-maximize", this.maximize);
-  }
-
-  private async destroyed() {
-    ipcRenderer.off("vue-unmaximize", this.unmaximize);
-    ipcRenderer.off("vue-maximize", this.maximize);
+    //@ts-ignore
+    const window = nw.Window.get();
+    window.close();
   }
 
   private windowState = 0;
@@ -112,11 +110,12 @@ export default class Header extends Vue {
 .header {
   -webkit-app-region: drag;
   user-select: none;
+
   display: grid;
   grid-template-columns: 1fr auto auto;
   gap: 10px;
+
   background-color: var(--header-bg-color);
-  margin-top: 1px;
 }
 
 .header-row {

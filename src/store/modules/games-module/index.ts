@@ -2,8 +2,7 @@ import { createModule, mutation, action } from "vuex-class-component";
 import { PluginGame } from "../packages-module/types";
 import { Game, KoikatsuGame, IGameInfo } from "./types";
 
-import { promises as fs } from "fs";
-const readFile = fs.readFile;
+import { readFile } from "fs/promises";
 
 const VuexModule = createModule({ namespaced: "games", strict: false });
 

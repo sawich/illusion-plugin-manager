@@ -1,13 +1,20 @@
 
 <template>
-  <router-view class="app-content" theme="raratina" />
+  <fragment>
+    <header-component class="header" />
+    <router-view class="app-content" theme="raratina" />
+  </fragment>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { games, packages, installedPackages, vs, cached } from "./store";
 
-@Component({})
+@Component({
+  components: {
+    HeaderComponent: () => import("@/components/header.vue")
+  }
+})
 export default class App extends Vue {
   async created() {
     this.$router.push({ name: "loading" });
@@ -17,6 +24,8 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import "@/themes/raratina.scss";
+
+$headerSize: 36px;
 
 body {
   font: 14px "Oxygen Mono", monospace;
@@ -29,9 +38,14 @@ body {
   overflow: hidden;
 }
 
-body,
-.app-content {
+body {
   height: 100vh;
   width: 100vw;
+  display: grid;
+  grid-template-rows: $headerSize 1fr;
+}
+
+.header {
+  height: $headerSize;
 }
 </style>

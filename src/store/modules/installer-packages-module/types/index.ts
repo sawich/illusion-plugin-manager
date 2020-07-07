@@ -8,12 +8,12 @@ export interface IPluginContainer {
 
 export const enum PlacerType {
   Git,
-  Patreon,
+  Patreon
 }
 
 export const enum ResolverType {
   VisualStudio,
-  UnZip,
+  UnZip
 }
 
 export interface IPlacerHeader extends IPluginContainer {
@@ -37,12 +37,16 @@ export interface IResolverHeader extends IPluginContainer {
   type: ResolverType;
 }
 
+export interface IVSFile {
+  src: string;
+  dst: string;
+}
+
+export interface IVSBuild {
+  file: string;
+}
+
 export interface IVSResolver extends IResolverHeader {
-  files: {
-    src: string;
-    dst: string;
-  }[];
-  build: {
-    file: string;
-  }[];
+  files: IVSFile[];
+  build: IVSBuild[];
 }

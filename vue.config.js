@@ -1,15 +1,10 @@
 module.exports = {
-    configureWebpack: {
-        devServer: {
-            watchOptions: {
-                ignored: [/node_modules/, /public\/\.cache/],
-            },
-        },
-        target: 'node-webkit'
+  configureWebpack: {
+    devServer: {
+      watchOptions: {
+        ignored: [/node_modules/, /public\/\.cache/],
+      },
     },
-    pluginOptions: {
-        electronBuilder: {
-            nodeIntegration: true,
-        },
-    },
+    target: 'node-webkit'
+  },
 };

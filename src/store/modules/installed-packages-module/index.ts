@@ -1,13 +1,14 @@
 import { createModule, action } from "vuex-class-component";
 import { PluginGame } from "../packages-module/types";
 import { Game } from "../games-module/types";
-import { promises as fs } from "fs";
+import { readFile } from "fs/promises";
 import { games } from "@/store";
-import { resolve } from "path";
+import { join } from "path";
 
-const readFile = fs.readFile;
-
-const VuexModule = createModule({ namespaced: "installed-packages", strict: false });
+const VuexModule = createModule({
+  namespaced: "installed-packages",
+  strict: false
+});
 
 export interface IInstaledPackage {
   uuid: string;
@@ -49,17 +50,19 @@ export class InstalledPackagesModule extends VuexModule {
   @action
   async load() {
     for (const game of games.list) {
-      const packages = JSON.parse(await this.getData(game)) as IInstaledPackage[];
+      const packages = JSON.parse(
+        await this.getData(game)
+      ) as IInstaledPackage[];
       this._plugins.set(
         game.id,
-        packages.map((p) => new InstaledPackage(p))
+        packages.map(p => new InstaledPackage(p))
       );
     }
   }
 
   private async getData(game: Game) {
     try {
-      return await readFile(resolve(game.path, "angel.packages.json"), "utf-8");
+      return await readFile(join(game.path, "angel.packages.json"), "utf-8");
     } catch {
       return "[]";
     }

@@ -1,8 +1,6 @@
 import { createModule, mutation, action } from "vuex-class-component";
 
-import { promises as fs } from "fs";
-const readFile = fs.readFile;
-const writeFile = fs.writeFile;
+import { readFile, writeFile } from "fs/promises";
 
 const VuexModule = createModule({ namespaced: "cached", strict: false });
 

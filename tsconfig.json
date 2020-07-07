@@ -1,38 +1,38 @@
 {
-    "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "strict": true,
-        "jsx": "preserve",
-        "importHelpers": true,
-        "moduleResolution": "node",
-        "experimentalDecorators": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "inlineSourceMap": true,
-        "baseUrl": ".",
-        "outDir": "dist/",
-        "types": [
-            "webpack-env",
-            "electron",
-        ],
-        "paths": {
-            "@/*": [
-                "src/*"
-            ]
-        },
-        "lib": [
-            "esnext",
-            "dom",
-            "dom.iterable",
-            "scripthost"
-        ]
-    },
-    "include": [
-        "src/**/*.ts",
-        "src/**/*.vue",
+  "compilerOptions": {
+    "target": "ESNext",
+    // "module": "CommonJS",
+    "module": "CommonJS",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "inlineSourceMap": true,
+    "baseUrl": ".",
+    "outDir": "dist/",
+    "types": [
+      "webpack-env",
     ],
-    "exclude": [
-        "node_modules"
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
     ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

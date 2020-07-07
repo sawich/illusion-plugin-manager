@@ -1,12 +1,22 @@
-import { IPluginContainer, IPlacerHeader, IResolverHeader, IGitPlacer, PlacerType, ResolverType } from "..";
+import {
+  IPluginContainer,
+  IPlacerHeader,
+  IResolverHeader,
+  IGitPlacer,
+  PlacerType,
+  ResolverType,
+  IVSResolver
+} from "..";
 import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
 import { VSCSharpResolver } from "../resolvers/vs-c-sharp-resolver";
-import { PluginGame, Package } from "@/store/modules/packages-module/types";
+import { Package } from "@/store/modules/packages-module/types";
 import { Task } from "@/store/modules/tasks-module/core/task";
-import { installerPackages, packages } from "@/store";
 import { GitPlacer } from "../placers/git-placer";
-import { Resolver } from "../resolvers/resolver";
-import { Placer } from "../placers/placer";
+import { installerPackages, packages } from "@/store";
+
+export interface IInstaller {
+  install(info: Task): Promise<void>;
+}
 
 export class PluginContainer {
   get uuid() {
@@ -37,10 +47,10 @@ export class PluginContainer {
     this._resolver = this.makeResolver(container.resolver);
   }
 
-  private makePlacer(placer: IPlacerHeader) {
-    switch (placer.type) {
+  private makePlacer(header: IPlacerHeader) {
+    switch (header.type) {
       case PlacerType.Git:
-        return new GitPlacer({ container: this, placer: placer as IGitPlacer });
+        return new GitPlacer({ container: this, placer: header as IGitPlacer });
     }
     throw new Error("Bad placer type");
   }
@@ -48,7 +58,10 @@ export class PluginContainer {
   private makeResolver(header: IResolverHeader) {
     switch (header.type) {
       case ResolverType.VisualStudio:
-        return new VSCSharpResolver();
+        return new VSCSharpResolver({
+          container: this,
+          resolver: header as IVSResolver
+        });
     }
     throw new Error("Bad resolver type");
   }
@@ -56,8 +69,8 @@ export class PluginContainer {
   private _uuid: string;
   private _uuidentity: string;
   private _dependence: string[];
-  private _placer: Placer;
-  private _resolver: Resolver;
+  private _placer: IInstaller;
+  private _resolver: IInstaller;
 }
 
 export class Installer {
@@ -76,13 +89,20 @@ export class Installer {
   async install(dep: boolean) {
     let task: Task | null = null;
     try {
-      task = new Task({ container: this.container, installer: this, package: this.package });
+      task = new Task({
+        container: this.container,
+        installer: this,
+        package: this.package
+      });
 
       if (this.container.dependence.length > 0) {
         console.log("install dependencies: ", this.container.dependence);
-        await Promise.race(
-          this.container.dependence.map(async (d) => {
-            await installerPackages.install({ package: this.package, dep: dep });
+        await Promise.all(
+          this.container.dependence.map(async d => {
+            await installerPackages.install({
+              package: await packages.get(d),
+              dep: dep
+            });
           })
         );
       }
