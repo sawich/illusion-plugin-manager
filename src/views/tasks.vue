@@ -56,8 +56,6 @@ export default class Tasks extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/common.scss";
-
 .tasks {
   padding: 20px;
 }

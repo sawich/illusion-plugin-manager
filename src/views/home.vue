@@ -32,8 +32,6 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/common.scss";
-
 .home {
   display: grid;
   grid-template-columns: auto 1fr;

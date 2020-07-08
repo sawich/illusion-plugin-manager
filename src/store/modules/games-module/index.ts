@@ -26,10 +26,9 @@ export class GamesModule extends VuexModule {
 
   @action
   async load() {
-    const data = await GamesModule.getData();
+    const data = await GamesModule.getGamesData();
     for (const info of data) {
-      const file = await GamesModule.readPackages(info.path);
-      const packages = JSON.parse(file) as IInstalledPackages;
+      const packages = await GamesModule.getPackagesData(info.path);
 
       switch (info.game) {
         case PluginGame.Koikatsu:
@@ -69,13 +68,19 @@ export class GamesModule extends VuexModule {
 
   private static async readGames() {
     try {
-      return await readFile(`${__userdata}/games.json`, "utf-8");
+      return await readFile(join(__userdata, "games.json"), "utf-8");
     } catch {
       return "[]";
     }
   }
 
-  private static async getData() {
+  private static async getPackagesData(path: string) {
+    return JSON.parse(
+      await GamesModule.readPackages(path)
+    ) as IInstalledPackages;
+  }
+
+  private static async getGamesData() {
     return JSON.parse(await GamesModule.readGames()) as IGameInfo[];
   }
 

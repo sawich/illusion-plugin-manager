@@ -64,8 +64,6 @@ export default class Game extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/common.scss";
-
 .plugins {
   padding: 20px;
 }
