@@ -17,6 +17,9 @@ import { games, packages, installedPackages, vs, cached } from "./store";
 })
 export default class App extends Vue {
   async created() {
+    //@ts-ignore
+    nw.Window.get().showDevTools();
+
     this.$router.push({ name: "loading" });
   }
 }

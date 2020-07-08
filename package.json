@@ -40,7 +40,7 @@
     "express": "^4.17.1",
     "fast-xml-parser": "^3.17.4",
     "normalize.css": "^8.0.1",
-    "nw": "^0.46.3",
+    "nw": "^0.46.3-sdk",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
     "simple-git": "^2.11.0",
@@ -129,6 +129,9 @@
         "min_height": 500,
         "icon": "dist-vue/icon.png"
       }
+    },
+    "developer": {
+      "showDevToolsOnStartup": true
     },
     "win": {
       "icon": "public/icon-256.ico"

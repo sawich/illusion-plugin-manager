@@ -1,14 +1,15 @@
-import { IPluginContainer, INodeHeader, NodeType } from "..";
 import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
-import { VSCSharpResolver } from "../resolvers/vs-c-sharp-resolver";
+import { installerPackages, packages } from "@/store";
 import { Package } from "@/store/modules/packages-module/types";
 import { Task } from "@/store/modules/tasks-module/core/task";
-import { installerPackages, packages } from "@/store";
-import { GitPlacer } from "../placers/git-placer";
-import { IPlacerHeader, IGitPlacer, PlacerType } from "../placers/types";
-import { IResolverHeader, IVSResolver, ResolverType } from "../resolvers/types";
-import { IMoverHeader, MoverType, IFileMover } from "../movers/types";
+
+import { INodeHeader, IPluginContainer, NodeType } from "../";
 import { FileMover } from "../movers/file-mover";
+import { IFileMover, IMoverHeader, MoverType } from "../movers/types";
+import { GitPlacer } from "../placers/git-placer";
+import { IGitPlacer, IPlacerHeader, PlacerType } from "../placers/types";
+import { IResolverHeader, IVSResolver, ResolverType } from "../resolvers/types";
+import { VSCSharpResolver } from "../resolvers/vs-c-sharp-resolver";
 
 export interface IInstaller {
   install(info: Task): Promise<void>;
@@ -37,7 +38,7 @@ export class PluginContainer {
     this._uuid = container.uuid;
     this._uuidentity = container.uuidentity;
     this._dependence = container.dependence;
-    this._nodes = container.nodes.map(this.makeNode);
+    this._nodes = container.nodes.map(n => this.makeNode(n));
   }
 
   private makeNode(header: INodeHeader) {

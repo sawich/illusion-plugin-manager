@@ -1,11 +1,13 @@
-import { VSBuildJob } from "@/store/modules/jobs-module/types/jobs/vs-build-job";
-import { PluginContainer, IInstaller } from "../core/installer";
-import { Task } from "@/store/modules/tasks-module/core/task";
-import { readFile, open, unlink } from "fs/promises";
-import { IVSResolver, IVSBuild } from "./types";
 import { spawn } from "child_process";
-import { parse, join } from "path";
+import { open, readFile, unlink } from "fs/promises";
+import { join, parse } from "path";
+
 import { vs } from "@/store";
+import { VSBuildJob } from "@/store/modules/jobs-module/types/jobs/vs-build-job";
+import { Task } from "@/store/modules/tasks-module/core/task";
+
+import { IInstaller, PluginContainer } from "../core/installer";
+import { IVSBuild, IVSResolver } from "./types";
 
 export class VSCSharpResolver implements IInstaller {
   async install(task: Task) {
@@ -75,12 +77,12 @@ export class VSCSharpResolver implements IInstaller {
         cwd: this._path,
         shell: true
       });
-      // dotnet.stdout.on("data", out => {
-      //   console.log(`${out}`);
-      // });
-      // dotnet.stderr.on("data", out => {
-      //   console.error(`${out}`);
-      // });
+      dotnet.stdout.on("data", out => {
+        console.log(`${out}`);
+      });
+      dotnet.stderr.on("data", out => {
+        console.error(`${out}`);
+      });
       dotnet.once("close", () => {
         resolve();
       });

@@ -1,6 +1,6 @@
-import { IResolverHeader } from "./resolvers/types";
-import { IPlacerHeader } from "./placers/types";
 import { IMoverHeader } from "./movers/types";
+import { IPlacerHeader } from "./placers/types";
+import { IResolverHeader } from "./resolvers/types";
 
 export const enum NodeType {
   Resolver,
