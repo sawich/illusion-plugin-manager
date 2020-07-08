@@ -70,8 +70,8 @@ export default class Home extends Vue {
 .router-link-exact-active {
   color: var(--link-hover-color);
   background-color: var(--games-list-bg-hover-color);
-  transition: color $animationVeryShortTime $animationFunction,
-    background-color $animationVeryShortTime $animationFunction;
+  transition: color var(--animation-very-short-time) var(--animation-function),
+    background-color var(--animation-very-short-time) var(--animation-function);
 }
 
 .router-link-exact-active {

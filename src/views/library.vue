@@ -90,14 +90,15 @@ export default class Game extends Vue {
 .install-button {
   color: var(--library-install-button-color);
   background-color: var(--font-color);
-  transition: color $animationLongTime $animationFunction,
-    background-color $animationLongTime $animationFunction;
+  transition: color var(--animation-long-time) var(--animation-function),
+    background-color var(--animation-long-time) var(--animation-function);
 
   &:hover {
     color: var(--font-color);
     background-color: var(--library-install-button-color);
-    transition: color $animationVeryShortTime $animationFunction,
-      background-color $animationVeryShortTime $animationFunction;
+    transition: color var(--animation-very-short-time) var(--animation-function),
+      background-color var(--animation-very-short-time)
+        var(--animation-function);
   }
 }
 
