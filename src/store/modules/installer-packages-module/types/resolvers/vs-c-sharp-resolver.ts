@@ -6,12 +6,15 @@ import { vs } from "@/store";
 import { VSBuildJob } from "@/store/modules/jobs-module/types/jobs/vs-build-job";
 import { Task } from "@/store/modules/tasks-module/core/task";
 
-import { IInstaller, PluginContainer } from "../core/installer";
+import { IInstaller, IInstallerArguments, PluginContainer } from "../core/installer";
 import { IVSBuild, IVSResolver } from "./types";
 
 export class VSCSharpResolver implements IInstaller {
-  async install(task: Task) {
-    const job = new VSBuildJob({ task, action: this.action.bind(this, task) });
+  async install(info: IInstallerArguments) {
+    const job = new VSBuildJob({
+      task: info.task,
+      action: this.action.bind(this, info.task)
+    });
     await job.run();
   }
 
@@ -45,7 +48,7 @@ export class VSCSharpResolver implements IInstaller {
     const xmlDoc = parser.parseFromString(cropped, "text/xml");
     for (const element of xmlDoc.querySelectorAll("HintPath")) {
       const dllName = parse(element.innerHTML).name;
-      const gameDll = task.package.game.getDllPath(dllName);
+      const gameDll = task.package.game.dll(dllName);
       if (gameDll != null) {
         element.innerHTML = gameDll;
       }

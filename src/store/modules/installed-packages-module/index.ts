@@ -1,26 +1,18 @@
-import { createModule, action } from "vuex-class-component";
-import { PluginGame } from "../packages-module/types";
-import { Game } from "../games-module/types";
 import { readFile } from "fs/promises";
-import { games } from "@/store";
 import { join } from "path";
+import { action, createModule } from "vuex-class-component";
+
+import { games } from "@/store";
+
+import { Game, IInstalledPackage } from "../games-module/types";
+import { PluginGame } from "../packages-module/types";
 
 const VuexModule = createModule({
   namespaced: "installed-packages",
   strict: false
 });
 
-export interface IInstaledPackage {
-  uuid: string;
-  version: string;
-  files: string[];
-}
-
 class InstaledPackage {
-  get uuid() {
-    return this._uuid;
-  }
-
   get version() {
     return this._version;
   }
@@ -29,15 +21,11 @@ class InstaledPackage {
     return this._files;
   }
 
-  async remove() {}
-
-  constructor(data: IInstaledPackage) {
-    this._uuid = data.uuid;
+  constructor(data: IInstalledPackage) {
     this._version = data.version;
     this._files = data.files;
   }
 
-  private _uuid: string;
   private _version: string;
   private _files: string[];
 }
@@ -52,7 +40,7 @@ export class InstalledPackagesModule extends VuexModule {
     for (const game of games.list) {
       const packages = JSON.parse(
         await this.getData(game)
-      ) as IInstaledPackage[];
+      ) as IInstalledPackage[];
       this._plugins.set(
         game.id,
         packages.map(p => new InstaledPackage(p))

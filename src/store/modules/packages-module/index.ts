@@ -1,9 +1,10 @@
-import { createModule, action, mutation } from "vuex-class-component";
 import { Vue } from "vue-property-decorator";
+import { action, createModule, mutation } from "vuex-class-component";
 
-import { PluginGame, Package, IPackage } from "./types";
 import { games } from "@/store";
+
 import { Game } from "../games-module/types";
+import { IPackage, Package, PluginGame } from "./types";
 
 const VuexModule = createModule({ namespaced: "packages", strict: false });
 
@@ -25,7 +26,7 @@ export class PackagesModule extends VuexModule {
   @action
   async load() {
     for (const game of games.list) {
-      const packages = await fetch(game.packagesUrl);
+      const packages = await fetch(game.url);
 
       const datas = (await packages.json()) as IPackage[];
       this.add({ game, packages: datas });

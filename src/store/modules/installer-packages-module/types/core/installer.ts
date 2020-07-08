@@ -11,8 +11,55 @@ import { IGitPlacer, IPlacerHeader, PlacerType } from "../placers/types";
 import { IResolverHeader, IVSResolver, ResolverType } from "../resolvers/types";
 import { VSCSharpResolver } from "../resolvers/vs-c-sharp-resolver";
 
+export class PackageBuilder {
+  /**
+   * Getters
+   */
+
+  get uuid() {
+    return this._uuid;
+  }
+
+  get version() {
+    return this._version;
+  }
+
+  get files() {
+    return this._files;
+  }
+
+  /**
+   * Setters
+   */
+
+  set version(value) {
+    this._version = value;
+  }
+
+  set files(value) {
+    this._files = value;
+  }
+
+  /**
+   * Methods
+   */
+
+  constructor(uuid: string) {
+    this._uuid = uuid;
+  }
+
+  private _uuid: string = "";
+  private _version: string = "";
+  private _files: string[] = [];
+}
+
+export interface IInstallerArguments {
+  task: Task;
+  builder: PackageBuilder;
+}
+
 export interface IInstaller {
-  install(info: Task): Promise<void>;
+  install(info: IInstallerArguments): Promise<void>;
 }
 
 export type IInstallers = IInstaller[];
@@ -98,6 +145,11 @@ export class Installer {
    * @param dep install as dependency
    */
   async install(dep: boolean) {
+    if (this.package.game.has(this.container.uuid)) {
+      console.warn("Already installed, skipped");
+      return;
+    }
+
     let task: Task | null = null;
     try {
       task = new Task({
@@ -118,9 +170,15 @@ export class Installer {
         );
       }
 
+      const builder = new PackageBuilder(this.container.uuid);
+
       for (const node of this.container.nodes) {
-        await node.install(task);
+        await node.install({ task, builder });
       }
+
+      task.package.game.add(builder);
+
+      await task.package.game.save();
     } catch (error) {
       if (error instanceof TaskExistExeption) {
         if (dep) {

@@ -1,14 +1,19 @@
+import { copyFile, mkdir } from "fs/promises";
+import { dirname, join } from "path";
+
 import { FileMoveJob } from "@/store/modules/jobs-module/types/jobs/file-move-job";
-import { PluginContainer, IInstaller } from "../core/installer";
 import { Task } from "@/store/modules/tasks-module/core/task";
-import { mkdir, copyFile } from "fs/promises";
+
+import { IInstaller, IInstallerArguments, PluginContainer } from "../core/installer";
 import { IFileMover, IFiles } from "./types";
-import { join, dirname } from "path";
 
 export class FileMover implements IInstaller {
-  async install(task: Task) {
+  async install(info: IInstallerArguments) {
     console.info("call place");
-    const job = new FileMoveJob({ task, action: this.action.bind(this, task) });
+    const job = new FileMoveJob({
+      task: info.task,
+      action: this.action.bind(this, info)
+    });
     await job.run();
   }
 
@@ -18,15 +23,17 @@ export class FileMover implements IInstaller {
     this._path = join(__cache, `git/${this._container.uuidentity}`);
   }
 
-  private async action(task: Task) {
+  private async action(info: IInstallerArguments) {
     for (const file of this._files) {
       const src = join(this._path, file.src);
-      const dst = join(task.package.game.path, file.dst);
+      const dst = join(info.task.package.game.path, file.dst);
       const path = dirname(dst);
 
       await mkdir(path, { recursive: true });
       await copyFile(src, dst);
     }
+
+    info.builder.files = this._files.map(f => f.dst);
   }
 
   private _path: string;
