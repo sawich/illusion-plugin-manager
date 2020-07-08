@@ -16,8 +16,8 @@ export class PackageBuilder {
    * Getters
    */
 
-  get uuid() {
-    return this._uuid;
+  get container() {
+    return this._container;
   }
 
   get version() {
@@ -44,11 +44,11 @@ export class PackageBuilder {
    * Methods
    */
 
-  constructor(uuid: string) {
-    this._uuid = uuid;
+  constructor(container: PluginContainer) {
+    this._container = container;
   }
 
-  private _uuid: string = "";
+  private _container: PluginContainer;
   private _version: string = "";
   private _files: string[] = [];
 }
@@ -170,7 +170,7 @@ export class Installer {
         );
       }
 
-      const builder = new PackageBuilder(this.container.uuid);
+      const builder = new PackageBuilder(this.container);
 
       for (const node of this.container.nodes) {
         await node.install({ task, builder });
