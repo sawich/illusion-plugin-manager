@@ -2,9 +2,9 @@ import { GitCloneJob } from "@/store/modules/jobs-module/types/jobs/git-clone-jo
 import { PluginContainer, IInstaller } from "../core/installer";
 import { Task } from "@/store/modules/tasks-module/core/task";
 import { mkdir, access } from "fs/promises";
+import { IGitPlacer } from "./types";
 import simpleGit from "simple-git";
 import { join } from "path";
-import { IGitPlacer } from "..";
 
 export class GitPlacer implements IInstaller {
   async install(task: Task) {
@@ -17,17 +17,14 @@ export class GitPlacer implements IInstaller {
   async action() {
     console.info("task action");
 
-    const path = this.path;
-    console.info("path:", path);
-
     try {
-      await access(path);
+      await access(this._path);
       console.info("already clonned");
     } catch {
       console.log("create directory");
-      await mkdir(path, { recursive: true });
+      await mkdir(this._path, { recursive: true });
 
-      const git = simpleGit(path);
+      const git = simpleGit(this._path);
 
       console.log("start clone");
       await git.clone(this._url, ".", ["--recursive"]);
@@ -39,12 +36,10 @@ export class GitPlacer implements IInstaller {
   constructor(info: { container: PluginContainer; placer: IGitPlacer }) {
     this._container = info.container;
     this._url = info.placer.url;
+    this._path = join(__cache, `git/${this._container.uuidentity}`);
   }
 
-  private get path() {
-    return join(__cache, `git/${this._container.uuidentity}`);
-  }
-
+  private _path: string;
   private _container: PluginContainer;
   private _url: string;
 }

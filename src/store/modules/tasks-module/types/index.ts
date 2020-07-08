@@ -7,6 +7,7 @@ export const enum JobIcon {
   GitHub,
   Download,
   VisualStudio,
+  FileMove
 }
 
 export const enum JobCategory {
@@ -14,10 +15,11 @@ export const enum JobCategory {
   GitPull,
   GitClone,
   VSBuild,
+  FileMove,
 
   /** Nothing. */
   Exists,
-  Dummy,
+  Dummy
 }
 
 export interface IRunnableJob<T> {

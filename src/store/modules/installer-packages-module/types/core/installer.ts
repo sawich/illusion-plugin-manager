@@ -1,22 +1,20 @@
-import {
-  IPluginContainer,
-  IPlacerHeader,
-  IResolverHeader,
-  IGitPlacer,
-  PlacerType,
-  ResolverType,
-  IVSResolver
-} from "..";
+import { IPluginContainer, INodeHeader, NodeType } from "..";
 import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
 import { VSCSharpResolver } from "../resolvers/vs-c-sharp-resolver";
 import { Package } from "@/store/modules/packages-module/types";
 import { Task } from "@/store/modules/tasks-module/core/task";
-import { GitPlacer } from "../placers/git-placer";
 import { installerPackages, packages } from "@/store";
+import { GitPlacer } from "../placers/git-placer";
+import { IPlacerHeader, IGitPlacer, PlacerType } from "../placers/types";
+import { IResolverHeader, IVSResolver, ResolverType } from "../resolvers/types";
+import { IMoverHeader, MoverType, IFileMover } from "../movers/types";
+import { FileMover } from "../movers/file-mover";
 
 export interface IInstaller {
   install(info: Task): Promise<void>;
 }
+
+export type IInstallers = IInstaller[];
 
 export class PluginContainer {
   get uuid() {
@@ -31,20 +29,26 @@ export class PluginContainer {
     return this._dependence;
   }
 
-  get placer() {
-    return this._placer;
-  }
-
-  get resolver() {
-    return this._resolver;
+  get nodes() {
+    return this._nodes;
   }
 
   constructor(container: IPluginContainer) {
     this._uuid = container.uuid;
     this._uuidentity = container.uuidentity;
     this._dependence = container.dependence;
-    this._placer = this.makePlacer(container.placer);
-    this._resolver = this.makeResolver(container.resolver);
+    this._nodes = container.nodes.map(this.makeNode);
+  }
+
+  private makeNode(header: INodeHeader) {
+    switch (header.type) {
+      case NodeType.Placer:
+        return this.makePlacer(header.node as IPlacerHeader);
+      case NodeType.Resolver:
+        return this.makeResolver(header.node as IResolverHeader);
+      case NodeType.Mover:
+        return this.makeMover(header.node as IMoverHeader);
+    }
   }
 
   private makePlacer(header: IPlacerHeader) {
@@ -66,11 +70,17 @@ export class PluginContainer {
     throw new Error("Bad resolver type");
   }
 
+  private makeMover(header: IMoverHeader) {
+    switch (header.type) {
+      case MoverType.File:
+        return new FileMover({ container: this, mover: header as IFileMover });
+    }
+  }
+
   private _uuid: string;
   private _uuidentity: string;
   private _dependence: string[];
-  private _placer: IInstaller;
-  private _resolver: IInstaller;
+  private _nodes: IInstallers;
 }
 
 export class Installer {
@@ -107,8 +117,9 @@ export class Installer {
         );
       }
 
-      await this.container.placer.install(task);
-      await this.container.resolver.install(task);
+      for (const node of this.container.nodes) {
+        await node.install(task);
+      }
     } catch (error) {
       if (error instanceof TaskExistExeption) {
         if (dep) {

@@ -1,28 +1,31 @@
+import { VSBuildJob } from "@/store/modules/jobs-module/types/jobs/vs-build-job";
 import { PluginContainer, IInstaller } from "../core/installer";
-import { readFile, open, mkdir, copyFile, unlink } from "fs/promises";
 import { Task } from "@/store/modules/tasks-module/core/task";
-import { IVSResolver, IVSBuild, IVSFile } from "..";
-import { parse, join, dirname } from "path";
+import { readFile, open, unlink } from "fs/promises";
+import { IVSResolver, IVSBuild } from "./types";
 import { spawn } from "child_process";
+import { parse, join } from "path";
 import { vs } from "@/store";
 
 export class VSCSharpResolver implements IInstaller {
   async install(task: Task) {
+    const job = new VSBuildJob({ task, action: this.action.bind(this, task) });
+    await job.run();
+  }
+
+  constructor(info: { container: PluginContainer; resolver: IVSResolver }) {
+    this._container = info.container;
+    this._build = info.resolver.build;
+    this._path = join(__cache, `git/${this._container.uuidentity}`);
+  }
+
+  private async action(task: Task) {
     await this.restore();
 
     for (const build of this._build) {
       const file = await this.createProjectFile(build, task);
       await vs.build({ cwd: this._path, file, toolset: "16.0" });
       await unlink(join(this._path, file));
-    }
-
-    for (const file of this._files) {
-      const src = join(this._path, file.src);
-      const dst = join(task.package.game.path, file.dst);
-      const path = dirname(dst);
-
-      await mkdir(path, { recursive: true });
-      await copyFile(src, dst);
     }
 
     //TargetFrameworkVersion
@@ -65,13 +68,6 @@ export class VSCSharpResolver implements IInstaller {
     return projectFileName;
   }
 
-  constructor(info: { container: PluginContainer; resolver: IVSResolver }) {
-    this._container = info.container;
-    this._files = info.resolver.files;
-    this._build = info.resolver.build;
-    this._path = join(__cache, `git/${this._container.uuidentity}`);
-  }
-
   private async restore() {
     console.log("start restore");
     await new Promise(resolve => {
@@ -94,6 +90,5 @@ export class VSCSharpResolver implements IInstaller {
 
   private _path: string;
   private _container: PluginContainer;
-  private _files: IVSFile[];
   private _build: IVSBuild[];
 }
