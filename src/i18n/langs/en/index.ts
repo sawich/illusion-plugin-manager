@@ -13,15 +13,14 @@ export default {
   },
   job: {
     categories: {
-      [JobCategory.Wait]: "—",
-      [JobCategory.VSInstaller]: "VSInstaller",
-      [JobCategory.GitPull]: "GitPull",
-      [JobCategory.GitClone]: "GitClone",
-      [JobCategory.VSBuild]: "VSBuild",
+      [JobCategory.VSInstaller]:
+        "Installing addditional Visual Studio components",
+      [JobCategory.GitPull]: "Pulling from git",
+      [JobCategory.GitClone]: "Cloning from git",
+      [JobCategory.VSBuild]: "Building binaries",
       [JobCategory.Wait]: "Wait...",
-      [JobCategory.InstallingDependencies]: "Installing dependencies...",
-      [JobCategory.Exists]:
-        "This task runned by another game. Wait for end exists task..."
+      [JobCategory.InstallingDependencies]: "Installing dependencies..."
+      // [JobCategory.Exists]: "This task runned by another game. Wait for end exists task..."
     }
   },
   plugins: {

@@ -18,7 +18,7 @@ export const enum JobCategory {
   FileMove,
 
   /** Nothing. */
-  Exists,
+  // Exists,
   Wait,
   InstallingDependencies
 }

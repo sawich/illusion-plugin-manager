@@ -14,7 +14,11 @@ export class InstallerPackagesModule extends VuexModule {
     const script = await request.json();
 
     const installer = new Installer({ package: p, container: script });
-    await installer.install();
+    try {
+      await installer.install();
+    } finally {
+      await installer.done();
+    }
   }
 }
 

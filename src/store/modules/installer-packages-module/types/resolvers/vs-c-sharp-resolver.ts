@@ -1,5 +1,6 @@
 import { spawn } from "child_process";
 import { open, readFile, unlink } from "fs/promises";
+import { getFileProperties } from "get-file-properties";
 import { join, parse } from "path";
 
 import { vs } from "@/store";
@@ -43,25 +44,51 @@ export class VSCSharpResolver implements IInstaller {
       throw new Error("");
     }
 
-    const cropped = file.replace(/<\?xml.*?\?>/, "");
     const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(cropped, "text/xml");
-    for (const element of xmlDoc.querySelectorAll("HintPath")) {
-      const dllName = parse(element.innerHTML).name;
-      if (project.ignore.includes(dllName)) {
-        console.warn(`[dll]: ${dllName} ignored replace path`);
+
+    const cropped = file.replace(/<\?xml.*?\?>/, "");
+    const xml = parser.parseFromString(cropped, "text/xml");
+
+    for (const element of xml.querySelectorAll("Reference")) {
+      const include = element.getAttribute("Include");
+      if (include === null) {
+        console.info(`[dll] skipped: ${element}`);
         continue;
       }
-      const gameDll = task.package.game.dll(dllName);
-      if (gameDll != null) {
-        element.innerHTML = gameDll;
+
+      const [_, moduleName] = include.match(/([\S]+),/) || [null, null];
+      if (moduleName === null) {
+        continue;
       }
 
-      console.log(`[dll]: ${element.innerHTML}`);
+      if (project.ignore.includes(moduleName)) {
+        console.warn(`[dll]: ${moduleName} ignored replace path`);
+        continue;
+      }
+
+      const modulePath = task.package.game.dll(moduleName);
+      if (modulePath !== null) {
+        const hintPath = element.querySelector("HintPath");
+        if (hintPath === null) {
+          console.error("HintPath not found");
+          continue;
+        }
+
+        hintPath.innerHTML = modulePath;
+
+        const properties = await getFileProperties(modulePath);
+        element.setAttribute(
+          "Include",
+          include.replace(/Version=.*?,/, `Version=${properties.Version},`)
+        );
+      }
+
+      console.log("[dll]");
+      console.log(element);
     }
 
     const xmlSerializer = new XMLSerializer();
-    const projectFileSerialized = xmlSerializer.serializeToString(xmlDoc);
+    const projectFileSerialized = xmlSerializer.serializeToString(xml);
 
     const projectFileName = join(
       parse(project.file).dir,
@@ -72,7 +99,6 @@ export class VSCSharpResolver implements IInstaller {
 
     const projectFile = await open(out, "w");
     await projectFile.write(xmlHeader[0]);
-    await projectFile.write("\n");
     await projectFile.write(projectFileSerialized);
     await projectFile.close();
 

@@ -1,5 +1,5 @@
 import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
-import { installerPackages, packages, tasks } from "@/store";
+import { installerPackages, packages } from "@/store";
 import {
     InstallingDependenciesJob
 } from "@/store/modules/jobs-module/types/jobs/Installing-dependencies-job";
@@ -149,52 +149,55 @@ export class Installer {
       return;
     }
 
-    let task: Task | null = null;
     try {
-      task = new Task({
-        container: this.container,
-        installer: this,
-        package: this.package
-      });
-
-      if (this.container.dependence.length > 0) {
-        console.log("install dependencies: ", this.container.dependence);
-        tasks.setJob({ task, job: new InstallingDependenciesJob(task) });
-
-        await Promise.all(
-          this.container.dependence.map(async d => {
-            return installerPackages.install(await packages.get(d));
-          })
-        );
-      }
-
-      const builder = new PackageBuilder(this.container);
-      for (const node of this.container.nodes) {
-        await node.install({ task, builder });
-      }
-
-      task.package.game.add(builder);
-
-      // await task.package.game.save();
+      await this._task.run();
     } catch (error) {
       if (error instanceof TaskExistExeption) {
-        console.log("task already exists. wait...");
+        // this._task.setJob(new WaitExistsJob(this._task));
+        console.info("Task already exists. wait...");
         await error.task.awaiter;
       } else {
         console.error(error);
       }
-    } finally {
-      if (task !== null) {
-        task.done();
-      }
+
+      return;
     }
+
+    if (this.container.dependence.length > 0) {
+      console.log("install dependencies: ", this.container.dependence);
+      this._task.setJob(new InstallingDependenciesJob(this._task));
+
+      await Promise.all(
+        this.container.dependence.map(async d => {
+          return installerPackages.install(await packages.get(d));
+        })
+      );
+    }
+
+    const builder = new PackageBuilder(this.container);
+    for (const node of this.container.nodes) {
+      await node.install({ task: this._task, builder });
+    }
+
+    this._task.package.game.add(builder);
+    await this._task.package.game.save();
+  }
+
+  async done() {
+    await this._task.done();
   }
 
   constructor(info: { package: Package; container: IPluginContainer }) {
     this._package = info.package;
     this._container = new PluginContainer(info.container);
+    this._task = new Task({
+      container: this.container,
+      installer: this,
+      package: this.package
+    });
   }
 
+  private _task: Task;
   private _package: Package;
   private _container: PluginContainer;
 }

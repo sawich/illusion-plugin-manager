@@ -55,9 +55,17 @@ export class Task {
    * Methods
    */
 
+  async setJob(job: Job) {
+    tasks.setJob({ task: this, job });
+  }
+
   async done() {
     this._resolver();
     tasks.done(this);
+  }
+
+  async run() {
+    tasks.add(this);
   }
 
   constructor(task: ITask) {
@@ -70,7 +78,6 @@ export class Task {
       this._resolver = resolve;
     });
 
-    tasks.add(this);
     console.info(`created task info with [uuidentity:${this._container.uuid}]`);
   }
 
