@@ -10,6 +10,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { games, packages, installedPackages, vs, cached } from "./store";
 
+import { readdir, writeFile } from "fs/promises";
+
 @Component({
   components: {
     HeaderComponent: () => import("@/components/header.vue")

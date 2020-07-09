@@ -1,4 +1,4 @@
-import { access, mkdir } from "fs/promises";
+import { access, mkdir, rmdir } from "fs/promises";
 import { join } from "path";
 import simpleGit from "simple-git";
 
@@ -21,23 +21,24 @@ export class GitPlacer implements IInstaller {
   }
 
   async action(builder: PackageBuilder) {
+    try {
+      console.log(`rm: ${this._path}`);
+
+      await rmdir(this._path, { recursive: true });
+    } catch {}
+
     console.info("task action");
 
-    const git = simpleGit(this._path);
+    console.log("create directory");
+    await mkdir(this._path, { recursive: true });
 
-    try {
-      await access(this._path);
-      console.info("already clonned");
-    } catch {
-      console.log("create directory");
-      await mkdir(this._path, { recursive: true });
+    const git = simpleGit();
 
-      console.log("start clone");
-      await git.clone(this._url, ".", ["--recursive"]);
-    }
+    console.log("start clone");
+    await git.clone(this._url, this._path, ["--recursive"]);
 
-    const log = await git.log({});
-    builder.version = log.latest.hash;
+    // const log = await git.log({});
+    // builder.version = log.latest.hash;
 
     console.info("action end");
   }

@@ -12,11 +12,16 @@ export interface IInstalledPackages {
   [key: string]: IInstalledPackage;
 }
 
+export interface IGameBaseInfo {
+  dlls: IDllInfo;
+}
+
 export interface IGameInfo {
   game: PluginGame;
   path: string;
   plugins: string[];
   packages: IInstalledPackages;
+  info: IGameBaseInfo;
 }
 
 export interface IInstalledPackage {
@@ -74,10 +79,34 @@ class InstalledPackage {
   private _files: string[];
 }
 
-export abstract class Game {
+export class Game {
+  /**
+   * Getters
+   */
+
   get id() {
     return this._game;
   }
+
+  get url() {
+    return `${__api}/packages/${this._game}`;
+  }
+
+  get path() {
+    return this._path;
+  }
+
+  /**
+   * Setters
+   */
+
+  set path(path: string) {
+    this._path = path;
+  }
+
+  /**
+   * Methods
+   */
 
   has(uuid: string) {
     return uuid in this._packages;
@@ -120,25 +149,13 @@ export abstract class Game {
     return null;
   }
 
-  get url() {
-    return `http://localhost:3000/packages/${this._game}`;
-  }
-
-  get path() {
-    return this._path;
-  }
-
-  set path(path: string) {
-    this._path = path;
-  }
-
-  protected constructor(info: { game: IGameInfo; dlls: IDllInfo }) {
-    this._game = info.game.game;
-    this._path = info.game.path;
-    this._dlls = info.dlls;
+  constructor(info: IGameInfo) {
+    this._game = info.game;
+    this._path = info.path;
+    this._dlls = info.info.dlls;
 
     this._packages = Object.fromEntries(
-      Object.entries(info.game.packages).map(([uuid, p]) => [
+      Object.entries(info.packages).map(([uuid, p]) => [
         uuid,
         new InstalledPackage({ ...p, game: this })
       ])
@@ -149,47 +166,4 @@ export abstract class Game {
   private _path: string;
   private _dlls: IDllInfo;
   private _packages: { [key: string]: InstalledPackage };
-}
-
-export class KoikatsuGame extends Game {
-  public constructor(game: IGameInfo) {
-    super({
-      game,
-      dlls: {
-        AmplifyColor: "Koikatu_Data/Managed/AmplifyColor.dll",
-        AmplifyOcclusion: "Koikatu_Data/Managed/AmplifyOcclusion.dll",
-        "Assembly-CSharp-firstpass":
-          "Koikatu_Data/Managed/Assembly-CSharp-firstpass.dll",
-        "Assembly-CSharp": "Koikatu_Data/Managed/Assembly-CSharp.dll",
-        "Assembly-UnityScript": "Koikatu_Data/Managed/Assembly-UnityScript.dll",
-        "Boo.Lang": "Koikatu_Data/Managed/Boo.Lang.dll",
-        DOTween: "Koikatu_Data/Managed/DOTween.dll",
-        DOTween43: "Koikatu_Data/Managed/DOTween43.dll",
-        DOTween46: "Koikatu_Data/Managed/DOTween46.dll",
-        DOTween50: "Koikatu_Data/Managed/DOTween50.dll",
-        "Mono.Security": "Koikatu_Data/Managed/Mono.Security.dll",
-        mscorlib: "Koikatu_Data/Managed/mscorlib.dll",
-        "Sirenix.OdinInspector.Attributes":
-          "Koikatu_Data/Managed/Sirenix.OdinInspector.Attributes.dll",
-        "Sirenix.Serialization.Config":
-          "Koikatu_Data/Managed/Sirenix.Serialization.Config.dll",
-        "Sirenix.Serialization":
-          "Koikatu_Data/Managed/Sirenix.Serialization.dll",
-        "Sirenix.Utilities": "Koikatu_Data/Managed/Sirenix.Utilities.dll",
-        "System.Core": "Koikatu_Data/Managed/System.Core.dll",
-        System: "Koikatu_Data/Managed/System.dll",
-        "System.Runtime.Serialization":
-          "Koikatu_Data/Managed/System.Runtime.Serialization.dll",
-        "System.Xml": "Koikatu_Data/Managed/System.Xml.dll",
-        "System.Xml.Linq": "Koikatu_Data/Managed/System.Xml.Linq.dll",
-        "TextMeshPro-1.0.55.56.0b12":
-          "Koikatu_Data/Managed/TextMeshPro-1.0.55.56.0b12.dll",
-        UnityEngine: "Koikatu_Data/Managed/UnityEngine.dll",
-        "UnityEngine.Networking":
-          "Koikatu_Data/Managed/UnityEngine.Networking.dll",
-        "UnityEngine.UI": "Koikatu_Data/Managed/UnityEngine.UI.dll",
-        Vectrosity: "Koikatu_Data/Managed/Vectrosity.dll"
-      }
-    });
-  }
 }

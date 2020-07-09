@@ -7,7 +7,7 @@ import { VSBuildJob } from "@/store/modules/jobs-module/types/jobs/vs-build-job"
 import { Task } from "@/store/modules/tasks-module/core/task";
 
 import { IInstaller, IInstallerArguments, PluginContainer } from "../core/installer";
-import { IVSBuild, IVSResolver } from "./types";
+import { IVSProject, IVSProjects, IVSResolver } from "./types";
 
 export class VSCSharpResolver implements IInstaller {
   async install(info: IInstallerArguments) {
@@ -20,14 +20,14 @@ export class VSCSharpResolver implements IInstaller {
 
   constructor(info: { container: PluginContainer; resolver: IVSResolver }) {
     this._container = info.container;
-    this._build = info.resolver.build;
+    this._projects = info.resolver.projects;
     this._path = join(__cache, `git/${this._container.uuidentity}`);
   }
 
   private async action(task: Task) {
     await this.restore();
 
-    for (const build of this._build) {
+    for (const build of this._projects) {
       const file = await this.createProjectFile(build, task);
       await vs.build({ cwd: this._path, file, toolset: "16.0" });
       await unlink(join(this._path, file));
@@ -36,8 +36,8 @@ export class VSCSharpResolver implements IInstaller {
     //TargetFrameworkVersion
   }
 
-  private async createProjectFile(build: IVSBuild, task: Task) {
-    const file = await readFile(join(this._path, build.file), "utf-8");
+  private async createProjectFile(project: IVSProject, task: Task) {
+    const file = await readFile(join(this._path, project.file), "utf-8");
     const xmlHeader = file.match(/<\?xml.*?\?>/);
     if (xmlHeader == null) {
       throw new Error("");
@@ -48,17 +48,23 @@ export class VSCSharpResolver implements IInstaller {
     const xmlDoc = parser.parseFromString(cropped, "text/xml");
     for (const element of xmlDoc.querySelectorAll("HintPath")) {
       const dllName = parse(element.innerHTML).name;
+      if (project.ignore.includes(dllName)) {
+        console.warn(`[dll]: ${dllName} ignored replace path`);
+        continue;
+      }
       const gameDll = task.package.game.dll(dllName);
       if (gameDll != null) {
         element.innerHTML = gameDll;
       }
+
+      console.log(`[dll]: ${element.innerHTML}`);
     }
 
     const xmlSerializer = new XMLSerializer();
     const projectFileSerialized = xmlSerializer.serializeToString(xmlDoc);
 
     const projectFileName = join(
-      parse(build.file).dir,
+      parse(project.file).dir,
       `${this._container.uuidentity}.csproj`
     );
 
@@ -95,5 +101,5 @@ export class VSCSharpResolver implements IInstaller {
 
   private _path: string;
   private _container: PluginContainer;
-  private _build: IVSBuild[];
+  private _projects: IVSProjects;
 }

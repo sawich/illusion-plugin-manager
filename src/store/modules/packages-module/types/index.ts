@@ -1,4 +1,5 @@
 import { installerPackages } from "@/store";
+
 import { Game } from "../../games-module/types";
 
 export const enum PluginGame {
@@ -15,7 +16,7 @@ export const enum PluginGame {
   AIShoujo,
 
   /** Honey Select 2 */
-  HoneySelect2,
+  HoneySelect2
 }
 
 export interface IPackage {
@@ -37,7 +38,7 @@ export class Package {
   }
 
   get url() {
-    return `http://localhost:3000/scripts/${this._uuid}`;
+    return `${__api}/scripts/${this._uuid}`;
   }
 
   async install() {

@@ -7,10 +7,13 @@ export interface IResolverHeader {
   type: ResolverType;
 }
 
-export interface IVSBuild {
+export interface IVSProject {
   file: string;
+  ignore: string[];
 }
 
+export type IVSProjects = IVSProject[];
+
 export interface IVSResolver extends IResolverHeader {
-  build: IVSBuild[];
+  projects: IVSProjects;
 }

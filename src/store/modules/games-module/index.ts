@@ -3,7 +3,7 @@ import { join } from "path";
 import { action, createModule, mutation } from "vuex-class-component";
 
 import { PluginGame } from "../packages-module/types";
-import { Game, IGameInfo, IInstalledPackage, IInstalledPackages, KoikatsuGame } from "./types";
+import { Game, IGameInfo, IInstalledPackages } from "./types";
 
 const VuexModule = createModule({ namespaced: "games", strict: false });
 
@@ -26,22 +26,18 @@ export class GamesModule extends VuexModule {
 
   @action
   async load() {
-    const data = await GamesModule.getGamesData();
-    for (const info of data) {
-      const packages = await GamesModule.getPackagesData(info.path);
+    const installedGames = await GamesModule.getGamesData();
+    for (const installedGame of installedGames) {
+      const packages = await GamesModule.getPackagesData(installedGame.path);
+      const gameBaseInfo = await fetch(`${__api}/games/${installedGame.game}`);
 
-      switch (info.game) {
-        case PluginGame.Koikatsu:
-          this.add(new KoikatsuGame({ ...info, packages }));
-          break;
-
-        case PluginGame.PlayHome:
-        case PluginGame.HoneySelect1:
-        case PluginGame.AIShoujo:
-        case PluginGame.HoneySelect2:
-        default:
-          break;
-      }
+      this.add(
+        new Game({
+          ...installedGame,
+          info: await gameBaseInfo.json(),
+          packages
+        })
+      );
     }
   }
 

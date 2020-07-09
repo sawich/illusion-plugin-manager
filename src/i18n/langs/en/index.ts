@@ -39,6 +39,16 @@ export default {
         name: "BepInEx",
         description: "Bepis Injector Extensible"
       },
+      "4df25152-dc91-4b31-bfa4-904447a02a85": {
+        name: "BGMLoader",
+        description:
+          "Loads custom BGMs and clips played on game startup. Stock audio is replaced during runtime by custom clips from BepInEx\\BGM and BepInEx\\IntroClips directories"
+      },
+      "54daee20-d190-42ff-9756-438798cec16c": {
+        name: "ColorCorrector",
+        description:
+          "Allows configuration of some post-processing filters. (change of bloom amount, disable saturation filter)"
+      },
       "31388055-2886-40f7-9b43-c6ae146875da": {
         name: "BepInEx.ConfigurationManager",
         description: "Mod configuration manager for BepInEx 5"
@@ -47,6 +57,11 @@ export default {
         name: "BetterHScenes",
         description:
           "This plugin fixes HScene performance bugs and adds extra features"
+      },
+      "4b11249a-f9a8-46d0-b372-748eb61091fe": {
+        name: "HCharaSwitcher",
+        description:
+          "This plugin allows you to change character cards during H scene"
       },
       "fd363547-ea54-4db1-a08c-b13a1ae64542": {
         name: "BrowserFolders",

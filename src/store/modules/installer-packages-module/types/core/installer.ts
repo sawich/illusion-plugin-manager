@@ -160,25 +160,23 @@ export class Installer {
 
       if (this.container.dependence.length > 0) {
         console.log("install dependencies: ", this.container.dependence);
-        await Promise.all(
-          this.container.dependence.map(async d => {
-            await installerPackages.install({
-              package: await packages.get(d),
-              dep: dep
-            });
-          })
-        );
+
+        for (const d of this.container.dependence) {
+          await installerPackages.install({
+            package: await packages.get(d),
+            dep
+          });
+        }
       }
 
       const builder = new PackageBuilder(this.container);
-
       for (const node of this.container.nodes) {
         await node.install({ task, builder });
       }
 
       task.package.game.add(builder);
 
-      await task.package.game.save();
+      // await task.package.game.save();
     } catch (error) {
       if (error instanceof TaskExistExeption) {
         if (dep) {
