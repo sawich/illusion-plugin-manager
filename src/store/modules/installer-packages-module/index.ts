@@ -1,4 +1,5 @@
-import { createModule, action } from "vuex-class-component";
+import { action, createModule } from "vuex-class-component";
+
 import { Package } from "../packages-module/types";
 import { Installer } from "./types/core/installer";
 
@@ -8,12 +9,12 @@ const VuexModule = createModule({
 });
 
 export class InstallerPackagesModule extends VuexModule {
-  @action async install(info: { package: Package; dep: boolean }) {
-    const request = await fetch(info.package.url);
+  @action async install(p: Package) {
+    const request = await fetch(p.url);
     const script = await request.json();
 
-    const p = new Installer({ package: info.package, container: script });
-    await p.install(info.dep);
+    const installer = new Installer({ package: p, container: script });
+    await installer.install();
   }
 }
 

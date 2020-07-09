@@ -1,10 +1,18 @@
-import { Installer } from "../../installer-packages-module/types/core/installer";
-import { PluginContainer } from "@/store/modules/installer-packages-module/types/core/installer";
-import { tasks } from "@/store";
-import { Job } from "../../jobs-module/types/core/job";
-import { Package } from "../../packages-module/types";
-import { DummyJob } from "../../jobs-module/types/jobs/dummy-job";
 import { Vue } from "vue-property-decorator";
+
+import { tasks } from "@/store";
+import { PluginContainer } from "@/store/modules/installer-packages-module/types/core/installer";
+
+import { Installer } from "../../installer-packages-module/types/core/installer";
+import { Job } from "../../jobs-module/types/core/job";
+import { WaitJob } from "../../jobs-module/types/jobs/wait-job";
+import { Package } from "../../packages-module/types";
+
+export interface ITask {
+  package: Package;
+  container: PluginContainer;
+  installer: Installer;
+}
 
 export class Task {
   /**
@@ -52,13 +60,13 @@ export class Task {
     tasks.done(this);
   }
 
-  constructor(info: { package: Package; container: PluginContainer; installer: Installer }) {
-    this._package = info.package;
-    this._container = info.container;
-    this._installer = info.installer;
-    this._job = new DummyJob(this);
+  constructor(task: ITask) {
+    this._package = task.package;
+    this._container = task.container;
+    this._installer = task.installer;
+    this._job = new WaitJob(this);
 
-    this._awaiter = new Promise(async (resolve) => {
+    this._awaiter = new Promise(async resolve => {
       this._resolver = resolve;
     });
 

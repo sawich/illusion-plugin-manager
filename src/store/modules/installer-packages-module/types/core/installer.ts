@@ -1,5 +1,8 @@
 import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
-import { installerPackages, packages } from "@/store";
+import { installerPackages, packages, tasks } from "@/store";
+import {
+    InstallingDependenciesJob
+} from "@/store/modules/jobs-module/types/jobs/Installing-dependencies-job";
 import { Package } from "@/store/modules/packages-module/types";
 import { Task } from "@/store/modules/tasks-module/core/task";
 
@@ -140,11 +143,7 @@ export class Installer {
     return this._container;
   }
 
-  /**
-   * @param game unique game id
-   * @param dep install as dependency
-   */
-  async install(dep: boolean) {
+  async install() {
     if (this.package.game.has(this.container.uuid)) {
       console.warn("Already installed, skipped");
       return;
@@ -160,13 +159,13 @@ export class Installer {
 
       if (this.container.dependence.length > 0) {
         console.log("install dependencies: ", this.container.dependence);
+        tasks.setJob({ task, job: new InstallingDependenciesJob(task) });
 
-        for (const d of this.container.dependence) {
-          await installerPackages.install({
-            package: await packages.get(d),
-            dep
-          });
-        }
+        await Promise.all(
+          this.container.dependence.map(async d => {
+            return installerPackages.install(await packages.get(d));
+          })
+        );
       }
 
       const builder = new PackageBuilder(this.container);
@@ -179,13 +178,8 @@ export class Installer {
       // await task.package.game.save();
     } catch (error) {
       if (error instanceof TaskExistExeption) {
-        if (dep) {
-          console.log("task already exists. wait...");
-          await error.task.awaiter;
-        } else {
-          console.warn("duplicated task...");
-          throw new Error("Duplicated task");
-        }
+        console.log("task already exists. wait...");
+        await error.task.awaiter;
       } else {
         console.error(error);
       }

@@ -42,7 +42,7 @@ export class Package {
   }
 
   async install() {
-    installerPackages.install({ package: this, dep: false });
+    installerPackages.install(this);
   }
 
   constructor(info: { package: IPackage; game: Game }) {

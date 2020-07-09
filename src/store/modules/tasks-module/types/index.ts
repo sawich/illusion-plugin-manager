@@ -2,7 +2,7 @@ import { Task } from "../core/task";
 
 export const enum JobIcon {
   /** Nothing. */
-  Dummy,
+  Wait,
 
   GitHub,
   Download,
@@ -19,7 +19,8 @@ export const enum JobCategory {
 
   /** Nothing. */
   Exists,
-  Dummy
+  Wait,
+  InstallingDependencies
 }
 
 export interface IRunnableJob<T> {

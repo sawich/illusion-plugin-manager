@@ -13,24 +13,17 @@ export default {
   },
   job: {
     categories: {
-      [JobCategory.Dummy]: "—",
+      [JobCategory.Wait]: "—",
       [JobCategory.VSInstaller]: "VSInstaller",
       [JobCategory.GitPull]: "GitPull",
       [JobCategory.GitClone]: "GitClone",
       [JobCategory.VSBuild]: "VSBuild",
-      [JobCategory.Dummy]: "Starting...",
+      [JobCategory.Wait]: "Wait...",
+      [JobCategory.InstallingDependencies]: "Installing dependencies...",
       [JobCategory.Exists]:
         "This task runned by another game. Wait for end exists task..."
     }
   },
-  // tasks: {
-  //   name: "Tasks",
-  //   status: {
-  //     [JobStatus.Dummy]: "Starting...",
-  //     [JobStatus.Exists]: "This task runned by another game. Wait for end exists task...",
-  //     [JobStatus.Git]: "Cloning from git...",
-  //   },
-  // },
   plugins: {
     install: "Install",
     installing: "Installing",
