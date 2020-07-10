@@ -30,7 +30,7 @@ export default {
     install: "Install",
     installing: "Installing",
     items: {
-      "2f94706f-97e3-4274-8ed1-53fbd1c82498": {
+      "e30cfeba-c751-4dbb-a350-1209acd960e1": {
         name: "BepInEx",
         description: "Bepis Injector Extensible"
       },
@@ -44,7 +44,7 @@ export default {
         description:
           "Allows configuration of some post-processing filters. (change of bloom amount, disable saturation filter)"
       },
-      "31388055-2886-40f7-9b43-c6ae146875da": {
+      "c3db40bf-d97d-4cd4-859c-9dd453f5e789": {
         name: "BepInEx.ConfigurationManager",
         description: "Mod configuration manager for BepInEx 5"
       },
@@ -53,7 +53,7 @@ export default {
         description:
           "This plugin fixes HScene performance bugs and adds extra features"
       },
-      "4b11249a-f9a8-46d0-b372-748eb61091fe": {
+      "1b4bb2d6-87e2-45fa-aee7-a27bba9f5342": {
         name: "HCharaSwitcher",
         description:
           "This plugin allows you to change character cards during H scene"

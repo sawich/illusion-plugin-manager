@@ -1,16 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { createProxy, extractVuexModule } from "vuex-class-component";
 
-import { extractVuexModule, createProxy } from "vuex-class-component";
-
-import { VSModule } from "./modules/vs-module";
 import { AppModule } from "./modules/app-module";
-import { GamesModule } from "./modules/games-module";
-import { TasksModule } from "./modules/tasks-module";
-import { PackagesModule } from "./modules/packages-module";
 import { CachedPackagesModule } from "./modules/cached-packages-module";
-import { InstalledPackagesModule } from "./modules/installed-packages-module";
+import { GamesModule } from "./modules/games-module";
 import { InstallerPackagesModule } from "./modules/installer-packages-module";
+import { PackagesModule } from "./modules/packages-module";
+import { TasksModule } from "./modules/tasks-module";
+import { VSModule } from "./modules/vs-module";
 
 Vue.use(Vuex);
 
@@ -22,10 +20,9 @@ export const store = new Vuex.Store({
     ...extractVuexModule(TasksModule),
     ...extractVuexModule(PackagesModule),
     ...extractVuexModule(CachedPackagesModule),
-    ...extractVuexModule(InstalledPackagesModule),
-    ...extractVuexModule(InstallerPackagesModule),
+    ...extractVuexModule(InstallerPackagesModule)
   },
-  strict: process.env.NODE_ENV != "production",
+  strict: process.env.NODE_ENV != "production"
 });
 
 export const vs = createProxy(store, VSModule);
@@ -34,5 +31,4 @@ export const games = createProxy(store, GamesModule);
 export const tasks = createProxy(store, TasksModule);
 export const packages = createProxy(store, PackagesModule);
 export const cached = createProxy(store, CachedPackagesModule);
-export const installedPackages = createProxy(store, InstalledPackagesModule);
 export const installerPackages = createProxy(store, InstallerPackagesModule);

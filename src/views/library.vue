@@ -67,11 +67,8 @@ export default class Library extends Vue {
   packages: IPackages = {};
 
   installing(p: Package) {
-    const task = tasks.entries[p.uuidentity];
-    if (task !== undefined) {
-      return task.package.game.id == p.game.id;
-    }
-    return p.uuidentity in tasks.entries;
+    const task = tasks.entries[p.uuid];
+    return p.uuid in tasks.entries;
   }
 
   installed(p: Package) {

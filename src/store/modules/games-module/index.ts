@@ -1,9 +1,10 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
+import { Vue } from "vue-property-decorator";
 import { action, createModule, mutation } from "vuex-class-component";
 
 import { PluginGame } from "../packages-module/types";
-import { Game, IGameInfo, IInstalledPackages } from "./types";
+import { Game, IGameInfo, IInstalledPackages, InstalledPackage } from "./types";
 
 const VuexModule = createModule({ namespaced: "games", strict: false });
 

@@ -39,9 +39,13 @@ export class Task {
     return this._awaiter;
   }
 
-  // get resolver() {
-  //   return this._resolver;
-  // }
+  get uuidRegister() {
+    return this._uuidRegister;
+  }
+
+  get uuidentityRegister() {
+    return this._uuidentityRegister;
+  }
 
   /**
    * Setters
@@ -49,6 +53,14 @@ export class Task {
 
   set job(task: Job) {
     this._job = task;
+  }
+
+  set uuidRegister(value) {
+    this._uuidRegister = value;
+  }
+
+  set uuidentityRegister(value) {
+    this._uuidentityRegister = value;
   }
 
   /**
@@ -65,7 +77,7 @@ export class Task {
   }
 
   async run() {
-    tasks.add(this);
+    await tasks.add(this);
   }
 
   constructor(task: ITask) {
@@ -84,6 +96,9 @@ export class Task {
   /**
    * Datas
    */
+
+  private _uuidRegister = false;
+  private _uuidentityRegister = false;
 
   private _package: Package;
   private _container: PluginContainer;

@@ -1,9 +1,9 @@
-// import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
-import { createModule, mutation, action } from "vuex-class-component";
-import { readFile } from "fs/promises";
-import { join } from "path";
-import { arch } from "os";
 import { spawn } from "child_process";
+import { readFile } from "fs/promises";
+import { arch } from "os";
+import { join } from "path";
+// import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
+import { action, createModule, mutation } from "vuex-class-component";
 
 export interface IVSConfig {
   version: string;

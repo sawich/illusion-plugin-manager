@@ -1,6 +1,8 @@
 import { writeFile } from "fs/promises";
 import { join, parse } from "path";
 
+import { games } from "@/store";
+
 import { PackageBuilder } from "../../installer-packages-module/types/core/installer";
 import { PluginGame } from "../../packages-module/types";
 
@@ -30,7 +32,7 @@ export interface IInstalledPackage {
   files: string[];
 }
 
-class InstalledPackage {
+export class InstalledPackage {
   get uuid() {
     return this._uuid;
   }

@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { games, packages, installedPackages, vs, cached } from "@/store";
+import { games, packages, vs, cached } from "@/store";
 
 @Component({ components: {} })
 export default class Loading extends Vue {

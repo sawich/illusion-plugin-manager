@@ -15,27 +15,25 @@ export class InstallerPackagesModule extends VuexModule {
     const request = await fetch(p.url);
     const script = await request.json();
 
+    if (p.game.has(p.uuid)) {
+      console.warn(`Already installed, skipped [game: ${p.game.id}]`);
+      return;
+    }
+
     const installer = new Installer({ package: p, container: script });
 
-    while (true) {
-      try {
-        await installer.install();
-        return;
-      } catch (error) {
-        if (error instanceof TaskExistExeption) {
-          console.info("Task already exists. wait...");
-          await error.task.awaiter;
-
-          if (error.task.package.game.id == p.game.id) {
-            console.log("start new try to install");
-            return;
-          }
-        } else {
-          console.error(error);
-        }
-      } finally {
-        await installer.done();
+    try {
+      await installer.install();
+      return;
+    } catch (error) {
+      if (error instanceof TaskExistExeption) {
+        console.info("Task already exists. wait...");
+        await error.task.awaiter;
+      } else {
+        console.error(error);
       }
+    } finally {
+      await installer.done();
     }
   }
 }

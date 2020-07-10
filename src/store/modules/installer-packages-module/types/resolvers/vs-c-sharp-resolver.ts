@@ -34,7 +34,9 @@ export class VSCSharpResolver implements IInstaller {
     for (const build of this._projects) {
       const file = await this.createProjectFile(build, task);
       await vs.build({ cwd: this._path, file, toolset: "16.0" });
-      await unlink(join(this._path, file));
+      try {
+        await unlink(join(this._path, file));
+      } catch {}
     }
 
     //TargetFrameworkVersion
@@ -86,8 +88,8 @@ export class VSCSharpResolver implements IInstaller {
         );
       }
 
-      console.log("[dll]");
-      console.log(element);
+      // console.log("[dll]");
+      // console.log(element);
     }
 
     const xmlSerializer = new XMLSerializer();
@@ -109,19 +111,19 @@ export class VSCSharpResolver implements IInstaller {
   }
 
   private async restore() {
-    console.log("start restore");
+    console.log("start restore:", join(this._path, this._dir));
     await new Promise(resolve => {
-      const dotnet = spawn(join(__cache, "nuget.exe"), ["restore"], {
+      const msbuild = spawn(join(__cache, "nuget.exe"), ["restore"], {
         cwd: join(this._path, this._dir),
         shell: true
       });
-      dotnet.stdout.on("data", out => {
+      msbuild.stdout.on("data", out => {
         console.log(`${out}`);
       });
-      dotnet.stderr.on("data", out => {
+      msbuild.stderr.on("data", out => {
         console.error(`${out}`);
       });
-      dotnet.once("close", () => {
+      msbuild.once("close", () => {
         resolve();
       });
     });

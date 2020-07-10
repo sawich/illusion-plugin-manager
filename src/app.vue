@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { games, packages, installedPackages, vs, cached } from "./store";
+import { games, packages, vs, cached } from "./store";
 
 import { readdir, writeFile } from "fs/promises";
 

@@ -20,19 +20,26 @@ export class GitPlacer implements IInstaller {
   }
 
   async action(builder: PackageBuilder) {
-    // try {
-    //   console.log(`rm: ${this._path}`);
-    //   await rmdir(this._path, { recursive: true });
-    // } catch {}
-    // console.info("task action");
-    // console.log("create directory");
-    // await mkdir(this._path, { recursive: true });
-    // const git = simpleGit();
-    // console.log("start clone");
-    // await git.clone(this._url, this._path, ["--recursive"]);
-    // // const log = await git.log({});
-    // // builder.version = log.latest.hash;
-    // console.info("action end");
+    try {
+      await access(this._path);
+      return;
+    } catch {}
+
+    try {
+      console.log(`rm: ${this._path}`);
+      await rmdir(this._path, { recursive: true });
+    } catch {}
+    console.info("task action");
+    console.log("create directory");
+    await mkdir(this._path, { recursive: true });
+    const git = simpleGit();
+    console.log("start clone");
+    await git.clone(this._url, this._path, ["--recursive"]);
+
+    const log = await git.log({});
+    builder.version = log.latest.hash;
+
+    console.info("action end");
   }
 
   constructor(info: { placer: IGitPlacer; package: Package }) {

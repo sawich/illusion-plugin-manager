@@ -1,4 +1,3 @@
-import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
 import { installerPackages, packages } from "@/store";
 import {
     InstallingDependenciesJob
@@ -150,13 +149,6 @@ export class Installer {
   }
 
   async install() {
-    if (this._task.package.game.has(this._task.package.uuid)) {
-      console.warn(
-        `Already installed, skipped [game: ${this._task.package.game.id}]`
-      );
-      return;
-    }
-
     await this._task.run();
 
     if (this.container.dependence.length > 0) {
@@ -165,12 +157,9 @@ export class Installer {
 
       await Promise.all(
         this.container.dependence.map(async uuid => {
-          return installerPackages.install(
-            await packages.get({
-              game: this._task.package.game,
-              uuid
-            })
-          );
+          console.log(uuid);
+
+          return installerPackages.install(await packages.get(uuid));
         })
       );
     }
@@ -181,7 +170,7 @@ export class Installer {
     }
 
     this._task.package.game.add(builder);
-    // await this._task.package.game.save();
+    await this._task.package.game.save();
   }
 
   async done() {
