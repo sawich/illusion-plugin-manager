@@ -20,10 +20,12 @@ export class GitPlacer implements IInstaller {
   }
 
   async action(builder: PackageBuilder) {
-    try {
-      await access(this._path);
-      return;
-    } catch {}
+    // try {
+    // await access(this._path);
+    // console.log("Used cached git");
+
+    // return;
+    // } catch {}
 
     try {
       console.log(`rm: ${this._path}`);

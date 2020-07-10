@@ -14,7 +14,7 @@ import { readdir, writeFile } from "fs/promises";
 
 @Component({
   components: {
-    HeaderComponent: () => import("@/components/header.vue")
+    HeaderComponent: () => import("@/components/layouts/default/header.vue")
   }
 })
 export default class App extends Vue {

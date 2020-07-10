@@ -7,7 +7,7 @@
       <div
         class="item"
         v-for="task in entries"
-        :key="`${task.container.uuidEntity}-item`"
+        :key="`${task.package.uuidEntity}-item`"
       >
         <div
           class="game-icon"

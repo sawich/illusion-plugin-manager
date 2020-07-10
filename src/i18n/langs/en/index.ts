@@ -12,7 +12,7 @@ export default {
     }
   },
   tasks: {
-    empty: "Nothing..."
+    empty: "Hello there..."
   },
   job: {
     categories: {

@@ -52,12 +52,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { ITasks } from "../store/modules/tasks-module/types";
+import { ITasks } from "@/store/modules/tasks-module/types";
 
 import { namespace } from "vuex-class";
 const tasks = namespace("tasks");
-
-// import { ipcRenderer } from "electron";
 
 @Component({
   components: {
