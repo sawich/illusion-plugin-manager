@@ -20,7 +20,7 @@ export class FileMover implements IInstaller {
   constructor(info: { mover: IFileMover; package: Package }) {
     this._package = info.package;
     this._files = info.mover.files;
-    this._path = join(__cache, `git/${this._package.uuidentity}`);
+    this._path = join(__cache, `git/${this._package.uuidEntity}`);
   }
 
   private async action(info: IInstallArguments) {

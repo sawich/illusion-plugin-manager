@@ -75,7 +75,7 @@
     "rimraf": "^3.0.2",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
-    "wait-on": "^5.0.3"
+    "wait-on": "^5.1.0"
   },
   "chromium-args": "--enable-spell-checking --load-extension='./node_modules/nw-vue-devtools-prebuilt/extension'",
   "build": {

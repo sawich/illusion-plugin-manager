@@ -52,7 +52,7 @@ export abstract class Job {
     tasks.setJob({ task: this._task, job: this });
 
     console.info(
-      `created job with [uuidentity:${this._task.package.uuidentity}]`
+      `created job with [uuidEntity:${this._task.package.uuidEntity}]`
     );
   }
 

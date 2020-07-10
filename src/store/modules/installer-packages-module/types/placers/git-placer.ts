@@ -45,7 +45,7 @@ export class GitPlacer implements IInstaller {
   constructor(info: { placer: IGitPlacer; package: Package }) {
     this._package = info.package;
     this._url = info.placer.url;
-    this._path = join(__cache, `git/${this._package.uuidentity}`);
+    this._path = join(__cache, `git/${this._package.uuidEntity}`);
   }
 
   private _path: string;

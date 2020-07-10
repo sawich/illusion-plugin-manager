@@ -62,13 +62,13 @@ export class TasksModule extends VuexModule {
   }
 
   @mutation private registerIdentity(task: Task) {
-    const existsTask = this._entries[task.package.uuidentity];
+    const existsTask = this._entries[task.package.uuidEntity];
     if (existsTask !== undefined) {
       throw new TaskIdentityExistExeption(existsTask);
     }
 
     task.uuidentityRegister = true;
-    vue.$set(this._identitites, task.package.uuidentity, task);
+    vue.$set(this._identitites, task.package.uuidEntity, task);
   }
 
   @mutation done(task: Task) {
@@ -77,7 +77,7 @@ export class TasksModule extends VuexModule {
     }
 
     if (task.uuidentityRegister) {
-      Vue.delete(this._identitites, task.package.uuidentity);
+      Vue.delete(this._identitites, task.package.uuidEntity);
     }
 
     console.log("task removed:", task.package.uuid);

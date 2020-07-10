@@ -22,7 +22,7 @@ export const enum PluginGame {
 export interface IPackage {
   uuid: string;
   lang: string;
-  uuidentity: string;
+  uuidEntity: string;
 }
 
 export class Package {
@@ -34,7 +34,7 @@ export class Package {
     return this._lang;
   }
 
-  get uuidentity() {
+  get uuidEntity() {
     return this._uuidentity;
   }
 
@@ -53,7 +53,7 @@ export class Package {
   constructor(info: { package: IPackage; game: Game }) {
     this._uuid = info.package.uuid;
     this._lang = info.package.lang;
-    this._uuidentity = info.package.uuidentity;
+    this._uuidentity = info.package.uuidEntity;
 
     this._game = info.game;
   }

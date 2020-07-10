@@ -50,7 +50,7 @@ export class InstalledPackage {
 
   toJSON() {
     return {
-      uuidentity: this.uuid,
+      uuidEntity: this.uuid,
       version: this.version,
       files: this.files
     };
@@ -135,7 +135,7 @@ export class Game {
 
   add(builder: PackageBuilder) {
     this._packages[builder.package.uuid] = new InstalledPackage({
-      uuid: builder.package.uuidentity,
+      uuid: builder.package.uuidEntity,
       files: builder.files,
       version: builder.version,
       game: this

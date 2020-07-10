@@ -90,7 +90,7 @@ export class Task {
       this._resolver = resolve;
     });
 
-    console.info(`created task info with [uuidentity:${this.package.uuid}]`);
+    console.info(`created task info with [uuidEntity:${this.package.uuid}]`);
   }
 
   /**

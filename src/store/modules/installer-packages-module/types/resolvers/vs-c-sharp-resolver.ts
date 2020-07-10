@@ -22,7 +22,7 @@ export class VSCSharpResolver implements IInstaller {
 
   constructor(info: { resolver: IVSResolver; package: Package }) {
     this._package = info.package;
-    this._path = join(__cache, `git/${this._package.uuidentity}`);
+    this._path = join(__cache, `git/${this._package.uuidEntity}`);
 
     this._dir = info.resolver.dir;
     this._projects = info.resolver.projects;
@@ -97,7 +97,7 @@ export class VSCSharpResolver implements IInstaller {
 
     const projectFileName = join(
       parse(project.file).dir,
-      `${this._package.uuidentity}.csproj`
+      `${this._package.uuidEntity}.csproj`
     );
 
     const out = join(this._path, projectFileName);

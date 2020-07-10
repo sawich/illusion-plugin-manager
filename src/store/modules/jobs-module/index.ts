@@ -22,8 +22,8 @@ export class jobsModule extends VuexModule {
    * Actions
    */
 
-  @action async get(uuidentity: string) {
-    return this._jobs[uuidentity];
+  @action async get(uuidEntity: string) {
+    return this._jobs[uuidEntity];
   }
 
   /**
@@ -31,17 +31,17 @@ export class jobsModule extends VuexModule {
    */
 
   @mutation add(job: Job) {
-    const existsJob = this._jobs[job.task.package.uuidentity];
+    const existsJob = this._jobs[job.task.package.uuidEntity];
     if (existsJob !== undefined) {
       throw new JobExistExeption(existsJob);
     }
 
-    vue.$set(this._jobs, job.task.package.uuidentity, job);
+    vue.$set(this._jobs, job.task.package.uuidEntity, job);
   }
 
   @mutation done(job: Job) {
-    Vue.delete(this._jobs, job.task.package.uuidentity);
-    console.log("job removed:", job.task.package.uuidentity);
+    Vue.delete(this._jobs, job.task.package.uuidEntity);
+    console.log("job removed:", job.task.package.uuidEntity);
   }
 
   /**
