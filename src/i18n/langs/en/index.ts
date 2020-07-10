@@ -8,7 +8,8 @@ export default {
       [PluginGame.HoneySelect1]: "Honey Select 1",
       [PluginGame.Koikatsu]: "Koikatsu",
       [PluginGame.AIShoujo]: "AI Shoujo",
-      [PluginGame.HoneySelect2]: "Honey Select 2"
+      [PluginGame.HoneySelect2]: "Honey Select 2",
+      [PluginGame.EmotionCreators]: "Emotion Creators"
     }
   },
   tasks: {
