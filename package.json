@@ -41,10 +41,10 @@
     "fast-xml-parser": "^3.17.4",
     "get-file-properties": "^1.0.1",
     "normalize.css": "^8.0.1",
-    "nw": "^0.46.3-sdk",
+    "nw": "^0.46.4-sdk",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
-    "simple-git": "^2.11.0",
+    "simple-git": "^2.12.0",
     "typescript": "^3.9.6",
     "vue-class-component": "^7.2.3",
     "vue-fragment": "^1.5.1",
@@ -54,7 +54,7 @@
     "vue-router": "^3.3.4",
     "vuex": "^3.5.1",
     "vuex-class": "^0.3.2",
-    "vuex-class-component": "^2.3.3"
+    "vuex-class-component": "^2.3.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-router": "^4.4.6",
@@ -75,7 +75,7 @@
     "rimraf": "^3.0.2",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
-    "wait-on": "^5.0.1"
+    "wait-on": "^5.0.3"
   },
   "chromium-args": "--enable-spell-checking --load-extension='./node_modules/nw-vue-devtools-prebuilt/extension'",
   "build": {
