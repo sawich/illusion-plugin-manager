@@ -16,7 +16,10 @@ export const enum PluginGame {
   AIShoujo,
 
   /** Honey Select 2 */
-  HoneySelect2
+  HoneySelect2,
+
+  /** Emotion Creators */
+  EmotionCreators
 }
 
 export interface IPackage {
