@@ -1,9 +1,10 @@
-import { createModule, mutation, action } from "vuex-class-component";
-import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
 import { Vue } from "vue-property-decorator";
+import { action, createModule, mutation } from "vuex-class-component";
+
+import { JobExistExeption } from "@/exceptions/job-exists-exception";
+
 import { IJobs } from "./types";
 import { Job } from "./types/core/job";
-import { JobExistExeption } from "@/exceptions/job-exists-exception";
 
 const VuexModule = createModule({ namespaced: "tasks", strict: false });
 
@@ -29,17 +30,17 @@ export class jobsModule extends VuexModule {
    */
 
   @mutation add(job: Job) {
-    const existsJob = this._jobs[job.task.container.uuidentity];
+    const existsJob = this._jobs[job.task.package.uuidentity];
     if (existsJob !== undefined) {
       throw new JobExistExeption(existsJob);
     }
 
-    Vue.set(this._jobs, job.task.container.uuidentity, job);
+    Vue.set(this._jobs, job.task.package.uuidentity, job);
   }
 
   @mutation done(job: Job) {
-    Vue.delete(this._jobs, job.task.container.uuidentity);
-    console.log("job removed:", job.task.container.uuidentity);
+    Vue.delete(this._jobs, job.task.package.uuidentity);
+    console.log("job removed:", job.task.package.uuidentity);
   }
 
   /**

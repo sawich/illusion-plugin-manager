@@ -1,9 +1,11 @@
-import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
-import { createModule, mutation } from "vuex-class-component";
 import { Vue } from "vue-property-decorator";
+import { createModule, mutation } from "vuex-class-component";
+
+import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
+
+import { Job } from "../jobs-module/types/core/job";
 import { Task } from "./core/task";
 import { ITasks } from "./types";
-import { Job } from "../jobs-module/types/core/job";
 
 const VuexModule = createModule({ namespaced: "tasks", strict: false });
 
@@ -17,36 +19,6 @@ export class TasksModule extends VuexModule {
   }
 
   /**
-   * Actions
-   */
-
-  // @action async get(uuidentity: string) {
-  //   return this._tasks[uuidentity];
-  // }
-
-  // @action async runGitClone(job: IRunnableJob<any>) {
-  //   console.log(`runGitClone [id:${job.task.container}][identity:${job.task.identity}]`);
-
-  //   /** Task who use this repository has launched, can just wait until she end. */
-  //   const existsTask = Object.values(this.tasks)
-  //     .filter((t) => t.category == JobCategory.GitClone && t.container != job.task.container)
-  //     .find((t) => t.identity == job.task.identity);
-
-  //   if (existsTask !== undefined) {
-  //     console.warn(`task exists [id:${job.task.container}][identity:${job.task.identity}]`);
-  //     this.setStatus({ task: job.task, status: JobStatus.Exists });
-  //     console.log("change status");
-
-  //     return existsTask;
-  //   }
-
-  //   const newTask = new GitCloneJob(job.task, job.action);
-  //   newTask.run();
-
-  //   return newTask;
-  // }
-
-  /**
    * Mutations
    */
 
@@ -55,17 +27,17 @@ export class TasksModule extends VuexModule {
   }
 
   @mutation add(task: Task) {
-    const existsTask = this._entries[task.container.uuidentity];
+    const existsTask = this._entries[task.package.uuidentity];
     if (existsTask !== undefined) {
       throw new TaskExistExeption(existsTask);
     }
 
-    Vue.set(this._entries, task.container.uuidentity, task);
+    Vue.set(this._entries, task.package.uuidentity, task);
   }
 
   @mutation done(task: Task) {
-    Vue.delete(this._entries, task.container.uuidentity);
-    console.log("task removed:", task.container.uuidentity);
+    Vue.delete(this._entries, task.package.uuidentity);
+    console.log("task removed:", task.package.uuidentity);
   }
 
   /**

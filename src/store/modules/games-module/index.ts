@@ -16,16 +16,15 @@ export class GamesModule extends VuexModule {
     return this._games.values();
   }
 
-  get(id: PluginGame) {
-    return this._games.get(id);
+  @action async get(id: PluginGame) {
+    return this._games.get(id) || null;
   }
 
   /**
    * Actions
    */
 
-  @action
-  async load() {
+  @action async load() {
     const installedGames = await GamesModule.getGamesData();
     for (const installedGame of installedGames) {
       const packages = await GamesModule.getPackagesData(installedGame.path);
@@ -45,8 +44,7 @@ export class GamesModule extends VuexModule {
    * Mutations
    */
 
-  @mutation
-  add(game: Game) {
+  @mutation add(game: Game) {
     this._games.set(game.id, game);
   }
 

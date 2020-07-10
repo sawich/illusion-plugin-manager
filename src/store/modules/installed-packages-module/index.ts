@@ -32,7 +32,7 @@ class InstaledPackage {
 
 export class InstalledPackagesModule extends VuexModule {
   get(game: PluginGame) {
-    return this._plugins.get(game);
+    return this._packages.get(game);
   }
 
   @action
@@ -41,7 +41,7 @@ export class InstalledPackagesModule extends VuexModule {
       const packages = JSON.parse(
         await this.getData(game)
       ) as IInstalledPackage[];
-      this._plugins.set(
+      this._packages.set(
         game.id,
         packages.map(p => new InstaledPackage(p))
       );
@@ -56,5 +56,5 @@ export class InstalledPackagesModule extends VuexModule {
     }
   }
 
-  private _plugins = new Map<PluginGame, InstaledPackage[]>();
+  private _packages = new Map<PluginGame, InstaledPackage[]>();
 }

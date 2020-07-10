@@ -1,5 +1,7 @@
 import { action, createModule } from "vuex-class-component";
 
+import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
+
 import { Package } from "../packages-module/types";
 import { Installer } from "./types/core/installer";
 
@@ -14,10 +16,26 @@ export class InstallerPackagesModule extends VuexModule {
     const script = await request.json();
 
     const installer = new Installer({ package: p, container: script });
-    try {
-      await installer.install();
-    } finally {
-      await installer.done();
+
+    while (true) {
+      try {
+        await installer.install();
+        return;
+      } catch (error) {
+        if (error instanceof TaskExistExeption) {
+          console.info("Task already exists. wait...");
+          await error.task.awaiter;
+
+          if (error.task.package.game.id == p.game.id) {
+            console.log("start new try to install");
+            return;
+          }
+        } else {
+          console.error(error);
+        }
+      } finally {
+        await installer.done();
+      }
     }
   }
 }

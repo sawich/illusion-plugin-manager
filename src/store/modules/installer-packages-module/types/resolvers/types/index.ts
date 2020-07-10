@@ -15,5 +15,6 @@ export interface IVSProject {
 export type IVSProjects = IVSProject[];
 
 export interface IVSResolver extends IResolverHeader {
+  dir: string;
   projects: IVSProjects;
 }

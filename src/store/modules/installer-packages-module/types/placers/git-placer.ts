@@ -3,14 +3,13 @@ import { join } from "path";
 import simpleGit from "simple-git";
 
 import { GitCloneJob } from "@/store/modules/jobs-module/types/jobs/git-clone-job";
+import { Package } from "@/store/modules/packages-module/types";
 
-import {
-    IInstaller, IInstallerArguments, PackageBuilder, PluginContainer
-} from "../core/installer";
+import { IInstallArguments, IInstaller, PackageBuilder } from "../core/installer";
 import { IGitPlacer } from "./types";
 
 export class GitPlacer implements IInstaller {
-  async install(info: IInstallerArguments) {
+  async install(info: IInstallArguments) {
     console.info("call place");
 
     const job = new GitCloneJob({
@@ -36,13 +35,13 @@ export class GitPlacer implements IInstaller {
     // console.info("action end");
   }
 
-  constructor(info: { container: PluginContainer; placer: IGitPlacer }) {
-    this._container = info.container;
+  constructor(info: { placer: IGitPlacer; package: Package }) {
+    this._package = info.package;
     this._url = info.placer.url;
-    this._path = join(__cache, `git/${this._container.uuidentity}`);
+    this._path = join(__cache, `git/${this._package.uuidentity}`);
   }
 
   private _path: string;
-  private _container: PluginContainer;
+  private _package: Package;
   private _url: string;
 }

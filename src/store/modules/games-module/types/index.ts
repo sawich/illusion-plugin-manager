@@ -25,14 +25,14 @@ export interface IGameInfo {
 }
 
 export interface IInstalledPackage {
-  uuidentity: string;
+  uuid: string;
   version: string;
   files: string[];
 }
 
 class InstalledPackage {
-  get uuidentity() {
-    return this._uuidentity;
+  get uuid() {
+    return this._uuid;
   }
   get game() {
     return this._game;
@@ -48,7 +48,7 @@ class InstalledPackage {
 
   toJSON() {
     return {
-      uuidentity: this.uuidentity,
+      uuidentity: this.uuid,
       version: this.version,
       files: this.files
     };
@@ -67,13 +67,13 @@ class InstalledPackage {
   }
 
   constructor(info: IInstalledPackage & { game: Game }) {
-    this._uuidentity = info.uuidentity;
+    this._uuid = info.uuid;
     this._game = info.game;
     this._version = info.version;
     this._files = info.files;
   }
 
-  private _uuidentity: string;
+  private _uuid: string;
   private _game: Game;
   private _version: string;
   private _files: string[];
@@ -94,6 +94,14 @@ export class Game {
 
   get path() {
     return this._path;
+  }
+
+  get keys() {
+    return Object.keys(this._packages);
+  }
+
+  get packages() {
+    return this._packages;
   }
 
   /**
@@ -124,8 +132,8 @@ export class Game {
   }
 
   add(builder: PackageBuilder) {
-    this._packages[builder.container.uuid] = new InstalledPackage({
-      uuidentity: builder.container.uuidentity,
+    this._packages[builder.package.uuid] = new InstalledPackage({
+      uuid: builder.package.uuidentity,
       files: builder.files,
       version: builder.version,
       game: this

@@ -1,6 +1,9 @@
 <template>
   <section class="tasks">
-    <div class="items">
+    <div class="empty" v-if="Object.keys(entries).length == 0">
+      {{ $t("tasks.empty") }}
+    </div>
+    <div class="items" v-else>
       <div
         class="item"
         v-for="task in entries"

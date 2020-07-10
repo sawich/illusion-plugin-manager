@@ -1,6 +1,7 @@
-import { JobCategory, JobIcon } from "../../../tasks-module/types";
-import { Task } from "../../../tasks-module/core/task";
 import { tasks } from "@/store";
+
+import { Task } from "../../../tasks-module/core/task";
+import { JobCategory, JobIcon } from "../../../tasks-module/types";
 
 export interface IJob {
   task: Task;
@@ -50,7 +51,9 @@ export abstract class Job {
 
     tasks.setJob({ task: this._task, job: this });
 
-    console.info(`created job with [uuidentity:${this._task.container.uuidentity}]`);
+    console.info(
+      `created job with [uuidentity:${this._task.package.uuidentity}]`
+    );
   }
 
   /**

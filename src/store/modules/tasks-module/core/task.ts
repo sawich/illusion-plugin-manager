@@ -78,7 +78,7 @@ export class Task {
       this._resolver = resolve;
     });
 
-    console.info(`created task info with [uuidentity:${this._container.uuid}]`);
+    console.info(`created task info with [uuidentity:${this.package.uuid}]`);
   }
 
   /**

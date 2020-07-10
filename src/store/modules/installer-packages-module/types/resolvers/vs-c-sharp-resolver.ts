@@ -5,13 +5,14 @@ import { join, parse } from "path";
 
 import { vs } from "@/store";
 import { VSBuildJob } from "@/store/modules/jobs-module/types/jobs/vs-build-job";
+import { Package } from "@/store/modules/packages-module/types";
 import { Task } from "@/store/modules/tasks-module/core/task";
 
-import { IInstaller, IInstallerArguments, PluginContainer } from "../core/installer";
+import { IInstallArguments, IInstaller } from "../core/installer";
 import { IVSProject, IVSProjects, IVSResolver } from "./types";
 
 export class VSCSharpResolver implements IInstaller {
-  async install(info: IInstallerArguments) {
+  async install(info: IInstallArguments) {
     const job = new VSBuildJob({
       task: info.task,
       action: this.action.bind(this, info.task)
@@ -19,10 +20,12 @@ export class VSCSharpResolver implements IInstaller {
     await job.run();
   }
 
-  constructor(info: { container: PluginContainer; resolver: IVSResolver }) {
-    this._container = info.container;
+  constructor(info: { resolver: IVSResolver; package: Package }) {
+    this._package = info.package;
+    this._path = join(__cache, `git/${this._package.uuidentity}`);
+
+    this._dir = info.resolver.dir;
     this._projects = info.resolver.projects;
-    this._path = join(__cache, `git/${this._container.uuidentity}`);
   }
 
   private async action(task: Task) {
@@ -92,7 +95,7 @@ export class VSCSharpResolver implements IInstaller {
 
     const projectFileName = join(
       parse(project.file).dir,
-      `${this._container.uuidentity}.csproj`
+      `${this._package.uuidentity}.csproj`
     );
 
     const out = join(this._path, projectFileName);
@@ -109,7 +112,7 @@ export class VSCSharpResolver implements IInstaller {
     console.log("start restore");
     await new Promise(resolve => {
       const dotnet = spawn(join(__cache, "nuget.exe"), ["restore"], {
-        cwd: this._path,
+        cwd: join(this._path, this._dir),
         shell: true
       });
       dotnet.stdout.on("data", out => {
@@ -126,6 +129,8 @@ export class VSCSharpResolver implements IInstaller {
   }
 
   private _path: string;
-  private _container: PluginContainer;
+  private _package: Package;
+
+  private _dir: string;
   private _projects: IVSProjects;
 }

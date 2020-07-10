@@ -11,6 +11,9 @@ export default {
       [PluginGame.HoneySelect2]: "Honey Select 2"
     }
   },
+  tasks: {
+    empty: "Nothing..."
+  },
   job: {
     categories: {
       [JobCategory.VSInstaller]:

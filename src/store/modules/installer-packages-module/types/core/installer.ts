@@ -19,8 +19,8 @@ export class PackageBuilder {
    * Getters
    */
 
-  get container() {
-    return this._container;
+  get package() {
+    return this._package;
   }
 
   get version() {
@@ -47,35 +47,32 @@ export class PackageBuilder {
    * Methods
    */
 
-  constructor(container: PluginContainer) {
-    this._container = container;
+  constructor(p: Package) {
+    this._package = p;
   }
 
-  private _container: PluginContainer;
+  private _package: Package;
   private _version: string = "";
   private _files: string[] = [];
 }
 
 export interface IInstallerArguments {
+  package: Package;
+  container: IPluginContainer;
+}
+
+export interface IInstallArguments {
   task: Task;
   builder: PackageBuilder;
 }
 
 export interface IInstaller {
-  install(info: IInstallerArguments): Promise<void>;
+  install(info: IInstallArguments): Promise<void>;
 }
 
 export type IInstallers = IInstaller[];
 
 export class PluginContainer {
-  get uuid() {
-    return this._uuid;
-  }
-
-  get uuidentity() {
-    return this._uuidentity;
-  }
-
   get dependence() {
     return this._dependence;
   }
@@ -84,120 +81,122 @@ export class PluginContainer {
     return this._nodes;
   }
 
-  constructor(container: IPluginContainer) {
-    this._uuid = container.uuid;
-    this._uuidentity = container.uuidentity;
-    this._dependence = container.dependence;
-    this._nodes = container.nodes.map(n => this.makeNode(n));
+  constructor(info: IInstallerArguments) {
+    this._dependence = info.container.dependence;
+    this._nodes = info.container.nodes.map(header =>
+      this.makeNode({ header, package: info.package })
+    );
   }
 
-  private makeNode(header: INodeHeader) {
-    switch (header.type) {
+  private makeNode(info: { header: INodeHeader; package: Package }) {
+    switch (info.header.type) {
       case NodeType.Placer:
-        return this.makePlacer(header.node as IPlacerHeader);
+        return this.makePlacer({
+          header: info.header.node as IPlacerHeader,
+          package: info.package
+        });
       case NodeType.Resolver:
-        return this.makeResolver(header.node as IResolverHeader);
+        return this.makeResolver({
+          header: info.header.node as IResolverHeader,
+          package: info.package
+        });
       case NodeType.Mover:
-        return this.makeMover(header.node as IMoverHeader);
+        return this.makeMover({
+          header: info.header.node as IMoverHeader,
+          package: info.package
+        });
     }
   }
 
-  private makePlacer(header: IPlacerHeader) {
-    switch (header.type) {
+  private makePlacer(info: { header: IPlacerHeader; package: Package }) {
+    switch (info.header.type) {
       case PlacerType.Git:
-        return new GitPlacer({ container: this, placer: header as IGitPlacer });
+        return new GitPlacer({
+          placer: info.header as IGitPlacer,
+          package: info.package
+        });
     }
     throw new Error("Bad placer type");
   }
 
-  private makeResolver(header: IResolverHeader) {
-    switch (header.type) {
+  private makeResolver(info: { header: IResolverHeader; package: Package }) {
+    switch (info.header.type) {
       case ResolverType.VisualStudio:
         return new VSCSharpResolver({
-          container: this,
-          resolver: header as IVSResolver
+          resolver: info.header as IVSResolver,
+          package: info.package
         });
     }
     throw new Error("Bad resolver type");
   }
 
-  private makeMover(header: IMoverHeader) {
-    switch (header.type) {
+  private makeMover(info: { header: IMoverHeader; package: Package }) {
+    switch (info.header.type) {
       case MoverType.File:
-        return new FileMover({ container: this, mover: header as IFileMover });
+        return new FileMover({
+          mover: info.header as IFileMover,
+          package: info.package
+        });
     }
   }
 
-  private _uuid: string;
-  private _uuidentity: string;
   private _dependence: string[];
   private _nodes: IInstallers;
 }
 
 export class Installer {
-  get package() {
-    return this._package;
-  }
-
   get container() {
     return this._container;
   }
 
   async install() {
-    if (this.package.game.has(this.container.uuid)) {
-      console.warn("Already installed, skipped");
+    if (this._task.package.game.has(this._task.package.uuid)) {
+      console.warn(
+        `Already installed, skipped [game: ${this._task.package.game.id}]`
+      );
       return;
     }
 
-    try {
-      await this._task.run();
-    } catch (error) {
-      if (error instanceof TaskExistExeption) {
-        // this._task.setJob(new WaitExistsJob(this._task));
-        console.info("Task already exists. wait...");
-        await error.task.awaiter;
-      } else {
-        console.error(error);
-      }
-
-      return;
-    }
+    await this._task.run();
 
     if (this.container.dependence.length > 0) {
       console.log("install dependencies: ", this.container.dependence);
       this._task.setJob(new InstallingDependenciesJob(this._task));
 
       await Promise.all(
-        this.container.dependence.map(async d => {
-          return installerPackages.install(await packages.get(d));
+        this.container.dependence.map(async uuid => {
+          return installerPackages.install(
+            await packages.get({
+              game: this._task.package.game,
+              uuid
+            })
+          );
         })
       );
     }
 
-    const builder = new PackageBuilder(this.container);
+    const builder = new PackageBuilder(this._task.package);
     for (const node of this.container.nodes) {
       await node.install({ task: this._task, builder });
     }
 
     this._task.package.game.add(builder);
-    await this._task.package.game.save();
+    // await this._task.package.game.save();
   }
 
   async done() {
     await this._task.done();
   }
 
-  constructor(info: { package: Package; container: IPluginContainer }) {
-    this._package = info.package;
-    this._container = new PluginContainer(info.container);
+  constructor(info: IInstallerArguments) {
+    this._container = new PluginContainer(info);
     this._task = new Task({
       container: this.container,
       installer: this,
-      package: this.package
+      package: info.package
     });
   }
 
   private _task: Task;
-  private _package: Package;
   private _container: PluginContainer;
 }

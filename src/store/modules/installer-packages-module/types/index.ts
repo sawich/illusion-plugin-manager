@@ -14,8 +14,6 @@ export interface INodeHeader {
 }
 
 export interface IPluginContainer {
-  uuid: string;
-  uuidentity: string;
   dependence: string[];
   nodes: INodeHeader[];
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="plugins">
     <div class="plugin">
-      <template v-for="p of list">
+      <template v-for="p of packages">
         <!-- <div
           class="button installing-button"
           :key="`button-installing-${p.uuid}`"
@@ -10,12 +10,29 @@
           <install-icon :size="16" class="icon install-icon" />
           {{ $t(`plugins.installing`) }}
         </div> -->
+
+        <div
+          class="installing"
+          :key="`text-installing-${p.uuid}`"
+          v-if="installing(p)"
+        >
+          installing
+        </div>
+
+        <div
+          class="installed"
+          :key="`text-installed-${p.uuid}`"
+          v-else-if="installed(p)"
+        >
+          installed
+        </div>
+
         <div
           class="button install-button"
           @click="() => p.install()"
           :key="`button-install-${p.uuid}`"
+          v-else
         >
-          <!-- v-else -->
           <install-icon :size="16" class="icon install-icon" />
           {{ $t(`plugins.install`) }}
         </div>
@@ -36,16 +53,30 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { PluginGame, Package } from "@/store/modules/packages-module/types";
 import { ITasks } from "../store/modules/tasks-module/types";
-import { packages } from "../store";
+import { packages, games, tasks } from "../store";
 import { IPackages } from "../store/modules/packages-module";
+import { Game } from "../store/modules/games-module/types";
 
 @Component({
   components: {
     InstallIcon: () => import("vue-material-design-icons/InboxArrowDown.vue")
   }
 })
-export default class Game extends Vue {
-  list: IPackages = {};
+export default class Library extends Vue {
+  game: Game | null = null;
+  packages: IPackages = {};
+
+  installing(p: Package) {
+    const task = tasks.entries[p.uuidentity];
+    if (task !== undefined) {
+      return task.package.game.id == p.game.id;
+    }
+    return p.uuidentity in tasks.entries;
+  }
+
+  installed(p: Package) {
+    return this.game !== null && this.game.has(p.uuid);
+  }
 
   @Watch("$route")
   async onRouteChange() {
@@ -57,8 +88,9 @@ export default class Game extends Vue {
   }
 
   private async init() {
-    const game = Number(this.$route.query.game);
-    this.list = await packages.list(game);
+    const id = Number(this.$route.query.game);
+    this.game = await games.get(id);
+    this.packages = await packages.list(id);
   }
 }
 </script>
@@ -78,8 +110,7 @@ export default class Game extends Vue {
 .button {
   justify-self: end;
   cursor: pointer;
-  display: inline-grid;
-  align-items: center;
+  display: grid;
   grid-template-columns: 16px 1fr;
   gap: 4px;
   padding: 0px 4px;
@@ -105,6 +136,7 @@ export default class Game extends Vue {
 }
 
 .icon {
+  align-self: center;
   display: flex;
 }
 
