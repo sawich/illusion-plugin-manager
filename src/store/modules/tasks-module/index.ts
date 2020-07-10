@@ -4,6 +4,7 @@ import { action, createModule, mutation } from "vuex-class-component";
 import { JobExistExeption } from "@/exceptions/job-exists-exception";
 import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
 import { TaskIdentityExistExeption } from "@/exceptions/task-identity-exists-exeption";
+import { vue } from "@/main";
 
 import { Job } from "../jobs-module/types/core/job";
 import { Task } from "./core/task";
@@ -57,7 +58,7 @@ export class TasksModule extends VuexModule {
     }
 
     task.uuidRegister = true;
-    Vue.set(this._entries, task.package.uuid, task);
+    vue.$set(this._entries, task.package.uuid, task);
   }
 
   @mutation private registerIdentity(task: Task) {
@@ -67,7 +68,7 @@ export class TasksModule extends VuexModule {
     }
 
     task.uuidentityRegister = true;
-    Vue.set(this._identitites, task.package.uuidentity, task);
+    vue.$set(this._identitites, task.package.uuidentity, task);
   }
 
   @mutation done(task: Task) {

@@ -1,6 +1,7 @@
 import { Vue } from "vue-property-decorator";
 import { action, createModule, mutation } from "vuex-class-component";
 
+import { vue } from "@/main";
 import { games } from "@/store";
 
 import { Game } from "../games-module/types";
@@ -25,7 +26,7 @@ export class PackagesModule extends VuexModule {
 
   @action
   async load() {
-    for (const game of games.list) {
+    for (const game of games.values) {
       const packages = await fetch(game.url);
 
       const datas = (await packages.json()) as IPackage[];
@@ -40,10 +41,10 @@ export class PackagesModule extends VuexModule {
     for (const p of info.packages) {
       const pack = new Package({ package: p, game: info.game });
       packages[p.uuid] = pack;
-      Vue.set(this._unordered, p.uuid, pack);
+      vue.$set(this._unordered, p.uuid, pack);
     }
 
-    Vue.set(this._entries, info.game.id, packages);
+    vue.$set(this._entries, info.game.id, packages);
   }
 
   private _unordered: { [key: string]: Package } = {};

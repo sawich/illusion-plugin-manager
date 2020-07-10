@@ -2,6 +2,7 @@ import { Vue } from "vue-property-decorator";
 import { action, createModule, mutation } from "vuex-class-component";
 
 import { JobExistExeption } from "@/exceptions/job-exists-exception";
+import { vue } from "@/main";
 
 import { IJobs } from "./types";
 import { Job } from "./types/core/job";
@@ -35,7 +36,7 @@ export class jobsModule extends VuexModule {
       throw new JobExistExeption(existsJob);
     }
 
-    Vue.set(this._jobs, job.task.package.uuidentity, job);
+    vue.$set(this._jobs, job.task.package.uuidentity, job);
   }
 
   @mutation done(job: Job) {

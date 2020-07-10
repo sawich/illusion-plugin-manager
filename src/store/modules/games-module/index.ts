@@ -3,6 +3,8 @@ import { join } from "path";
 import { Vue } from "vue-property-decorator";
 import { action, createModule, mutation } from "vuex-class-component";
 
+import { vue } from "@/main";
+
 import { PluginGame } from "../packages-module/types";
 import { Game, IGameInfo, IInstalledPackages, InstalledPackage } from "./types";
 
@@ -13,12 +15,12 @@ export class GamesModule extends VuexModule {
    * Getters
    */
 
-  get list() {
-    return this._games.values();
+  get values() {
+    return Object.values(this._games);
   }
 
   @action async get(id: PluginGame) {
-    return this._games.get(id) || null;
+    return this._games[id] || null;
   }
 
   /**
@@ -27,6 +29,7 @@ export class GamesModule extends VuexModule {
 
   @action async load() {
     const installedGames = await GamesModule.getGamesData();
+
     for (const installedGame of installedGames) {
       const packages = await GamesModule.getPackagesData(installedGame.path);
       const gameBaseInfo = await fetch(`${__api}/games/${installedGame.game}`);
@@ -39,6 +42,10 @@ export class GamesModule extends VuexModule {
         })
       );
     }
+
+    console.log("local");
+
+    console.log(this.values);
   }
 
   /**
@@ -46,7 +53,7 @@ export class GamesModule extends VuexModule {
    */
 
   @mutation add(game: Game) {
-    this._games.set(game.id, game);
+    vue.$set(this._games, game.id, game);
   }
 
   /**
@@ -83,5 +90,5 @@ export class GamesModule extends VuexModule {
    * Data
    */
 
-  _games = new Map<PluginGame, Game>();
+  private _games: { [key: number]: Game } = {};
 }
