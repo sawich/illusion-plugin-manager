@@ -3,22 +3,28 @@ import { installerPackages } from "@/store";
 import { Game } from "../../games-module/types";
 
 export const enum PluginGame {
-  /** Play Home */
+  /** 0. Play Home */
   PlayHome,
 
-  /** Honey Select 1 */
+  /** 1. Honey Select 1 */
   HoneySelect1,
 
-  /** Koikatsu */
+  /** 2. Koikatsu */
   Koikatsu,
 
-  /** AI Shoujo */
+  /** 3. Koikatsu (Steam) */
+  KoikatsuSteam,
+
+  /** 4. AI Shoujo */
   AIShoujo,
 
-  /** Honey Select 2 */
+  /** 5. AI Shoujo (Steam) */
+  AIShoujoSteam,
+
+  /** 6. Honey Select 2 */
   HoneySelect2,
 
-  /** Emotion Creators */
+  /** 7. Emotion Creators */
   EmotionCreators
 }
 
