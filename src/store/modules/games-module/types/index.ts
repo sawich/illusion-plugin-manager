@@ -35,6 +35,9 @@ export interface IInstalledPackage {
 }
 
 export class InstalledPackage {
+  /**
+   * Getters
+   */
   get uuid() {
     return this._uuid;
   }
@@ -54,6 +57,26 @@ export class InstalledPackage {
   get disabled() {
     return this._disabled;
   }
+
+  /**
+   * Setters
+   */
+
+  set disabled(value) {
+    this._disabled = value;
+  }
+
+  /**
+   * Vuex
+   */
+
+  toggle() {
+    games.togglePackage(this);
+  }
+
+  /**
+   * Methods
+   */
 
   toJSON() {
     return {
@@ -121,6 +144,14 @@ export class Game {
   }
 
   /**
+   * Vuex
+   */
+
+  add(builder: PackageBuilder) {
+    games.addPackage({ builder, game: this });
+  }
+
+  /**
    * Methods
    */
 
@@ -130,10 +161,6 @@ export class Game {
 
   package(uuid: string) {
     return this._packages[uuid] || null;
-  }
-
-  add(builder: PackageBuilder) {
-    games.addPackage({ builder, game: this });
   }
 
   async save() {

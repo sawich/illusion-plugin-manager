@@ -19,18 +19,21 @@
     </div>
 
     <div class="toolbar" v-if="installing == false">
-      <template class="installed">
-        <div class="toolbar-content">
-          <div class="installed" v-if="installed">
+      <div class="toolbar-content">
+        <template v-if="installed">
+          <div>
             uninstall
           </div>
-
-          <div class="button install-button" @click="() => p.install()" v-else>
-            <install-icon :size="16" class="icon install-icon" />
-            {{ $t(`plugins.install`) }}
+          <div @click="toggle">
+            toggle
           </div>
+        </template>
+
+        <div class="button install-button" @click="() => p.install()" v-else>
+          <install-icon :size="16" class="icon install-icon" />
+          {{ $t(`plugins.install`) }}
         </div>
-      </template>
+      </div>
     </div>
   </div>
 </template>
@@ -48,8 +51,12 @@ import { Game } from "../store/modules/games-module/types";
 })
 export default class PackageComponent extends Vue {
   @Prop({ required: true }) game!: Game;
-
   @Prop({ required: true }) p!: Package;
+
+  async toggle() {
+    const p = this.game.package(this.p.uuid);
+    p.toggle();
+  }
 
   get disabled() {
     const p = this.game.package(this.p.uuid);

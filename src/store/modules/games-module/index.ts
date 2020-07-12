@@ -49,6 +49,10 @@ export class GamesModule extends VuexModule {
    * Mutations
    */
 
+  @mutation togglePackage(p: InstalledPackage) {
+    p.disabled = !p.disabled;
+  }
+
   @mutation addPackage(info: { builder: PackageBuilder; game: Game }) {
     const p = new InstalledPackage({
       uuid: info.builder.package.uuidEntity,
