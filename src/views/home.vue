@@ -20,12 +20,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { PluginGame } from "@/store/modules/packages-module/types";
+import { GameId } from "@/store/modules/packages-module/types";
 import { fullGameIconPath, GameIconSize } from "@/helpers/game-icon-helper";
 
 @Component({ components: {} })
 export default class Home extends Vue {
-  fullIconPath(game: PluginGame) {
+  fullIconPath(game: GameId) {
     return fullGameIconPath(game, GameIconSize.s16);
   }
 }

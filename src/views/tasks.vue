@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { PluginGame } from "@/store/modules/packages-module/types";
+import { GameId } from "@/store/modules/packages-module/types";
 import { fullGameIconPath, GameIconSize } from "@/helpers/game-icon-helper";
 import { fullJobIconPath } from "@/helpers/job-icon-helper";
 
@@ -48,7 +48,7 @@ export default class Tasks extends Vue {
   @tasks.Getter("entries")
   private entries!: ITasks;
 
-  gameFullIconPath(game: PluginGame) {
+  gameFullIconPath(game: GameId) {
     return fullGameIconPath(game, GameIconSize.s48);
   }
 
