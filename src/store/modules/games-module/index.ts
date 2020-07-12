@@ -1,6 +1,7 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { Vue } from "vue-property-decorator";
+import { install } from "vuex";
 import { action, createModule, mutation } from "vuex-class-component";
 
 import { vue } from "@/main";
@@ -45,24 +46,30 @@ export class GamesModule extends VuexModule {
     }
   }
 
+  @action async togglePackage(installed: InstalledPackage) {
+    this._togglePackage(installed);
+    await installed.toggle();
+    await installed.game.save();
+  }
+
   /**
    * Mutations
    */
 
-  @mutation togglePackage(p: InstalledPackage) {
-    p.disabled = !p.disabled;
+  @mutation private _togglePackage(installed: InstalledPackage) {
+    installed.disabled = !installed.disabled;
   }
 
-  @mutation addPackage(info: { builder: PackageBuilder; game: Game }) {
+  @mutation addPackage(builder: PackageBuilder) {
     const p = new InstalledPackage({
-      uuid: info.builder.package.uuidEntity,
-      version: info.builder.version,
-      files: info.builder.files,
+      uuid: builder.package.uuid,
+      version: builder.version,
+      files: builder.files,
       disabled: false,
-      game: info.game
+      game: builder.package.game
     });
 
-    vue.$set(info.game.packages, info.builder.package.uuid, p);
+    vue.$set(p.game.packages, p.uuid, p);
   }
 
   @mutation add(game: Game) {

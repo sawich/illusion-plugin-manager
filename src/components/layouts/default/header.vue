@@ -8,11 +8,17 @@
       />
     </div>
     <div class="header-row">
-      <router-link
+      <!-- <router-link
         class="link-icon-only header-active-item header-row"
         :to="{ name: 'settings' }"
       >
         <settings-icon class="icon user-icon" :size="16" />
+      </router-link> -->
+      <router-link
+        class="link-icon-only header-active-item header-row"
+        :to="{ name: 'folders' }"
+      >
+        <folders-icon class="icon user-icon" :size="16" />
       </router-link>
       <router-link
         class="link-icon-only header-active-item header-row icon-tasks"
@@ -59,13 +65,14 @@ const tasks = namespace("tasks");
 
 @Component({
   components: {
-    SettingsIcon: () => import("vue-material-design-icons/AccountConvert.vue"),
+    // SettingsIcon: () => import("vue-material-design-icons/AccountConvert.vue"),
     // SettingsIcon: () => import("vue-material-design-icons/CogOutline.vue"),
     TasksIcon: () => import("vue-material-design-icons/ArrowCollapseDown.vue"),
     MinimizeIcon: () => import("vue-material-design-icons/WindowMinimize.vue"),
     // UnmaximizeIcon: () => import("vue-material-design-icons/WindowRestore.vue"),
     // MaximizeIcon: () => import("vue-material-design-icons/WindowMaximize.vue"),
-    CloseIcon: () => import("vue-material-design-icons/WindowClose.vue")
+    CloseIcon: () => import("vue-material-design-icons/WindowClose.vue"),
+    FoldersIcon: () => import("vue-material-design-icons/FolderCog.vue")
   }
 })
 export default class Header extends Vue {

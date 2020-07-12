@@ -7,6 +7,10 @@
       :game="game"
     />
   </div>
+  <div class="folders" v-else>
+    Select installed game or specify a folder path
+    <router-link :to="{ name: 'folders' }">here</router-link>
+  </div>
 </template>
 
 <script lang="ts">
@@ -44,7 +48,19 @@ export default class Library extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.plugins {
+.plugins,
+.folders {
   padding: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #00bfff;
+  transition: var(--animation-long-time) var(--animation-function);
+
+  &:hover {
+    color: var(--link-hover-color);
+    transition-duration: var(--animation-short-time);
+  }
 }
 </style>

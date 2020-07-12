@@ -25,11 +25,16 @@ const routes: Array<RouteConfig> = [
     name: "tasks",
     path: "/tasks",
     component: () => import("@/views/tasks.vue")
+    // },
+    // {
+    // name: "settings",
+    // path: "/settings",
+    // component: () => import("@/views/settings.vue")
   },
   {
-    name: "settings",
-    path: "/settings",
-    component: () => import("@/views/settings.vue")
+    name: "folders",
+    path: "/folders",
+    component: () => import("@/views/folders.vue")
   }
 ];
 

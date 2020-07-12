@@ -66,8 +66,10 @@ export default class Home extends Vue {
 
 .game:hover,
 .router-link-exact-active {
-  color: var(--link-hover-color);
-  background-color: var(--games-list-bg-hover-color);
+  color: var(--games-list-bg-hover-color);
+  background-color: var(--font-color);
+  // color: var(--link-hover-color);
+  // background-color: var(--games-list-bg-hover-color);
   transition: var(--animation-short-time) var(--animation-function);
 }
 

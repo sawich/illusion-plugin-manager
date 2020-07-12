@@ -3,9 +3,9 @@
     :class="[
       'plugin',
       {
-        'plugin-disabled': disabled,
         'plugin-installing': installing,
-        'plugin-installed': installed
+        'plugin-installed': installed,
+        'plugin-disabled': disabled
       }
     ]"
   >
@@ -30,7 +30,7 @@
               {{ $t("plugins.disable") }}
             </template>
           </div>
-          <div class="button">
+          <div class="button button-uninstall">
             <install-icon :size="16" class="icon install-icon" />
             {{ $t("plugins.uninstall") }}
           </div>
@@ -50,6 +50,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { Package } from "@/store/modules/packages-module/types";
 import { tasks } from "../store";
 import { Game } from "../store/modules/games-module/types";
+import { togglePackage } from "@/helpers/packages/toggle-package";
 
 @Component({
   components: {
@@ -61,13 +62,13 @@ export default class PackageComponent extends Vue {
   @Prop({ required: true }) p!: Package;
 
   async toggle() {
-    const p = this.game.package(this.p.uuid);
-    p.toggle();
+    const installed = this.game.package(this.p.uuid);
+    togglePackage(installed);
   }
 
   get disabled() {
-    const p = this.game.package(this.p.uuid);
-    return p && p.disabled;
+    const installed = this.game.package(this.p.uuid);
+    return installed && installed.disabled;
   }
 
   get installing() {
@@ -142,7 +143,7 @@ $padding: 10px;
   display: grid;
   align-content: end;
 
-  // opacity: 0;
+  opacity: 0;
   transition: var(--animation-long-time) var(--animation-function);
 
   &:hover {
@@ -164,7 +165,7 @@ $padding: 10px;
   grid-auto-flow: column;
   justify-content: start;
   gap: $padding;
-  // opacity: 0;
+  opacity: 0;
   transition: var(--animation-long-time) var(--animation-function);
 }
 
@@ -174,22 +175,24 @@ $padding: 10px;
   grid-template-columns: 16px 1fr;
   gap: 4px;
 
-  padding: 4px 20px;
-  // color: var(--font-color);
+  padding: 4px 8px;
 
-  // $color: var(--bg-color);
-  // text-shadow: 0 0 2px var(--font-color), 0 0 4px $color, 0 0 6px $color;
   color: var(--font-color);
   transition: var(--animation-long-time) var(--animation-function);
 
   &:hover {
-    text-shadow: unset;
-    // color: var(--link-hover-color);
-    // background-color: var(--games-list-bg-hover-color);
-    // transition: var(--animation-very-short-time) var(--animation-function);
     color: var(--games-list-bg-hover-color);
     background-color: var(--font-color);
     transition: var(--animation-short-time) var(--animation-function);
+  }
+}
+
+.button-uninstall {
+  color: var(--red);
+
+  &:hover {
+    color: var(--font-color);
+    background-color: var(--red);
   }
 }
 

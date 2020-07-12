@@ -1,3 +1,4 @@
+import { addPackage } from "@/helpers/packages/add-package";
 import { installerPackages, packages } from "@/store";
 import {
     InstallingDependenciesJob
@@ -169,7 +170,7 @@ export class Installer {
       await node.install({ task: this._task, builder });
     }
 
-    this._task.package.game.add(builder);
+    addPackage(builder);
     await this._task.package.game.save();
   }
 

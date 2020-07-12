@@ -12,8 +12,8 @@
   "node-main": "",
   "window": {
     "title": "Illusion plugin manager",
-    "width": 960,
-    "height": 600,
+    "width": 1240,
+    "height": 700,
     "frame": false,
     "resize": false,
     "icon": "src/assets/vue.png"
@@ -124,10 +124,8 @@
       "node-main": "server.js",
       "chromium-args": "--enable-spell-checking --allow-running-insecure-content --ignore-certificate-errors",
       "window": {
-        "width": 960,
-        "height": 600,
-        "min_width": 700,
-        "min_height": 500,
+        "width": 1240,
+        "height": 700,
         "icon": "dist-vue/icon.png"
       }
     },

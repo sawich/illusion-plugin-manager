@@ -1,10 +1,8 @@
-import { writeFile } from "fs/promises";
+import { rename, writeFile } from "fs/promises";
 import { join, parse } from "path";
 
-import { vue } from "@/main";
 import { games } from "@/store";
 
-import { PackageBuilder } from "../../installer-packages-module/types/core/installer";
 import { PluginGame } from "../../packages-module/types";
 
 interface IDllInfo {
@@ -66,17 +64,33 @@ export class InstalledPackage {
     this._disabled = value;
   }
 
-  /**
-   * Vuex
-   */
+  private paths(file: string) {
+    if (this.disabled) {
+      return {
+        old: join(this.game.path, file),
+        new: join(this.game.path, `${file}_disabled`)
+      };
+    }
 
-  toggle() {
-    games.togglePackage(this);
+    return {
+      old: join(this.game.path, `${file}_disabled`),
+      new: join(this.game.path, file)
+    };
   }
 
   /**
    * Methods
    */
+
+  async toggle() {
+    await Promise.allSettled(
+      this.files.map(file => {
+        const paths = this.paths(file);
+        rename(paths.old, paths.new);
+        console.log(paths);
+      })
+    );
+  }
 
   toJSON() {
     return {
@@ -144,14 +158,6 @@ export class Game {
   }
 
   /**
-   * Vuex
-   */
-
-  add(builder: PackageBuilder) {
-    games.addPackage({ builder, game: this });
-  }
-
-  /**
    * Methods
    */
 
@@ -160,7 +166,7 @@ export class Game {
   }
 
   package(uuid: string) {
-    return this._packages[uuid] || null;
+    return this._packages[uuid];
   }
 
   async save() {
