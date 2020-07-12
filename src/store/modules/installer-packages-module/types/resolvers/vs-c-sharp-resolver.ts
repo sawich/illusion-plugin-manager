@@ -88,8 +88,8 @@ export class VSCSharpResolver implements IInstaller {
         );
       }
 
-      // console.log("[dll]");
-      // console.log(element);
+      console.log("[dll]");
+      console.log(element);
     }
 
     const xmlSerializer = new XMLSerializer();

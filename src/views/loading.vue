@@ -18,7 +18,8 @@ export default class Loading extends Vue {
 
     console.log("created end");
 
-    this.$router.push({ name: "home" });
+    // this.$router.push({ name: "home" });
+    this.$router.push({ name: "library", query: { game: "6" } });
   }
 }
 </script>

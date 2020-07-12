@@ -14,7 +14,7 @@
         {{ name }}
       </router-link>
     </div>
-    <router-view class="library-content" />
+    <router-view class="router-content" />
   </section>
 </template>
 
@@ -76,7 +76,7 @@ export default class Home extends Vue {
   cursor: default;
 }
 
-.library-content {
+.router-content {
   overflow-y: auto;
 }
 </style>
