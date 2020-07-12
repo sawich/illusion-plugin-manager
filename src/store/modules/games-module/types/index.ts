@@ -64,23 +64,38 @@ export class InstalledPackage {
     this._disabled = value;
   }
 
-  private paths(file: string) {
-    if (this.disabled) {
-      return {
-        old: join(this.game.path, file),
-        new: join(this.game.path, `${file}_disabled`)
-      };
-    }
+  /**
+   * Statics
+   */
 
-    return {
-      old: join(this.game.path, `${file}_disabled`),
-      new: join(this.game.path, file)
-    };
+  static get disabledPrefix() {
+    return "_disabled";
   }
 
   /**
    * Methods
    */
+
+  actualPath(file: string) {
+    return join(
+      this.game.path,
+      this.disabled ? `${file}${InstalledPackage.disabledPrefix}` : file
+    );
+  }
+
+  paths(file: string) {
+    if (this.disabled) {
+      return {
+        old: join(this.game.path, file),
+        new: join(this.game.path, `${file}${InstalledPackage.disabledPrefix}`)
+      };
+    }
+
+    return {
+      old: join(this.game.path, `${file}${InstalledPackage.disabledPrefix}`),
+      new: join(this.game.path, file)
+    };
+  }
 
   async toggle() {
     await Promise.allSettled(

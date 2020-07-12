@@ -1,5 +1,3 @@
-import { installerPackages } from "@/store";
-
 import { Game } from "../../games-module/types";
 
 export const enum PluginGame {
@@ -53,10 +51,6 @@ export class Package {
 
   get url() {
     return `${__api}/scripts/${this._uuid}`;
-  }
-
-  async install() {
-    installerPackages.install(this);
   }
 
   constructor(info: { package: IPackage; game: Game }) {

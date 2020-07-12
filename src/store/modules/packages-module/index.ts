@@ -14,28 +14,24 @@ export interface IPackages {
 }
 
 export class PackagesModule extends VuexModule {
-  @action
-  async get(uuid: string) {
+  @action async get(uuid: string) {
     return this._unordered[uuid];
   }
 
-  @action
-  async list(game: PluginGame) {
+  @action async list(game: PluginGame) {
     return this._entries[game] || {};
   }
 
-  @action
-  async load() {
+  @action async load() {
     for (const game of games.values) {
       const packages = await fetch(game.url);
 
       const datas = (await packages.json()) as IPackage[];
-      this.add({ game, packages: datas });
+      this.seed({ game, packages: datas });
     }
   }
 
-  @mutation
-  private add(info: { game: Game; packages: IPackage[] }) {
+  @mutation private seed(info: { game: Game; packages: IPackage[] }) {
     const packages: IPackages = {};
 
     for (const p of info.packages) {

@@ -1,14 +1,11 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
-import { Vue } from "vue-property-decorator";
-import { install } from "vuex";
 import { action, createModule, mutation } from "vuex-class-component";
 
 import { vue } from "@/main";
 
-import { PackageBuilder } from "../installer-packages-module/types/core/installer";
 import { PluginGame } from "../packages-module/types";
-import { Game, IGameInfo, IInstalledPackages, InstalledPackage } from "./types";
+import { Game, IGameInfo, IInstalledPackages as IIPS, InstalledPackage } from "./types";
 
 const VuexModule = createModule({ namespaced: "games", strict: false });
 
@@ -21,13 +18,13 @@ export class GamesModule extends VuexModule {
     return Object.values(this._games);
   }
 
-  @action async get(id: PluginGame) {
-    return this._games[id] || null;
-  }
-
   /**
    * Actions
    */
+
+  @action async get(id: PluginGame) {
+    return this._games[id];
+  }
 
   @action async load() {
     const installedGames = await GamesModule.getGamesData();
@@ -60,16 +57,12 @@ export class GamesModule extends VuexModule {
     installed.disabled = !installed.disabled;
   }
 
-  @mutation addPackage(builder: PackageBuilder) {
-    const p = new InstalledPackage({
-      uuid: builder.package.uuid,
-      version: builder.version,
-      files: builder.files,
-      disabled: false,
-      game: builder.package.game
-    });
+  @mutation addPackage(installed: InstalledPackage) {
+    vue.$set(installed.game.packages, installed.uuid, installed);
+  }
 
-    vue.$set(p.game.packages, p.uuid, p);
+  @mutation deletePackage(installed: InstalledPackage) {
+    vue.$delete(installed.game.packages, installed.uuid);
   }
 
   @mutation add(game: Game) {
@@ -96,14 +89,12 @@ export class GamesModule extends VuexModule {
     }
   }
 
-  private static async getPackagesData(path: string) {
-    return JSON.parse(
-      await GamesModule.readPackages(path)
-    ) as IInstalledPackages;
+  private static async getPackagesData(path: string): Promise<IIPS> {
+    return JSON.parse(await GamesModule.readPackages(path));
   }
 
-  private static async getGamesData() {
-    return JSON.parse(await GamesModule.readGames()) as IGameInfo[];
+  private static async getGamesData(): Promise<IGameInfo[]> {
+    return JSON.parse(await GamesModule.readGames());
   }
 
   /**

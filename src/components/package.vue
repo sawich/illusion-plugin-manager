@@ -30,13 +30,13 @@
               {{ $t("plugins.disable") }}
             </template>
           </div>
-          <div class="button button-uninstall">
+          <div class="button button-uninstall" @click="uninstall">
             <install-icon :size="16" class="icon install-icon" />
             {{ $t("plugins.uninstall") }}
           </div>
         </template>
 
-        <div class="button" @click="() => p.install()" v-else>
+        <div class="button" @click="install" v-else>
           <install-icon :size="16" class="icon install-icon" />
           {{ $t("plugins.install") }}
         </div>
@@ -51,6 +51,8 @@ import { Package } from "@/store/modules/packages-module/types";
 import { tasks } from "../store";
 import { Game } from "../store/modules/games-module/types";
 import { togglePackage } from "@/helpers/packages/toggle-package";
+import { installPackage } from "@/helpers/packages/install-package";
+import { uninstallPackage } from "@/helpers/packages/uninstall-package";
 
 @Component({
   components: {
@@ -60,6 +62,15 @@ import { togglePackage } from "@/helpers/packages/toggle-package";
 export default class PackageComponent extends Vue {
   @Prop({ required: true }) game!: Game;
   @Prop({ required: true }) p!: Package;
+
+  async install() {
+    installPackage(this.p);
+  }
+
+  async uninstall() {
+    const installed = this.game.package(this.p.uuid);
+    uninstallPackage(installed);
+  }
 
   async toggle() {
     const installed = this.game.package(this.p.uuid);
