@@ -53,10 +53,6 @@ export class GamesModule extends VuexModule {
    * Mutations
    */
 
-  @mutation private _togglePackage(installed: InstalledPackage) {
-    installed.disabled = !installed.disabled;
-  }
-
   @mutation addPackage(installed: InstalledPackage) {
     vue.$set(installed.game.packages, installed.uuid, installed);
   }
@@ -67,6 +63,10 @@ export class GamesModule extends VuexModule {
 
   @mutation add(game: Game) {
     vue.$set(this._games, game.id, game);
+  }
+
+  @mutation private _togglePackage(installed: InstalledPackage) {
+    installed.disabled = !installed.disabled;
   }
 
   /**

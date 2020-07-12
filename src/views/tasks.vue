@@ -36,11 +36,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { GameId } from "@/store/modules/packages-module/types";
-import { fullGameIconPath, GameIconSize } from "@/helpers/game-icon-helper";
-import { fullJobIconPath } from "@/helpers/job-icon-helper";
 
 import { namespace } from "vuex-class";
 import { JobIcon, ITasks } from "../store/modules/tasks-module/types";
+import { fullGameIconPath, GameIconSize } from "../helpers/game-icon-helper";
 const tasks = namespace("tasks");
 
 @Component({ components: {} })
@@ -50,10 +49,6 @@ export default class Tasks extends Vue {
 
   gameFullIconPath(game: GameId) {
     return fullGameIconPath(game, GameIconSize.s48);
-  }
-
-  jobFullIconPath(icon: JobIcon) {
-    return fullJobIconPath(icon);
   }
 }
 </script>

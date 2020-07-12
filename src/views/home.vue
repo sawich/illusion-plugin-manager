@@ -55,8 +55,7 @@ export default class Home extends Vue {
   gap: 10px;
 
   color: var(--font-color);
-  transition: color var(--animation-long-time) var(--animation-function),
-    background-color var(--animation-long-time) var(--animation-function);
+  transition: var(--animation-long-time) var(--animation-function);
 }
 
 .icon {
