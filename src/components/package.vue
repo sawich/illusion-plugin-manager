@@ -3,9 +3,9 @@
     :class="[
       'plugin',
       {
+        'plugin-disabled': disabled,
         'plugin-installing': installing,
-        'plugin-installed': installed,
-        'plugin-disabled': disabled
+        'plugin-installed': installed
       }
     ]"
   >
@@ -21,17 +21,24 @@
     <div class="toolbar" v-if="installing == false">
       <div class="toolbar-content">
         <template v-if="installed">
-          <div>
-            uninstall
+          <div class="button" @click="toggle">
+            <install-icon :size="16" class="icon install-icon" />
+            <template v-if="disabled">
+              {{ $t("plugins.enable") }}
+            </template>
+            <template v-else>
+              {{ $t("plugins.disable") }}
+            </template>
           </div>
-          <div @click="toggle">
-            toggle
+          <div class="button">
+            <install-icon :size="16" class="icon install-icon" />
+            {{ $t("plugins.uninstall") }}
           </div>
         </template>
 
-        <div class="button install-button" @click="() => p.install()" v-else>
+        <div class="button" @click="() => p.install()" v-else>
           <install-icon :size="16" class="icon install-icon" />
-          {{ $t(`plugins.install`) }}
+          {{ $t("plugins.install") }}
         </div>
       </div>
     </div>
@@ -76,7 +83,6 @@ export default class PackageComponent extends Vue {
 
 <style lang="scss" scoped>
 $padding: 10px;
-$pagePadding: 20px;
 
 .plugin {
   position: relative;
@@ -132,11 +138,11 @@ $pagePadding: 20px;
   left: -1px;
   width: calc(100% + 1px);
   height: 100%;
-  filter: none;
   user-select: unset;
   display: grid;
-  align-content: center;
-  opacity: 0;
+  align-content: end;
+
+  // opacity: 0;
   transition: var(--animation-long-time) var(--animation-function);
 
   &:hover {
@@ -152,39 +158,39 @@ $pagePadding: 20px;
 }
 
 .toolbar-content {
-  padding: 0 10px;
+  padding: $padding;
 
-  opacity: 0;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  gap: $padding;
+  // opacity: 0;
   transition: var(--animation-long-time) var(--animation-function);
 }
 
 .button {
-  justify-self: end;
   cursor: pointer;
   display: grid;
   grid-template-columns: 16px 1fr;
   gap: 4px;
-  padding: 0px 4px;
-}
 
-.install-button {
-  display: inline-grid;
+  padding: 4px 20px;
+  // color: var(--font-color);
+
+  // $color: var(--bg-color);
+  // text-shadow: 0 0 2px var(--font-color), 0 0 4px $color, 0 0 6px $color;
   color: var(--font-color);
-
-  $color: var(--bg-color);
-  text-shadow: 0 0 2px var(--font-color), 0 0 4px $color, 0 0 6px $color;
   transition: var(--animation-long-time) var(--animation-function);
 
   &:hover {
     text-shadow: unset;
+    // color: var(--link-hover-color);
+    // background-color: var(--games-list-bg-hover-color);
+    // transition: var(--animation-very-short-time) var(--animation-function);
     color: var(--games-list-bg-hover-color);
     background-color: var(--font-color);
     transition: var(--animation-short-time) var(--animation-function);
   }
-}
-
-.installing-button {
-  cursor: default;
 }
 
 .icon {

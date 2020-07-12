@@ -8,7 +8,7 @@
   "name": "nw-vue",
   "version": "1.5.0",
   "main": "http://localhost:8964",
-  "node-remote": "http://localhost:8964",
+  "node-remote": "*://localhost/*",
   "node-main": "",
   "window": {
     "title": "Illusion plugin manager",
@@ -21,7 +21,7 @@
   "private": true,
   "scripts": {
     "start": "concurrently \"npm run serve\" \"wait-on http://localhost:8964 && nw .\"",
-    "serve": "vue-cli-service serve --port=8964",
+    "serve": "vue-cli-service serve --port=8964 --hot",
     "build": "npm run build:clean && npm run build:vue && npm run build:nw",
     "build:clean": "rimraf ./dist-vue ./dist",
     "build:vue": "vue-cli-service build --modern --dest ./dist-vue",
@@ -32,7 +32,7 @@
     "build:lin:clean": "rimraf ./dist-vue ./dist/nw-vue-1.5.0-linux-x64 ./dist/nw-vue-1.5.0-linux-x64.zip",
     "run:win": "dist\\nw-vue-1.5.0-win-x86\\nw-vue.exe",
     "run:lin": "./dist/nw-vue-1.5.0-linux-x64/nw-vue",
-    "regression": "rd /s /q node_modules & rd /s /q node_modules & rd /s /q node_modules & npm install && npm run lint && npm test && npm run build:win && npm run run:win",
+    "regression": "rd /s /q node_modules & rd /s /q node_modules & rd /s /q node_modules & npm install && npm run build:win && npm run run:win",
     "update:vue-devtools": "rimraf ./node_modules/nw-vue-devtools-prebuilt && npm install"
   },
   "dependencies": {
@@ -77,7 +77,7 @@
     "vue-template-compiler": "^2.6.11",
     "wait-on": "^5.1.0"
   },
-  "chromium-args": "--enable-spell-checking --load-extension='./node_modules/nw-vue-devtools-prebuilt/extension'",
+  "chromium-args": "--enable-spell-checking --allow-running-insecure-content --ignore-certificate-errors --load-extension='./node_modules/nw-vue-devtools-prebuilt/extension'",
   "build": {
     "nwVersion": "v0.44.2",
     "nwFlavor": "normal",
@@ -120,9 +120,9 @@
     ],
     "overriddenProperties": {
       "main": "http://localhost:8965",
-      "node-remote": "http://localhost:8965",
+      "node-remote": "*://localhost/*",
       "node-main": "server.js",
-      "chromium-args": "--enable-spell-checking",
+      "chromium-args": "--enable-spell-checking --allow-running-insecure-content --ignore-certificate-errors",
       "window": {
         "width": 960,
         "height": 600,

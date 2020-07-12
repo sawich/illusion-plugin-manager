@@ -34,6 +34,9 @@ export default {
     }
   },
   plugins: {
+    uninstall: "Uninstall",
+    disable: "Disable",
+    enable: "Enable",
     install: "Install",
     installing: "Installing",
     items: {

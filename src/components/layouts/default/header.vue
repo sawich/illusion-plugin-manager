@@ -28,7 +28,7 @@
         :size="16"
         @click="minimize"
       />
-      <unmaximize-icon
+      <!-- <unmaximize-icon
         class="icon header-active-item window-control-icon"
         :size="16"
         @click="unmaximize"
@@ -39,7 +39,7 @@
         :size="16"
         @click="maximize"
         v-if="windowState == 0"
-      />
+      /> -->
       <close-icon
         class="icon header-active-item window-control-icon"
         :size="16"
@@ -63,8 +63,8 @@ const tasks = namespace("tasks");
     // SettingsIcon: () => import("vue-material-design-icons/CogOutline.vue"),
     TasksIcon: () => import("vue-material-design-icons/ArrowCollapseDown.vue"),
     MinimizeIcon: () => import("vue-material-design-icons/WindowMinimize.vue"),
-    UnmaximizeIcon: () => import("vue-material-design-icons/WindowRestore.vue"),
-    MaximizeIcon: () => import("vue-material-design-icons/WindowMaximize.vue"),
+    // UnmaximizeIcon: () => import("vue-material-design-icons/WindowRestore.vue"),
+    // MaximizeIcon: () => import("vue-material-design-icons/WindowMaximize.vue"),
     CloseIcon: () => import("vue-material-design-icons/WindowClose.vue")
   }
 })
@@ -72,12 +72,12 @@ export default class Header extends Vue {
   @tasks.Getter("entries")
   private entries!: ITasks;
 
-  private async unmaximize() {
-    //@ts-ignore
-    const window = nw.Window.get();
-    window.restore();
-    this.windowState = 0;
-  }
+  // private async unmaximize() {
+  //   //@ts-ignore
+  //   const window = nw.Window.get();
+  //   window.restore();
+  //   this.windowState = 0;
+  // }
 
   private async minimize() {
     //@ts-ignore
@@ -85,12 +85,12 @@ export default class Header extends Vue {
     window.minimize();
   }
 
-  private async maximize() {
-    //@ts-ignore
-    const window = nw.Window.get();
-    window.maximize();
-    this.windowState = 1;
-  }
+  // private async maximize() {
+  //   //@ts-ignore
+  //   const window = nw.Window.get();
+  //   window.maximize();
+  //   this.windowState = 1;
+  // }
 
   private async close() {
     //@ts-ignore
