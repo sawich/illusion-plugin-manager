@@ -1,12 +1,11 @@
 <template>
   <div class="library">
-    <header>Packages</header>
-    <div class="description">
-      Manage packages for
-      <template v-if="game !== null">{{ $t("game.names")[game.id] }}</template>
-    </div>
+    <template v-if="game">
+      <h2>Packages</h2>
+      <div class="description">
+        Manage packages for {{ $t("game.names")[game.id] }}
+      </div>
 
-    <template v-if="game !== null">
       <package-component
         v-for="p of packages"
         :key="p.uuid"
@@ -14,7 +13,12 @@
         :game="game"
       />
     </template>
-    <div class="folders" v-else>
+    <div class="setup" v-else>
+      <h2>Setup game</h2>
+      <div class="description">
+        No info
+      </div>
+
       Select installed game or specify a folder path
       <router-link :to="{ name: 'folders' }">here</router-link>
     </div>
@@ -54,12 +58,10 @@ export default class Library extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import "@/common.scss";
+
 .library {
   padding: 20px;
-}
-
-header {
-  font-size: 2rem;
 }
 
 .description {

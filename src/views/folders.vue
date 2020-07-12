@@ -1,6 +1,6 @@
 <template>
   <section class="folders">
-    <header>Folders</header>
+    <h2>Folders</h2>
     <div class="description">Add games path here</div>
     <div class="games">
       <div class="game" v-for="game of games.values" :key="game.id">
@@ -23,12 +23,10 @@ export default class Folders extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import "@/common.scss";
+
 .folders {
   padding: 20px;
-}
-
-header {
-  font-size: 2rem;
 }
 
 .description {
