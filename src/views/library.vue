@@ -1,23 +1,29 @@
 <template>
-  <div class="plugins" v-if="game !== null">
-    <package-component
-      v-for="p of packages"
-      :key="p.uuid"
-      :p="p"
-      :game="game"
-    />
-  </div>
-  <div class="folders" v-else>
-    Select installed game or specify a folder path
-    <router-link :to="{ name: 'folders' }">here</router-link>
+  <div class="library">
+    <header>Packages</header>
+    <div class="description">
+      Manage packages for
+      <template v-if="game !== null">{{ $t("game.names")[game.id] }}</template>
+    </div>
+
+    <template v-if="game !== null">
+      <package-component
+        v-for="p of packages"
+        :key="p.uuid"
+        :p="p"
+        :game="game"
+      />
+    </template>
+    <div class="folders" v-else>
+      Select installed game or specify a folder path
+      <router-link :to="{ name: 'folders' }">here</router-link>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { PluginGame, Package } from "@/store/modules/packages-module/types";
-import { ITasks } from "../store/modules/tasks-module/types";
-import { packages, games, tasks } from "../store";
+import { packages, games } from "../store";
 import { IPackages } from "../store/modules/packages-module";
 import { Game } from "../store/modules/games-module/types";
 
@@ -48,9 +54,17 @@ export default class Library extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.plugins,
-.folders {
+.library {
   padding: 20px;
+}
+
+header {
+  font-size: 2rem;
+}
+
+.description {
+  color: var(--font-detail-color);
+  margin-bottom: 20px;
 }
 
 a {

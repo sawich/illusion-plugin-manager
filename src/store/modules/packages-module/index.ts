@@ -5,7 +5,7 @@ import { vue } from "@/main";
 import { games } from "@/store";
 
 import { Game } from "../games-module/types";
-import { IPackage, Package, PluginGame } from "./types";
+import { GameId, IPackage, Package } from "./types";
 
 const VuexModule = createModule({ namespaced: "packages", strict: false });
 
@@ -18,7 +18,7 @@ export class PackagesModule extends VuexModule {
     return this._unordered[uuid];
   }
 
-  @action async list(game: PluginGame) {
+  @action async list(game: GameId) {
     return this._entries[game] || {};
   }
 

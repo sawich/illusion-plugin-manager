@@ -1,6 +1,6 @@
 import { Game } from "../../games-module/types";
 
-export const enum PluginGame {
+export const enum GameId {
   /** 0. Play Home */
   PlayHome,
 

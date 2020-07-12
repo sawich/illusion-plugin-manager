@@ -1,4 +1,4 @@
-import { PluginGame } from "@/store/modules/packages-module/types";
+import { GameId } from "@/store/modules/packages-module/types";
 import { JobCategory } from "@/store/modules/tasks-module/types";
 
 import games from "./games.json";
@@ -8,18 +8,18 @@ export default {
   game: {
     names: {
       ...games,
-      [PluginGame.PlayHome]: "Play Home",
-      [PluginGame.HoneySelect1]: "Honey Select 1",
-      [PluginGame.Koikatsu]: "Koikatsu",
-      [PluginGame.KoikatsuSteam]: "Koikatsu (Steam)",
-      [PluginGame.AIShoujo]: "AI Shoujo",
-      [PluginGame.AIShoujoSteam]: "AI Shoujo (Steam)",
-      [PluginGame.HoneySelect2]: "Honey Select 2",
-      [PluginGame.EmotionCreators]: "Emotion Creators"
+      [GameId.PlayHome]: "Play Home",
+      [GameId.HoneySelect1]: "Honey Select 1",
+      [GameId.Koikatsu]: "Koikatsu",
+      [GameId.KoikatsuSteam]: "Koikatsu (Steam)",
+      [GameId.AIShoujo]: "AI Shoujo",
+      [GameId.AIShoujoSteam]: "AI Shoujo (Steam)",
+      [GameId.HoneySelect2]: "Honey Select 2",
+      [GameId.EmotionCreators]: "Emotion Creators"
     }
   },
   tasks: {
-    empty: "Hello there..."
+    empty: "Nothing..."
   },
   job: {
     categories: {

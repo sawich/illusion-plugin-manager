@@ -3,7 +3,7 @@ import { join, parse } from "path";
 
 import { games } from "@/store";
 
-import { PluginGame } from "../../packages-module/types";
+import { GameId } from "../../packages-module/types";
 
 interface IDllInfo {
   [key: string]: string;
@@ -18,7 +18,7 @@ export interface IGameBaseInfo {
 }
 
 export interface IGameInfo {
-  game: PluginGame;
+  game: GameId;
   path: string;
   plugins: string[];
   packages: IInstalledPackages;
@@ -149,11 +149,11 @@ export class Game {
    */
 
   get id() {
-    return this._game;
+    return this._id;
   }
 
   get url() {
-    return `${__api}/packages/${this._game}`;
+    return `${__api}/packages/${this._id}`;
   }
 
   get path() {
@@ -209,7 +209,7 @@ export class Game {
   }
 
   constructor(info: IGameInfo) {
-    this._game = info.game;
+    this._id = info.game;
     this._path = info.path;
     this._dlls = info.info.dlls;
 
@@ -221,7 +221,7 @@ export class Game {
     );
   }
 
-  private _game: PluginGame;
+  private _id: GameId;
   private _path: string;
   private _dlls: IDllInfo;
   private _packages: { [key: string]: InstalledPackage };

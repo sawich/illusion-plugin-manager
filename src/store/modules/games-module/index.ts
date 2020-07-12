@@ -4,7 +4,7 @@ import { action, createModule, mutation } from "vuex-class-component";
 
 import { vue } from "@/main";
 
-import { PluginGame } from "../packages-module/types";
+import { GameId } from "../packages-module/types";
 import { Game, IGameInfo, IInstalledPackages as IIPS, InstalledPackage } from "./types";
 
 const VuexModule = createModule({ namespaced: "games", strict: false });
@@ -22,7 +22,7 @@ export class GamesModule extends VuexModule {
    * Actions
    */
 
-  @action async get(id: PluginGame) {
+  @action async get(id: GameId) {
     return this._games[id];
   }
 

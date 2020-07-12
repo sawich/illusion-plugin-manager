@@ -1,4 +1,4 @@
-import { PluginGame } from "@/store/modules/packages-module/types";
+import { GameId } from "@/store/modules/packages-module/types";
 
 export const enum GameIconSize {
   "s16" = 1,
@@ -9,9 +9,12 @@ export const enum GameIconSize {
   "s96",
   "s128",
   "s192",
-  "s256",
+  "s256"
 }
 
-export const fullGameIconPath = (game: PluginGame, size: GameIconSize = GameIconSize.s16) => {
+export const fullGameIconPath = (
+  game: GameId,
+  size: GameIconSize = GameIconSize.s16
+) => {
   return `/icons/games/${game}/${size}.ico`;
 };
