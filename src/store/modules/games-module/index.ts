@@ -5,6 +5,7 @@ import { action, createModule, mutation } from "vuex-class-component";
 
 import { vue } from "@/main";
 
+import { PackageBuilder } from "../installer-packages-module/types/core/installer";
 import { PluginGame } from "../packages-module/types";
 import { Game, IGameInfo, IInstalledPackages, InstalledPackage } from "./types";
 
@@ -42,15 +43,23 @@ export class GamesModule extends VuexModule {
         })
       );
     }
-
-    console.log("local");
-
-    console.log(this.values);
   }
 
   /**
    * Mutations
    */
+
+  @mutation addPackage(info: { builder: PackageBuilder; game: Game }) {
+    const p = new InstalledPackage({
+      uuid: info.builder.package.uuidEntity,
+      version: info.builder.version,
+      files: info.builder.files,
+      disabled: false,
+      game: info.game
+    });
+
+    vue.$set(info.game.packages, info.builder.package.uuid, p);
+  }
 
   @mutation add(game: Game) {
     vue.$set(this._games, game.id, game);

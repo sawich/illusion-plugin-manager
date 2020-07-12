@@ -170,7 +170,7 @@ export class Installer {
     }
 
     this._task.package.game.add(builder);
-    await this._task.package.game.save();
+    // await this._task.package.game.save();
   }
 
   async done() {

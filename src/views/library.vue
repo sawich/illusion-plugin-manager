@@ -1,5 +1,5 @@
 <template>
-  <div class="plugins">
+  <div class="plugins" v-if="game !== null">
     <package-component
       v-for="p of packages"
       :key="p.uuid"
@@ -28,11 +28,11 @@ export default class Library extends Vue {
 
   @Watch("$route")
   async onRouteChange() {
-    this.init();
+    await this.init();
   }
 
   async created() {
-    this.init();
+    await this.init();
   }
 
   private async init() {

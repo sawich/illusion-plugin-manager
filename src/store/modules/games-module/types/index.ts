@@ -1,6 +1,7 @@
 import { writeFile } from "fs/promises";
 import { join, parse } from "path";
 
+import { vue } from "@/main";
 import { games } from "@/store";
 
 import { PackageBuilder } from "../../installer-packages-module/types/core/installer";
@@ -30,12 +31,14 @@ export interface IInstalledPackage {
   uuid: string;
   version: string;
   files: string[];
+  disabled: boolean;
 }
 
 export class InstalledPackage {
   get uuid() {
     return this._uuid;
   }
+
   get game() {
     return this._game;
   }
@@ -48,11 +51,16 @@ export class InstalledPackage {
     return this._files;
   }
 
+  get disabled() {
+    return this._disabled;
+  }
+
   toJSON() {
     return {
       uuidEntity: this.uuid,
       version: this.version,
-      files: this.files
+      files: this.files,
+      disabled: this.disabled
     };
   }
 
@@ -73,12 +81,14 @@ export class InstalledPackage {
     this._game = info.game;
     this._version = info.version;
     this._files = info.files;
+    this._disabled = info.disabled;
   }
 
   private _uuid: string;
   private _game: Game;
   private _version: string;
   private _files: string[];
+  private _disabled: boolean;
 }
 
 export class Game {
@@ -96,10 +106,6 @@ export class Game {
 
   get path() {
     return this._path;
-  }
-
-  get keys() {
-    return Object.keys(this._packages);
   }
 
   get packages() {
@@ -126,20 +132,15 @@ export class Game {
     return this._packages[uuid] || null;
   }
 
+  add(builder: PackageBuilder) {
+    games.addPackage({ builder, game: this });
+  }
+
   async save() {
     await writeFile(
       join(this.path, "angel.packages.json"),
       JSON.stringify(this._packages)
     );
-  }
-
-  add(builder: PackageBuilder) {
-    this._packages[builder.package.uuid] = new InstalledPackage({
-      uuid: builder.package.uuidEntity,
-      files: builder.files,
-      version: builder.version,
-      game: this
-    });
   }
 
   dll(filename: string) {

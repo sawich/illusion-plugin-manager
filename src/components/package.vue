@@ -1,5 +1,14 @@
 <template>
-  <div class="plugin">
+  <div
+    :class="[
+      'plugin',
+      {
+        'plugin-installing': installing,
+        'plugin-installed': installed,
+        'plugin-disabled': disabled
+      }
+    ]"
+  >
     <div class="plugin-text">
       <div class="name">
         {{ $t("plugins.items")[p.lang].name }}
@@ -9,21 +18,19 @@
       </div>
     </div>
 
-    <div class="toolbar">
-      <div class="toolbar-content">
-        <div class="installing" v-if="installing(p)">
-          installing
-        </div>
+    <div class="toolbar" v-if="installing == false">
+      <template class="installed">
+        <div class="toolbar-content">
+          <div class="installed" v-if="installed">
+            uninstall
+          </div>
 
-        <div class="installed" v-else-if="installed(p)">
-          installed
+          <div class="button install-button" @click="() => p.install()" v-else>
+            <install-icon :size="16" class="icon install-icon" />
+            {{ $t(`plugins.install`) }}
+          </div>
         </div>
-
-        <div class="button install-button" @click="() => p.install()" v-else>
-          <install-icon :size="16" class="icon install-icon" />
-          {{ $t(`plugins.install`) }}
-        </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -40,17 +47,25 @@ import { Game } from "../store/modules/games-module/types";
   }
 })
 export default class PackageComponent extends Vue {
-  @Prop({ required: true }) game!: Game | null;
+  @Prop({ required: true }) game!: Game;
 
   @Prop({ required: true }) p!: Package;
 
-  installing(p: Package) {
-    const task = tasks.entries[p.uuid];
-    return p.uuid in tasks.entries;
+  get disabled() {
+    const p = this.game.package(this.p.uuid);
+    return p && p.disabled;
   }
 
-  installed(p: Package) {
-    return this.game !== null && this.game.has(p.uuid);
+  get installing() {
+    const task = tasks.entries[this.p.uuid];
+    return this.p.uuid in tasks.entries;
+  }
+
+  get installed() {
+    const has = this.game.has(this.p.uuid);
+    console.log(`has: ${has}`);
+
+    return has;
   }
 }
 </script>
@@ -62,18 +77,48 @@ $pagePadding: 20px;
 .plugin {
   position: relative;
   padding: $padding;
-  border-left: 1px solid rgba(7, 202, 0, 0.4);
+  border-left: 1px solid transparent;
+
+  transition: var(--animation-short-time) var(--animation-function);
 
   &:hover {
+    transition: var(--animation-long-time) var(--animation-function);
+
     .plugin-text {
-      transition: filter var(--animation-short-time) var(--animation-function);
+      transition: var(--animation-short-time) var(--animation-function);
       filter: blur(6px);
     }
   }
 }
 
 .plugin-text {
-  transition: filter var(--animation-long-time) var(--animation-function);
+  transition: var(--animation-long-time) var(--animation-function);
+}
+
+.plugin-disabled {
+  opacity: 0.4;
+  text-decoration: line-through;
+  border-color: transparent;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.plugin-installing {
+  color: #00bfff;
+
+  &:hover {
+    transition: var(--animation-short-time) var(--animation-function);
+  }
+
+  .plugin-text {
+    filter: unset !important;
+  }
+}
+
+.plugin-installed {
+  border-color: rgba(7, 202, 0, 0.4);
 }
 
 .toolbar {
@@ -81,31 +126,23 @@ $pagePadding: 20px;
   position: absolute;
   top: 0;
   left: -1px;
-  width: 100%;
+  width: calc(100% + 1px);
   height: 100%;
   filter: none;
   user-select: unset;
   display: grid;
   align-content: center;
   opacity: 0;
-  transition: text-shadow var(--animation-long-time) var(--animation-function),
-    opacity var(--animation-long-time) var(--animation-function);
+  transition: var(--animation-long-time) var(--animation-function);
 
   &:hover {
     opacity: 1;
-    transition: opacity var(--animation-short-time) var(--animation-function);
+    transition: var(--animation-short-time) var(--animation-function);
 
     .toolbar-content {
       opacity: 1;
-      text-shadow: 0 0 (10px / 2) var(--font-color),
-        0 0 (20px / 2) var(--font-color), 0 0 (30px / 2) #00bfff,
-        0 0 (40px / 2) #00bfff, 0 0 (50px / 2) #00bfff, 0 0 (60px / 2) #00bfff,
-        0 0 (70px / 2) #00bfff;
 
-      transition: opacity var(--animation-short-time) var(--animation-function)
-          var(--animation-short-time),
-        text-shadow var(--animation-short-time) var(--animation-function)
-          var(--animation-short-time);
+      transition: var(--animation-short-time) var(--animation-function);
     }
   }
 }
@@ -114,13 +151,7 @@ $pagePadding: 20px;
   padding: 0 10px;
 
   opacity: 0;
-  transition: text-shadow var(--animation-long-time) var(--animation-function),
-    opacity var(--animation-long-time) var(--animation-function);
-}
-
-.install {
-  cursor: pointer;
-  display: inline-block;
+  transition: var(--animation-long-time) var(--animation-function);
 }
 
 .button {
@@ -133,17 +164,18 @@ $pagePadding: 20px;
 }
 
 .install-button {
-  color: var(--library-install-button-color);
-  background-color: var(--font-color);
-  transition: color var(--animation-long-time) var(--animation-function),
-    background-color var(--animation-long-time) var(--animation-function);
+  display: inline-grid;
+  color: var(--font-color);
+
+  $color: var(--bg-color);
+  text-shadow: 0 0 2px var(--font-color), 0 0 4px $color, 0 0 6px $color;
+  transition: var(--animation-long-time) var(--animation-function);
 
   &:hover {
-    color: var(--font-color);
-    background-color: var(--library-install-button-color);
-    transition: color var(--animation-very-short-time) var(--animation-function),
-      background-color var(--animation-very-short-time)
-        var(--animation-function);
+    text-shadow: unset;
+    color: var(--games-list-bg-hover-color);
+    background-color: var(--font-color);
+    transition: var(--animation-short-time) var(--animation-function);
   }
 }
 
