@@ -69,10 +69,7 @@ export default class PackageComponent extends Vue {
   }
 
   get installed() {
-    const has = this.game.has(this.p.uuid);
-    console.log(`has: ${has}`);
-
-    return has;
+    return this.game.has(this.p.uuid);
   }
 }
 </script>
