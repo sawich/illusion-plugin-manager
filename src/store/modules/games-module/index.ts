@@ -3,7 +3,7 @@ import { readFile } from "fs/promises";
 import { join } from "path";
 import { action, createModule, mutation } from "vuex-class-component";
 import { GameId } from "../packages-module/types";
-import { Game, IGameInfo, IInstalledPackages, InstalledPackage } from "./types";
+import { Game, IGameInfo, InstalledPackage } from "./types";
 
 const VuexModule = createModule({ strict: false });
 
@@ -87,11 +87,6 @@ export class GamesModule extends VuexModule.With({ namespaced: "games" }) {
     }
   }
 
-  private static async getPackagesData(
-    path: string
-  ): Promise<IInstalledPackages> {
-    return JSON.parse(await GamesModule.readPackages(path));
-  }
 
   private static async getGamesData(): Promise<IGameInfo[]> {
     return JSON.parse(await GamesModule.readGames());

@@ -14,7 +14,6 @@ export const store = new Vuex.Store({
   modules: {
     ...extractVuexModule(VSModule),
     ...extractVuexModule(GamesModule),
-    ...extractVuexModule(PackagesModule),
     ...extractVuexModule(CachedPackagesModule),
     ...extractVuexModule(InstallerPackagesModule),
   },
@@ -24,6 +23,6 @@ export const store = new Vuex.Store({
 export const vs = createProxy(store, VSModule);
 export const games = createProxy(store, GamesModule);
 export const tasks = new TasksModule();
-export const packages = createProxy(store, PackagesModule);
+export const packages = new PackagesModule;
 export const cached = createProxy(store, CachedPackagesModule);
 export const installerPackages = createProxy(store, InstallerPackagesModule);
