@@ -61,7 +61,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { ITasks } from "@/store/modules/tasks-module/types";
 
 import { namespace } from "vuex-class";
-const tasks = namespace("tasks");
+import { tasks } from '@/store';
 
 @Component({
   components: {
@@ -76,28 +76,13 @@ const tasks = namespace("tasks");
   }
 })
 export default class Header extends Vue {
-  @tasks.Getter("entries")
-  private entries!: ITasks;
-
-  // private async unmaximize() {
-  //   //@ts-ignore
-  //   const window = nw.Window.get();
-  //   window.restore();
-  //   this.windowState = 0;
-  // }
+  entries = tasks.entries;
 
   private async minimize() {
     //@ts-ignore
     const window = nw.Window.get();
     window.minimize();
   }
-
-  // private async maximize() {
-  //   //@ts-ignore
-  //   const window = nw.Window.get();
-  //   window.maximize();
-  //   this.windowState = 1;
-  // }
 
   private async close() {
     //@ts-ignore

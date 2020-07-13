@@ -15,7 +15,6 @@ export default class Loading extends Vue {
     console.log("loading");
 
     await Promise.all([games.load().then(packages.load), vs.load()]);
-
     console.log("created end");
 
     // this.$router.push({ name: "home" });

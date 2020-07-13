@@ -33,7 +33,8 @@ export default class App extends Vue {
 $headerSize: 36px;
 
 body {
-  font: 14px "Oxygen Mono", monospace;
+  // font: 14px "Oxygen Mono", monospace;
+  font: 14px "Fira Code", monospace;
   line-height: 1.6;
 
   -webkit-font-smoothing: antialiased;

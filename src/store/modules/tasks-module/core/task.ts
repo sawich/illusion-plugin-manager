@@ -1,8 +1,5 @@
-import { Vue } from "vue-property-decorator";
-
 import { tasks } from "@/store";
 import { PluginContainer } from "@/store/modules/installer-packages-module/types/core/installer";
-
 import { Installer } from "../../installer-packages-module/types/core/installer";
 import { Job } from "../../jobs-module/types/core/job";
 import { WaitJob } from "../../jobs-module/types/jobs/wait-job";
@@ -15,6 +12,7 @@ export interface ITask {
 }
 
 export class Task {
+
   /**
    * Getters
    */
@@ -43,7 +41,7 @@ export class Task {
     return this._uuidRegister;
   }
 
-  get uuidentityRegister() {
+  get uuidEntityRegister() {
     return this._uuidentityRegister;
   }
 
@@ -51,25 +49,21 @@ export class Task {
    * Setters
    */
 
-  set job(task: Job) {
-    this._job = task;
+  set job(job: Job) {
+    this._job = job;
   }
 
   set uuidRegister(value) {
     this._uuidRegister = value;
   }
 
-  set uuidentityRegister(value) {
+  set uuidEntityRegister(value) {
     this._uuidentityRegister = value;
   }
 
   /**
    * Methods
    */
-
-  async setJob(job: Job) {
-    tasks.setJob({ task: this, job });
-  }
 
   async done() {
     this._resolver();

@@ -1,31 +1,23 @@
-import { Vue } from "vue-property-decorator";
-import { action, createModule, mutation } from "vuex-class-component";
-
-import { JobExistExeption } from "@/exceptions/job-exists-exception";
 import { TaskExistExeption } from "@/exceptions/task-exist-exeption";
 import { TaskIdentityExistExeption } from "@/exceptions/task-identity-exists-exeption";
 import { vue } from "@/main";
-
-import { Job } from "../jobs-module/types/core/job";
 import { Task } from "./core/task";
 import { ITasks } from "./types";
 
-const VuexModule = createModule({ namespaced: "tasks", strict: false });
-
-export class TasksModule extends VuexModule {
+export class TasksModule {
   /**
    * Getters
    */
 
   get entries() {
-    return this._entries;
+    return this.#entries;
   }
 
   /**
    * Actions
    */
 
-  @action async add(task: Task) {
+  async add(task: Task) {
     this.registerEntity(task);
 
     /** Task with same root project exists. Wait and and try recreate. */
@@ -43,41 +35,33 @@ export class TasksModule extends VuexModule {
     }
   }
 
-  /**
-   * Mutations
-   */
-
-  @mutation setJob(info: { task: Task; job: Job }) {
-    info.task.job = info.job;
-  }
-
-  @mutation private registerEntity(task: Task) {
-    const existsTask = this._entries[task.package.uuid];
+  private registerEntity(task: Task) {
+    const existsTask = this.#entries[task.package.uuid];
     if (existsTask !== undefined) {
       throw new TaskExistExeption(existsTask);
     }
 
     task.uuidRegister = true;
-    vue.$set(this._entries, task.package.uuid, task);
+    vue.$set(this.#entries, task.package.uuid, task);
   }
 
-  @mutation private registerIdentity(task: Task) {
-    const existsTask = this._entries[task.package.uuidEntity];
+  private registerIdentity(task: Task) {
+    const existsTask = this.#entries[task.package.uuidEntity];
     if (existsTask !== undefined) {
       throw new TaskIdentityExistExeption(existsTask);
     }
 
-    task.uuidentityRegister = true;
-    vue.$set(this._identitites, task.package.uuidEntity, task);
+    task.uuidEntityRegister = true;
+    vue.$set(this.#identitites, task.package.uuidEntity, task);
   }
 
-  @mutation done(task: Task) {
+  done(task: Task) {
     if (task.uuidRegister) {
-      Vue.delete(this._entries, task.package.uuid);
+      vue.$delete(this.#entries, task.package.uuid);
     }
 
-    if (task.uuidentityRegister) {
-      Vue.delete(this._identitites, task.package.uuidEntity);
+    if (task.uuidEntityRegister) {
+      vue.$delete(this.#identitites, task.package.uuidEntity);
     }
 
     console.log("task removed:", task.package.uuid);
@@ -87,6 +71,6 @@ export class TasksModule extends VuexModule {
    * Datas
    */
 
-  private _identitites: string[] = [];
-  private _entries: ITasks = {};
+  #identitites: string[] = [];
+  #entries: ITasks = {};
 }

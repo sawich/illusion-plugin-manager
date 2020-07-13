@@ -1,15 +1,13 @@
+import { vue } from "@/main";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { action, createModule, mutation } from "vuex-class-component";
-
-import { vue } from "@/main";
-
 import { GameId } from "../packages-module/types";
-import { Game, IGameInfo, IInstalledPackages as IIPS, InstalledPackage } from "./types";
+import { Game, IGameInfo, IInstalledPackages, InstalledPackage } from "./types";
 
-const VuexModule = createModule({ namespaced: "games", strict: false });
+const VuexModule = createModule({ strict: false });
 
-export class GamesModule extends VuexModule {
+export class GamesModule extends VuexModule.With({ namespaced: "games" }) {
   /**
    * Getters
    */
@@ -89,7 +87,9 @@ export class GamesModule extends VuexModule {
     }
   }
 
-  private static async getPackagesData(path: string): Promise<IIPS> {
+  private static async getPackagesData(
+    path: string
+  ): Promise<IInstalledPackages> {
     return JSON.parse(await GamesModule.readPackages(path));
   }
 

@@ -54,6 +54,11 @@ export default class Library extends Vue {
     this.game = await games.get(id);
     this.packages = await packages.list(id);
   }
+
+  beforeRouteUpdate(to, from, next) {
+    console.log('beforeRouteUpdate');
+
+  }
 }
 </script>
 

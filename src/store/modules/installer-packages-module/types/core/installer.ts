@@ -1,11 +1,8 @@
 import { addPackage } from "@/helpers/packages/add-package";
 import { installerPackages, packages } from "@/store";
-import {
-    InstallingDependenciesJob
-} from "@/store/modules/jobs-module/types/jobs/Installing-dependencies-job";
+import { InstallingDependenciesJob } from "@/store/modules/jobs-module/types/jobs/Installing-dependencies-job";
 import { Package } from "@/store/modules/packages-module/types";
 import { Task } from "@/store/modules/tasks-module/core/task";
-
 import { INodeHeader, IPluginContainer, NodeType } from "../";
 import { FileMover } from "../movers/file-mover";
 import { IFileMover, IMoverHeader, MoverType } from "../movers/types";
@@ -13,6 +10,7 @@ import { GitPlacer } from "../placers/git-placer";
 import { IGitPlacer, IPlacerHeader, PlacerType } from "../placers/types";
 import { IResolverHeader, IVSResolver, ResolverType } from "../resolvers/types";
 import { VSCSharpResolver } from "../resolvers/vs-c-sharp-resolver";
+
 
 export class PackageBuilder {
   /**
@@ -154,7 +152,7 @@ export class Installer {
 
     if (this.container.dependence.length > 0) {
       console.log("install dependencies: ", this.container.dependence);
-      this._task.setJob(new InstallingDependenciesJob(this._task));
+      this._task.job = new InstallingDependenciesJob(this._task);
 
       await Promise.all(
         this.container.dependence.map(async uuid => {
@@ -174,9 +172,9 @@ export class Installer {
     await this._task.package.game.save();
   }
 
-  async done() {
-    await this._task.done();
-  }
+  // async done() {
+  //   await this._task.done();
+  // }
 
   constructor(info: IInstallerArguments) {
     this._container = new PluginContainer(info);
