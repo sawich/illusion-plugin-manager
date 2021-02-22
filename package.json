@@ -41,7 +41,7 @@
     "fast-xml-parser": "^3.17.4",
     "get-file-properties": "^1.0.1",
     "normalize.css": "^8.0.1",
-    "nw": "^0.46.4-sdk",
+    "nw": "^0.51.2",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
     "simple-git": "^2.12.0",
